@@ -1,51 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-
-const equipos = [
-  {
-    nombre: "OLD SCHOOL",
-    slug: "old-school",
-    logo: "/equipos/old-school.png",
-    integrantes: ["Cifu", "Tito", "Unai", "Gon Ayllón", "Rafa Llopis", "Dani Pueyo", "Jaime de Sala"],
-  },
-  {
-    nombre: "FILÓSOFOS",
-    slug: "filosofos",
-    logo: "/equipos/filosofos.png",
-    integrantes: ["Melendi", "Rodri Urru", "Petit", "Salva", "Nalda", "Nacho Sánchez", "Lilo"],
-  },
-  {
-    nombre: "BODØ DREAM",
-    slug: "bodo-dream",
-    logo: "/equipos/bodo-dream.png",
-    integrantes: ["Nacho Ramírez", "Kike Vivar", "Nico Sánchez", "Marco Hurtado", "Pablo Hurtado", "Pedro Bañeres (P)", "Juan Sánchez"],
-  },
-  {
-    nombre: "SPITI2",
-    slug: "spiti2",
-    logo: "/equipos/spiti2.png",
-    integrantes: ["Borja", "Caco", "Campa", "Juan Sánchez-Harguindey", "Jordi Sánchez", "Javi Herrera", "Jordi Sánchez (P)", "Guille"],
-  },
-  {
-    nombre: "AÇAI BOYS",
-    slug: "acai-boys",
-    logo: "/equipos/acai-boys.png",
-    integrantes: ["Nico Pueyo", "Charly", "Rober", "Pato", "Mario", "Miguel Fiter", "Arturo", "Carlos (P)"],
-  },
-  {
-    nombre: "ATALAYA",
-    slug: "atalaya",
-    logo: "/equipos/atalaya.png",
-    integrantes: ["Rome", "Nico Marín", "Urru", "Fer Diez", "Jimmy (P)", "Barca", "Nachito"],
-  },
-  {
-    nombre: "TORRE BELDES",
-    slug: "torre-beldes",
-    logo: "/equipos/torre-beldes.png",
-    integrantes: ["Miguel Morán", "Coco", "Lucho", "Sotto", "Gabi", "Pow", "Louis"],
-  },
-];
+import { equipos } from "@/data/equipos";
 
 type Props = {
   params: Promise<{

@@ -1,15 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-
-const equipos = [
-  { nombre: "Old School", logo: "/equipos/old-school.png", slug: "old-school" },
-  { nombre: "Filósofos", logo: "/equipos/filosofos.png", slug: "filosofos" },
-  { nombre: "BODØ DREAM", logo: "/equipos/bodo-dream.png", slug: "bodo-dream" },
-  { nombre: "Spiti2", logo: "/equipos/spiti2.png", slug: "spiti2" },
-  { nombre: "Açai Boys", logo: "/equipos/acai-boys.png", slug: "acai-boys" },
-  { nombre: "Atalaya", logo: "/equipos/atalaya.png", slug: "atalaya" },
-  { nombre: "Torre Beldes", logo: "/equipos/torre-beldes.png", slug: "torre-beldes" },
-];
+import { equipos } from "@/data/equipos";
 
 export default function EquiposPage() {
   return (
