@@ -1,9 +1,46 @@
-export const jornadas = [
+export type EstadoPartido =
+  | "Pendiente de programar"
+  | "Programado"
+  | "Aplazado"
+  | "Finalizado";
+
+export type EventoGol = {
+  jugador: string;
+  asistente?: string;
+};
+
+export type ResumenPartido = {
+  local: EventoGol[];
+  visitante: EventoGol[];
+};
+
+export type Partido = {
+  id: string;
+  local: string;
+  visitante: string;
+  dia?: string;
+  hora?: string;
+  campo?: string;
+  arbitra?: string;
+  estado: EstadoPartido;
+  motivo?: string;
+  resultado?: string;
+  resumen?: ResumenPartido;
+};
+
+export type Jornada = {
+  numero: number;
+  descansa: string;
+  partidos: Partido[];
+};
+
+export const jornadas: Jornada[] = [
   {
     numero: 1,
     descansa: "SPITI2",
     partidos: [
       {
+        id: "j1-torre-beldes-filosofos",
         local: "TORRE BELDES",
         visitante: "FILÓSOFOS",
         dia: "Lunes 18 de marzo",
@@ -14,6 +51,7 @@ export const jornadas = [
         motivo: "Falta de jugadores en FILÓSOFOS",
       },
       {
+        id: "j1-atalaya-bodo-dream",
         local: "ATALAYA",
         visitante: "BODØ DREAM",
         dia: "Jueves 12 de marzo",
@@ -22,8 +60,23 @@ export const jornadas = [
         arbitra: "AÇAI BOYS",
         estado: "Finalizado",
         resultado: "4-4",
+        resumen: {
+          local: [
+            { jugador: "Nico Marín", asistente: "Urru" },
+            { jugador: "Fer Diez", asistente: "Urru" },
+            { jugador: "Urru", asistente: "Nico Marín" },
+            { jugador: "Nachito", asistente: "Sin asistencia" },
+          ],
+          visitante: [
+            { jugador: "Kike Vivar", asistente: "Juan Sánchez" },
+            { jugador: "Nacho Ramírez", asistente: "Nico Sánchez" },
+            { jugador: "Nico Sánchez", asistente: "Pablo Hurtado" },
+            { jugador: "Nico Sánchez", asistente: "Nacho Ramírez" },
+          ],
+        },
       },
       {
+        id: "j1-old-school-acai-boys",
         local: "OLD SCHOOL",
         visitante: "AÇAI BOYS",
         dia: "Jueves 12 de marzo",
@@ -32,14 +85,29 @@ export const jornadas = [
         arbitra: "ATALAYA",
         estado: "Finalizado",
         resultado: "5-3",
+        resumen: {
+          local: [
+            { jugador: "Unai", asistente: "Rafa Llopis" },
+            { jugador: "Gon Ayllón", asistente: "Rafa Llopis" },
+            { jugador: "Jaime de Sala", asistente: "Cifu" },
+            { jugador: "Rafa Llopis", asistente: "Sin asistencia" },
+            { jugador: "Jaime de Sala", asistente: "Rafa Llopis" },
+          ],
+          visitante: [
+            { jugador: "Arturo", asistente: "Sin asistencia" },
+            { jugador: "Gol cedido", asistente: "Sin asistencia" },
+            { jugador: "Gol cedido", asistente: "Sin asistencia" },
+          ],
+        },
       },
     ],
   },
-    {
+  {
     numero: 2,
     descansa: "FILÓSOFOS",
     partidos: [
       {
+        id: "j2-torre-beldes-old-school",
         local: "TORRE BELDES",
         visitante: "OLD SCHOOL",
         dia: "Lunes 16 de marzo",
@@ -49,6 +117,7 @@ export const jornadas = [
         estado: "Programado",
       },
       {
+        id: "j2-acai-boys-atalaya",
         local: "AÇAI BOYS",
         visitante: "ATALAYA",
         dia: "Jueves 19 de marzo",
@@ -58,6 +127,7 @@ export const jornadas = [
         estado: "Programado",
       },
       {
+        id: "j2-bodo-dream-spiti2",
         local: "BODØ DREAM",
         visitante: "SPITI2",
         dia: "Lunes 16 de marzo",
@@ -73,6 +143,7 @@ export const jornadas = [
     descansa: "OLD SCHOOL",
     partidos: [
       {
+        id: "j3-torre-beldes-bodo-dream",
         local: "TORRE BELDES",
         visitante: "BODØ DREAM",
         dia: "Lunes 23 de marzo",
@@ -82,6 +153,7 @@ export const jornadas = [
         estado: "Programado",
       },
       {
+        id: "j3-filosofos-acai-boys",
         local: "FILÓSOFOS",
         visitante: "AÇAI BOYS",
         dia: "Lunes 23 de marzo",
@@ -91,6 +163,7 @@ export const jornadas = [
         estado: "Programado",
       },
       {
+        id: "j3-spiti2-atalaya",
         local: "SPITI2",
         visitante: "ATALAYA",
         dia: "Jueves 26 de marzo",
@@ -102,87 +175,99 @@ export const jornadas = [
     ],
   },
   {
-  numero: 4,
-  descansa: "ATALAYA",
-  partidos: [
-    {
-      local: "TORRE BELDES",
-      visitante: "AÇAI BOYS",
-      estado: "Pendiente de programar",
-    },
-    {
-      local: "BODØ DREAM",
-      visitante: "OLD SCHOOL",
-      estado: "Pendiente de programar",
-    },
-    {
-      local: "FILÓSOFOS",
-      visitante: "SPITI2",
-      estado: "Pendiente de programar",
-    },
-  ],
-},
-{
-  numero: 5,
-  descansa: "AÇAI BOYS",
-  partidos: [
-    {
-      local: "TORRE BELDES",
-      visitante: "SPITI2",
-      estado: "Pendiente de programar",
-    },
-    {
-      local: "OLD SCHOOL",
-      visitante: "ATALAYA",
-      estado: "Pendiente de programar",
-    },
-    {
-      local: "FILÓSOFOS",
-      visitante: "BODØ DREAM",
-      estado: "Pendiente de programar",
-    },
-  ],
-},
-{
-  numero: 6,
-  descansa: "BODØ DREAM",
-  partidos: [
-    {
-      local: "TORRE BELDES",
-      visitante: "ATALAYA",
-      estado: "Pendiente de programar",
-    },
-    {
-      local: "OLD SCHOOL",
-      visitante: "FILÓSOFOS",
-      estado: "Pendiente de programar",
-    },
-    {
-      local: "AÇAI BOYS",
-      visitante: "SPITI2",
-      estado: "Pendiente de programar",
-    },
-  ],
-},
-{
-  numero: 7,
-  descansa: "TORRE BELDES",
-  partidos: [
-    {
-      local: "OLD SCHOOL",
-      visitante: "SPITI2",
-      estado: "Pendiente de programar",
-    },
-    {
-      local: "AÇAI BOYS",
-      visitante: "BODØ DREAM",
-      estado: "Pendiente de programar",
-    },
-    {
-      local: "FILÓSOFOS",
-      visitante: "ATALAYA",
-      estado: "Pendiente de programar",
-    },
-  ],
-},
+    numero: 4,
+    descansa: "ATALAYA",
+    partidos: [
+      {
+        id: "j4-torre-beldes-acai-boys",
+        local: "TORRE BELDES",
+        visitante: "AÇAI BOYS",
+        estado: "Pendiente de programar",
+      },
+      {
+        id: "j4-bodo-dream-old-school",
+        local: "BODØ DREAM",
+        visitante: "OLD SCHOOL",
+        estado: "Pendiente de programar",
+      },
+      {
+        id: "j4-filosofos-spiti2",
+        local: "FILÓSOFOS",
+        visitante: "SPITI2",
+        estado: "Pendiente de programar",
+      },
+    ],
+  },
+  {
+    numero: 5,
+    descansa: "AÇAI BOYS",
+    partidos: [
+      {
+        id: "j5-torre-beldes-spiti2",
+        local: "TORRE BELDES",
+        visitante: "SPITI2",
+        estado: "Pendiente de programar",
+      },
+      {
+        id: "j5-old-school-atalaya",
+        local: "OLD SCHOOL",
+        visitante: "ATALAYA",
+        estado: "Pendiente de programar",
+      },
+      {
+        id: "j5-filosofos-bodo-dream",
+        local: "FILÓSOFOS",
+        visitante: "BODØ DREAM",
+        estado: "Pendiente de programar",
+      },
+    ],
+  },
+  {
+    numero: 6,
+    descansa: "BODØ DREAM",
+    partidos: [
+      {
+        id: "j6-torre-beldes-atalaya",
+        local: "TORRE BELDES",
+        visitante: "ATALAYA",
+        estado: "Pendiente de programar",
+      },
+      {
+        id: "j6-old-school-filosofos",
+        local: "OLD SCHOOL",
+        visitante: "FILÓSOFOS",
+        estado: "Pendiente de programar",
+      },
+      {
+        id: "j6-acai-boys-spiti2",
+        local: "AÇAI BOYS",
+        visitante: "SPITI2",
+        estado: "Pendiente de programar",
+      },
+    ],
+  },
+  {
+    numero: 7,
+    descansa: "TORRE BELDES",
+    partidos: [
+      {
+        id: "j7-old-school-spiti2",
+        local: "OLD SCHOOL",
+        visitante: "SPITI2",
+        estado: "Pendiente de programar",
+      },
+      {
+        id: "j7-acai-boys-bodo-dream",
+        local: "AÇAI BOYS",
+        visitante: "BODØ DREAM",
+        estado: "Pendiente de programar",
+      },
+      {
+        id: "j7-filosofos-atalaya",
+        local: "FILÓSOFOS",
+        visitante: "ATALAYA",
+        estado: "Pendiente de programar",
+      },
+    ],
+  },
 ];
