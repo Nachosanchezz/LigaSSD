@@ -14,17 +14,17 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es">
-      <body className="relative min-h-screen bg-[#f7f3e9]">
+      <body className="relative min-h-screen bg-slate-50 text-slate-800 antialiased selection:bg-yellow-400 selection:text-blue-950">
 
         {/* Logo de fondo */}
         <div
-          className="fixed inset-0 bg-center bg-no-repeat bg-contain opacity-10 pointer-events-none"
+          className="fixed inset-0 bg-center bg-no-repeat bg-contain opacity-5 pointer-events-none mix-blend-multiply"
           style={{ backgroundImage: "url('/logo.png')" }}
         />
 
         <Navbar />
 
-        <main className="relative z-10">
+        <main className="relative z-10 flex flex-col min-h-[calc(100vh-80px)]">
           {children}
         </main>
 
