@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { jornadas } from "../../data/partidos";
 import { equipos } from "../../data/equipos";
 
@@ -16,7 +17,6 @@ type FilaClasificacion = {
 function calcularClasificacion(): FilaClasificacion[] {
   const tabla: Record<string, FilaClasificacion> = {};
 
-  // Inicializamos todos los equipos
   for (const equipo of equipos) {
     tabla[equipo.nombre] = {
       equipo: equipo.nombre,
@@ -31,7 +31,6 @@ function calcularClasificacion(): FilaClasificacion[] {
     };
   }
 
-  // Recorremos todos los partidos finalizados
   for (const jornada of jornadas) {
     for (const partido of jornada.partidos) {
       if (partido.estado !== "Finalizado" || !partido.resultado) continue;
@@ -47,18 +46,15 @@ function calcularClasificacion(): FilaClasificacion[] {
 
       if (!local || !visitante) continue;
 
-      // Partidos jugados
       local.pj += 1;
       visitante.pj += 1;
 
-      // Goles a favor / en contra
       local.gf += golesLocal;
       local.gc += golesVisitante;
 
       visitante.gf += golesVisitante;
       visitante.gc += golesLocal;
 
-      // Resultado
       if (golesLocal > golesVisitante) {
         local.pg += 1;
         local.pts += 3;
@@ -76,13 +72,11 @@ function calcularClasificacion(): FilaClasificacion[] {
     }
   }
 
-  // Calculamos diferencia de goles
   const clasificacion = Object.values(tabla).map((fila) => ({
     ...fila,
     dg: fila.gf - fila.gc,
   }));
 
-  // Ordenamos la tabla
   clasificacion.sort((a, b) => {
     if (b.pts !== a.pts) return b.pts - a.pts;
     if (b.dg !== a.dg) return b.dg - a.dg;
@@ -95,6 +89,10 @@ function calcularClasificacion(): FilaClasificacion[] {
 
 export default function ClasificacionPage() {
   const clasificacion = calcularClasificacion();
+
+  const logosEquipos = Object.fromEntries(
+    equipos.map((equipo) => [equipo.nombre, equipo.logo])
+  ) as Record<string, string>;
 
   return (
     <section className="mx-auto max-w-6xl px-6 py-16">
@@ -124,9 +122,20 @@ export default function ClasificacionPage() {
                 className="border-t border-slate-200 text-slate-800"
               >
                 <td className="px-4 py-4 font-semibold">{index + 1}</td>
+
                 <td className="px-4 py-4 font-semibold text-[#0b4a6f]">
-                  {fila.equipo}
+                  <div className="flex items-center gap-3">
+                    <Image
+                      src={logosEquipos[fila.equipo]}
+                      alt={fila.equipo}
+                      width={28}
+                      height={28}
+                      className="h-7 w-7 object-contain"
+                    />
+                    <span>{fila.equipo}</span>
+                  </div>
                 </td>
+
                 <td className="px-4 py-4 text-center">{fila.pj}</td>
                 <td className="px-4 py-4 text-center">{fila.pg}</td>
                 <td className="px-4 py-4 text-center">{fila.pe}</td>

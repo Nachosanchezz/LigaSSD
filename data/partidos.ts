@@ -62,16 +62,16 @@ export const jornadas: Jornada[] = [
         resultado: "4-4",
         resumen: {
           local: [
-            { jugador: "Nico Marín", asistente: "Urru" },
-            { jugador: "Fer Diez", asistente: "Urru" },
-            { jugador: "Urru", asistente: "Nico Marín" },
+            { jugador: "Nico Marín", asistente: "Borja Urrutia" },
+            { jugador: "Fernando Diez", asistente: "Borja Urrutia" },
+            { jugador: "Borja Urrutia", asistente: "Nico Marín" },
             { jugador: "Nachito", asistente: "Sin asistencia" },
           ],
           visitante: [
-            { jugador: "Kike Vivar", asistente: "Juan Sánchez" },
-            { jugador: "Nacho Ramírez", asistente: "Nico Sánchez" },
-            { jugador: "Nico Sánchez", asistente: "Pablo Hurtado" },
-            { jugador: "Nico Sánchez", asistente: "Nacho Ramírez" },
+            { jugador: "Enrique Vivar", asistente: "Juan Sánchez" },
+            { jugador: "Nacho Ramírez", asistente: "Nicolás Sánchez" },
+            { jugador: "Nicolás Sánchez", asistente: "Pablo Hurtado" },
+            { jugador: "Nicolás Sánchez", asistente: "Nacho Ramírez" },
           ],
         },
       },
@@ -87,11 +87,11 @@ export const jornadas: Jornada[] = [
         resultado: "5-3",
         resumen: {
           local: [
-            { jugador: "Unai", asistente: "Rafa Llopis" },
-            { jugador: "Gon Ayllón", asistente: "Rafa Llopis" },
+            { jugador: "Unai", asistente: "Rafael Llopis" },
+            { jugador: "Gon Ayllón", asistente: "Rafael Llopis" },
             { jugador: "Jaime de Sala", asistente: "Cifu" },
-            { jugador: "Rafa Llopis", asistente: "Sin asistencia" },
-            { jugador: "Jaime de Sala", asistente: "Rafa Llopis" },
+            { jugador: "Rafael Llopis", asistente: "Sin asistencia" },
+            { jugador: "Jaime de Sala", asistente: "Rafael Llopis" },
           ],
           visitante: [
             { jugador: "Arturo", asistente: "Sin asistencia" },

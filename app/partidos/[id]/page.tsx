@@ -1,6 +1,8 @@
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { jornadas } from "../../../data/partidos";
+import { equipos } from "../../../data/equipos";
 
 type Props = {
   params: Promise<{
@@ -19,6 +21,10 @@ export default async function PartidoDetallePage({ params }: Props) {
     notFound();
   }
 
+  const logosEquipos = Object.fromEntries(
+    equipos.map((equipo) => [equipo.nombre, equipo.logo])
+  ) as Record<string, string>;
+
   return (
     <section className="mx-auto max-w-5xl px-6 py-16">
       <Link
@@ -30,13 +36,43 @@ export default async function PartidoDetallePage({ params }: Props) {
 
       <div className="rounded-2xl border border-slate-200 bg-white/90 p-8 shadow-sm backdrop-blur-sm">
         <div className="mb-8 text-center">
-          <p className="mb-2 text-sm font-medium text-slate-500">
+          <p className="mb-4 text-sm font-medium text-slate-500">
             {partido.dia} {partido.hora ? `· ${partido.hora}` : ""}
           </p>
 
-          <h1 className="text-4xl font-bold text-[#0b4a6f]">
-            {partido.local} {partido.resultado} {partido.visitante}
-          </h1>
+          <div className="mb-6 flex flex-col items-center justify-center gap-6 md:flex-row">
+            <div className="flex flex-col items-center gap-3">
+              <Image
+                src={logosEquipos[partido.local]}
+                alt={partido.local}
+                width={70}
+                height={70}
+                className="h-[70px] w-[70px] object-contain"
+              />
+              <span className="text-lg font-semibold text-[#0b4a6f]">
+                {partido.local}
+              </span>
+            </div>
+
+            <div className="text-center">
+              <h1 className="text-5xl font-bold text-[#0b4a6f]">
+                {partido.resultado}
+              </h1>
+            </div>
+
+            <div className="flex flex-col items-center gap-3">
+              <Image
+                src={logosEquipos[partido.visitante]}
+                alt={partido.visitante}
+                width={70}
+                height={70}
+                className="h-[70px] w-[70px] object-contain"
+              />
+              <span className="text-lg font-semibold text-[#0b4a6f]">
+                {partido.visitante}
+              </span>
+            </div>
+          </div>
 
           <div className="mt-4 flex flex-wrap justify-center gap-3">
             {partido.campo && (

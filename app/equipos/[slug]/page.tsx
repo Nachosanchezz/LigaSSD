@@ -1,13 +1,23 @@
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { equipos } from "@/data/equipos";
+import { equipos } from "../../../data/equipos";
 
 type Props = {
   params: Promise<{
     slug: string;
   }>;
 };
+
+function nombreCompletoJugador(jugador: {
+  nombre: string;
+  primerApellido?: string;
+  segundoApellido?: string;
+}) {
+  return [jugador.nombre, jugador.primerApellido, jugador.segundoApellido]
+    .filter((parte) => parte && parte.trim() !== "")
+    .join(" ");
+}
 
 export default async function EquipoPage({ params }: Props) {
   const { slug } = await params;
@@ -50,10 +60,24 @@ export default async function EquipoPage({ params }: Props) {
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {equipo.integrantes.map((jugador) => (
               <div
-                key={jugador}
-                className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-800"
+                key={nombreCompletoJugador(jugador)}
+                className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3"
               >
-                {jugador}
+                <p className="font-semibold text-slate-800">
+                  {nombreCompletoJugador(jugador)}
+                </p>
+
+                {jugador.apodo && (
+                  <p className="mt-1 text-sm text-slate-600">
+                    Apodo: {jugador.apodo}
+                  </p>
+                )}
+
+                <div className="mt-2 space-y-1 text-sm text-slate-600">
+                  {jugador.edad && <p>Edad: {jugador.edad}</p>}
+                  {jugador.posicion && <p>Posición: {jugador.posicion}</p>}
+                  {jugador.piernaBuena && <p>Pierna buena: {jugador.piernaBuena}</p>}
+                </div>
               </div>
             ))}
           </div>
