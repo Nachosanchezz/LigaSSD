@@ -57,10 +57,13 @@ export default function JornadasPage() {
 
                   const contenido = esFinalizado ? (
                     <div className="flex flex-col h-full justify-center">
-                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 sm:gap-0">
+                      <div className="flex flex-row items-center justify-between w-full">
                         {/* Local */}
-                        <div className="flex items-center gap-3 sm:gap-4 sm:w-2/5 order-1 sm:order-1">
-                          <div className="h-10 w-10 sm:h-14 sm:w-14 rounded-full bg-slate-50 border border-slate-100 flex items-center justify-center p-2 shadow-sm shrink-0">
+                        <div className="flex flex-col sm:flex-row items-center sm:justify-end gap-1.5 sm:gap-4 flex-1">
+                          <span className="text-[10px] sm:text-base md:text-xl font-bold text-slate-800 text-center sm:text-right line-clamp-2 sm:line-clamp-1 order-2 sm:order-1 leading-tight">
+                            {partido.local}
+                          </span>
+                          <div className="h-10 w-10 sm:h-14 sm:w-14 rounded-full bg-slate-50 border border-slate-100 flex items-center justify-center p-1.5 sm:p-2 shadow-sm shrink-0 order-1 sm:order-2 mx-auto sm:mx-0">
                             <Image
                               src={logosEquipos[partido.local]}
                               alt={partido.local}
@@ -69,24 +72,18 @@ export default function JornadasPage() {
                               className="h-full w-full object-contain"
                             />
                           </div>
-                          <span className="text-base sm:text-xl font-bold text-slate-800 line-clamp-1">
-                            {partido.local}
-                          </span>
                         </div>
 
                         {/* Score */}
-                        <div className="flex justify-start sm:justify-center sm:w-1/5 order-3 sm:order-2 mt-2 sm:mt-0">
-                          <div className="flex items-center justify-center min-w-[5rem] sm:min-w-[6rem] rounded-xl bg-gradient-to-b from-[#091f36] to-[#0b4a6f] px-3 sm:px-4 py-1.5 sm:py-2 text-xl sm:text-3xl font-black tracking-widest text-white shadow-md shadow-[#0b4a6f]/20">
+                        <div className="flex justify-center shrink-0 mx-2 sm:mx-6">
+                          <div className="flex items-center justify-center min-w-[3.5rem] sm:min-w-[6rem] rounded-xl bg-gradient-to-b from-[#091f36] to-[#0b4a6f] px-2 sm:px-4 py-1 sm:py-2 text-lg sm:text-3xl font-black tracking-widest text-white shadow-md shadow-[#0b4a6f]/20">
                             {partido.resultado}
                           </div>
                         </div>
 
                         {/* Visitante */}
-                        <div className="flex items-center gap-3 sm:gap-4 sm:w-2/5 order-2 sm:order-3 justify-start sm:justify-end">
-                          <span className="text-base sm:text-xl font-bold text-slate-800 text-left sm:text-right line-clamp-1">
-                            {partido.visitante}
-                          </span>
-                          <div className="h-10 w-10 sm:h-14 sm:w-14 rounded-full bg-slate-50 border border-slate-100 flex items-center justify-center p-2 shadow-sm shrink-0">
+                        <div className="flex flex-col sm:flex-row items-center sm:justify-start gap-1.5 sm:gap-4 flex-1">
+                          <div className="h-10 w-10 sm:h-14 sm:w-14 rounded-full bg-slate-50 border border-slate-100 flex items-center justify-center p-1.5 sm:p-2 shadow-sm shrink-0 mx-auto sm:mx-0">
                             <Image
                               src={logosEquipos[partido.visitante]}
                               alt={partido.visitante}
@@ -95,42 +92,39 @@ export default function JornadasPage() {
                               className="h-full w-full object-contain"
                             />
                           </div>
+                          <span className="text-[10px] sm:text-base md:text-xl font-bold text-slate-800 text-center sm:text-left line-clamp-2 sm:line-clamp-1 leading-tight">
+                            {partido.visitante}
+                          </span>
                         </div>
                       </div>
 
                       {/* Info Footer */}
-                      <div className="mt-5 sm:mt-6 flex flex-wrap items-center gap-2 sm:gap-3 border-t border-slate-100 pt-3 sm:pt-4">
-                        <div className="inline-flex items-center rounded-lg bg-green-50 border border-green-100 px-2 sm:px-3 py-1 text-[10px] sm:text-xs font-bold uppercase tracking-wide text-green-700 w-fit">
+                      <div className="mt-4 flex flex-wrap items-center justify-center sm:justify-start gap-2 border-t border-slate-100 pt-3">
+                        <div className="inline-flex items-center rounded-lg bg-green-50 border border-green-100 px-2 sm:px-3 py-1 text-[9px] sm:text-xs font-bold uppercase tracking-wide text-green-700 w-fit">
                           <span className="w-1.5 h-1.5 rounded-full bg-green-500 mr-1.5 animate-pulse"></span>
                           {partido.estado}
                         </div>
                         {partido.dia && partido.hora && (
-                          <div className="inline-flex items-center gap-1.5 rounded-lg bg-slate-50 border border-slate-100 px-2 sm:px-3 py-1 text-[10px] sm:text-xs font-medium text-slate-600">
-                            <svg className="w-3 h-3 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                          <div className="inline-flex items-center gap-1.5 rounded-lg bg-slate-50 border border-slate-100 px-2 sm:px-3 py-1 text-[9px] sm:text-xs font-medium text-slate-600">
+                            <svg className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                             {partido.dia} · {partido.hora}
                           </div>
                         )}
                         {partido.campo && (
-                          <div className="inline-flex items-center gap-1.5 rounded-lg bg-slate-50 border border-slate-100 px-2 sm:px-3 py-1 text-[10px] sm:text-xs font-medium text-slate-600">
-                            <svg className="w-3 h-3 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                          <div className="inline-flex items-center gap-1.5 rounded-lg bg-slate-50 border border-slate-100 px-2 sm:px-3 py-1 text-[9px] sm:text-xs font-medium text-slate-600">
+                            <svg className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
                             {partido.campo}
-                          </div>
-                        )}
-                        {partido.arbitra && (
-                          <div className="inline-flex items-center gap-1.5 rounded-lg bg-yellow-50 border border-yellow-100 px-2 sm:px-3 py-1 text-[10px] sm:text-xs font-medium text-yellow-800">
-                            <svg className="w-3 h-3 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
-                            {partido.arbitra}
                           </div>
                         )}
                       </div>
                     </div>
                   ) : (
                     <div className="flex flex-col h-full justify-center">
-                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 sm:gap-0">
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-0">
                         {/* Resumen Header */}
-                        <div className="flex items-center gap-4 w-full sm:w-auto text-lg sm:text-xl font-bold text-slate-800">
-                          <div className="flex items-center gap-2 sm:gap-3">
-                            <div className="h-8 w-8 sm:h-10 sm:w-10 rounded-full bg-slate-50 border border-slate-100 flex items-center justify-center p-1.5 shadow-sm shrink-0 text-gray-500">
+                        <div className="flex flex-row items-center justify-center sm:justify-start gap-2 sm:gap-4 w-full sm:w-auto text-xs sm:text-xl font-bold text-slate-800">
+                          <div className="flex flex-col sm:flex-row items-center gap-1.5 sm:gap-3 flex-1 sm:flex-none">
+                            <div className="h-8 w-8 sm:h-10 sm:w-10 rounded-full bg-slate-50 border border-slate-100 flex items-center justify-center p-1.5 shadow-sm shrink-0 text-gray-500 mx-auto sm:mx-0">
                               <Image
                                 src={logosEquipos[partido.local]}
                                 alt={partido.local}
@@ -139,14 +133,13 @@ export default function JornadasPage() {
                                 className="h-full w-full object-contain opacity-70"
                               />
                             </div>
-                            <span className="line-clamp-1">{partido.local}</span>
+                            <span className="line-clamp-2 sm:line-clamp-1 text-center sm:text-left leading-tight">{partido.local}</span>
                           </div>
 
-                          <span className="text-slate-300 text-sm font-black uppercase tracking-wider bg-slate-50 px-2 py-0.5 rounded">vs</span>
+                          <span className="text-slate-300 text-[10px] sm:text-sm font-black uppercase tracking-wider bg-slate-50 px-1.5 sm:px-2 py-0.5 rounded shrink-0">vs</span>
 
-                          <div className="flex items-center gap-2 sm:gap-3">
-                            <span className="line-clamp-1">{partido.visitante}</span>
-                            <div className="h-8 w-8 sm:h-10 sm:w-10 rounded-full bg-slate-50 border border-slate-100 flex items-center justify-center p-1.5 shadow-sm shrink-0 text-gray-500">
+                          <div className="flex flex-col sm:flex-row items-center gap-1.5 sm:gap-3 flex-1 sm:flex-none">
+                            <div className="h-8 w-8 sm:h-10 sm:w-10 rounded-full bg-slate-50 border border-slate-100 flex items-center justify-center p-1.5 shadow-sm shrink-0 text-gray-500 order-1 sm:order-2 mx-auto sm:mx-0">
                               <Image
                                 src={logosEquipos[partido.visitante]}
                                 alt={partido.visitante}
@@ -155,11 +148,12 @@ export default function JornadasPage() {
                                 className="h-full w-full object-contain opacity-70"
                               />
                             </div>
+                            <span className="line-clamp-2 sm:line-clamp-1 text-center sm:text-left leading-tight order-2 sm:order-1">{partido.visitante}</span>
                           </div>
                         </div>
 
                         {/* Fecha */}
-                        <div className="text-xs sm:text-sm font-bold text-[#0b4a6f] bg-blue-50 border border-blue-100 px-3 py-1.5 rounded-lg w-fit sm:w-auto">
+                        <div className="text-[10px] sm:text-sm font-bold text-[#0b4a6f] bg-blue-50 border border-blue-100 px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg w-fit mx-auto sm:mx-0 mt-2 sm:mt-0">
                           {partido.dia && partido.hora
                             ? `${partido.dia} · ${partido.hora}`
                             : "Por Confirmar"}
@@ -167,9 +161,9 @@ export default function JornadasPage() {
                       </div>
 
                       {/* Info Footer */}
-                      <div className="mt-4 sm:mt-5 flex flex-wrap items-center gap-2 sm:gap-3 border-t border-slate-50 pt-3 sm:pt-4">
+                      <div className="mt-3 sm:mt-5 flex flex-wrap items-center justify-center sm:justify-start gap-2 border-t border-slate-50 pt-3">
                         <div
-                          className={`inline-flex items-center rounded-lg border px-2 sm:px-3 py-1 text-[10px] sm:text-xs font-bold uppercase tracking-wide w-fit ${
+                          className={`inline-flex items-center rounded-lg border px-2 sm:px-3 py-1 text-[9px] sm:text-xs font-bold uppercase tracking-wide w-fit ${
                             partido.estado === "Aplazado"
                               ? "bg-red-50 text-red-700 border-red-100"
                               : partido.estado === "Programado"
@@ -181,21 +175,21 @@ export default function JornadasPage() {
                         </div>
 
                         {partido.estado === "Aplazado" && partido.motivo && (
-                          <div className="inline-flex items-center gap-1.5 rounded-lg bg-red-50/50 border border-red-50 px-2 sm:px-3 py-1 text-[10px] sm:text-xs font-medium text-red-600">
+                          <div className="inline-flex items-center gap-1.5 rounded-lg bg-red-50/50 border border-red-50 px-2 sm:px-3 py-1 text-[9px] sm:text-xs font-medium text-red-600">
                             Motivo: {partido.motivo}
                           </div>
                         )}
 
                         {partido.campo && (
-                          <div className="inline-flex items-center gap-1.5 rounded-lg bg-slate-50 border border-slate-100 px-2 sm:px-3 py-1 text-[10px] sm:text-xs font-medium text-slate-600">
-                            <svg className="w-3 h-3 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                          <div className="inline-flex items-center gap-1.5 rounded-lg bg-slate-50 border border-slate-100 px-2 sm:px-3 py-1 text-[9px] sm:text-xs font-medium text-slate-600">
+                            <svg className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
                             {partido.campo}
                           </div>
                         )}
                         
                         {partido.arbitra && (
-                          <div className="inline-flex items-center gap-1.5 rounded-lg bg-yellow-50 border border-yellow-100 px-2 sm:px-3 py-1 text-[10px] sm:text-xs font-medium text-yellow-800">
-                            <svg className="w-3 h-3 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                          <div className="inline-flex items-center gap-1.5 rounded-lg bg-yellow-50 border border-yellow-100 px-2 sm:px-3 py-1 text-[9px] sm:text-xs font-medium text-yellow-800">
+                            <svg className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
                             {partido.arbitra}
                           </div>
                         )}
@@ -208,7 +202,7 @@ export default function JornadasPage() {
                       <Link
                         key={index}
                         href={`/partidos/${partido.id}`}
-                        className="group block rounded-[1.5rem] border border-slate-100 bg-white px-4 sm:px-6 py-4 sm:py-5 transition-all hover:border-[#0b4a6f]/30 hover:shadow-lg hover:shadow-[#0b4a6f]/10 shadow-sm"
+                        className="group block rounded-[1.5rem] border border-slate-100 bg-white px-3 sm:px-6 py-4 sm:py-5 transition-all hover:border-[#0b4a6f]/30 hover:shadow-lg hover:shadow-[#0b4a6f]/10 shadow-sm"
                       >
                         {contenido}
                       </Link>
@@ -218,7 +212,7 @@ export default function JornadasPage() {
                   return (
                     <div
                       key={index}
-                      className="rounded-[1.5rem] border border-slate-100/60 bg-slate-50/50 px-4 sm:px-6 py-4 sm:py-5 opacity-90 transition-opacity hover:opacity-100"
+                      className="rounded-[1.5rem] border border-slate-100/60 bg-slate-50/50 px-3 sm:px-6 py-4 sm:py-5 opacity-90 transition-opacity hover:opacity-100"
                     >
                       {contenido}
                     </div>
