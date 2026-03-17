@@ -113,7 +113,7 @@ export const jornadas: Jornada[] = [
         dia: "Lunes 16 de marzo",
         hora: "21:20",
         campo: "1",
-        arbitra: "SPITI2",
+        arbitra: "BODØ DREAM",
         estado: "Finalizado",
         resultado: "9-5",
         resumen: {
