@@ -301,7 +301,7 @@ export const equipos: Equipo[] = [
         apodo: "Guille",
         edad: 27,
         posicion: "Cierre",
-        piernaBuena: "Derecha",
+        piernaBuena: "Izquierda",
       },
     ],
   },

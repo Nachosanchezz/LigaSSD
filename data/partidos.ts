@@ -7,6 +7,7 @@ export type EstadoPartido =
 export type EventoGol = {
   jugador: string;
   asistente?: string;
+  minuto?: number;
 };
 
 export type ResumenPartido = {
@@ -144,8 +145,23 @@ export const jornadas: Jornada[] = [
         dia: "Jueves 19 de marzo",
         hora: "21:00",
         campo: "1",
-        arbitra: "FILÓSOFOS",
-        estado: "Programado",
+        arbitra: "BODØ DREAM",
+        estado: "Finalizado",
+        resultado: "4-4",
+        resumen: {
+          local: [
+            { jugador: "Pato", asistente: "Charly", minuto: 13 },
+            { jugador: "Pueyo", asistente: "Pato", minuto: 29 },
+            { jugador: "Cedido", asistente: "Mario", minuto: 30 },
+            { jugador: "Cedido", asistente: "Sin asistencia", minuto: 40 },
+          ],
+          visitante: [
+            { jugador: "Fer", asistente: "Urru", minuto: 10 },
+            { jugador: "Nico Marín", asistente: "Fer", minuto: 17 },
+            { jugador: "Nico Marín", asistente: "Fer", minuto: 25 },
+            { jugador: "Jimmy", asistente: "Sin asistencia", minuto: 37 },
+          ],
+        },
       },
       {
         id: "j2-bodo-dream-spiti2",
@@ -154,8 +170,9 @@ export const jornadas: Jornada[] = [
         dia: "Lunes 16 de marzo",
         hora: "20:30",
         campo: "1",
-        arbitra: "OLD SCHOOL",
-        estado: "Programado",
+        arbitra: "Autoarbitraje",
+        estado: "Aplazado",
+        motivo: "Falta de jugadores en BODØ DREAM",
       },
     ],
   },
