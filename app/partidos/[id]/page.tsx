@@ -102,7 +102,7 @@ export default async function PartidoDetallePage({ params }: Props) {
                   key={index}
                   className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3"
                 >
-                  <p className="font-semibold text-slate-800">{gol.jugador}{gol.minuto ? `${gol.minuto}'` : ""}</p>
+                  <p className="font-semibold text-slate-800">{gol.jugador} {gol.minuto ? `${gol.minuto}'` : " "}</p>
                   <p className="text-sm text-slate-600">
                     Asistencia: {gol.asistente ?? "Sin asistencia"}
                   </p>
@@ -122,7 +122,7 @@ export default async function PartidoDetallePage({ params }: Props) {
                   key={index}
                   className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3"
                 >
-                  <p className="font-semibold text-slate-800">{gol.jugador}{gol.minuto ? `${gol.minuto}'` : ""}</p>
+                  <p className="font-semibold text-slate-800">{gol.jugador} {gol.minuto ? `${gol.minuto}'` : " "}</p>
                   <p className="text-sm text-slate-600">
                     Asistencia: {gol.asistente ?? "Sin asistencia"}
                   </p>
