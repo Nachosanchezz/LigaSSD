@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { equipos } from "../../../data/equipos";
+import { getArbitrajesDeEquipo } from "@/lib/arbitrajes";
 
 type Props = {
   params: Promise<{
@@ -25,8 +26,8 @@ const getShieldForPosition = (posicion?: string) => {
   const isPortero = posicion.toLowerCase().includes("portero");
   return (
     <span className={`inline-flex px-1.5 sm:px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider shadow-sm border ${isPortero
-        ? "bg-yellow-100 text-yellow-800 border-yellow-200"
-        : "bg-blue-50 text-blue-700 border-blue-200"
+      ? "bg-yellow-100 text-yellow-800 border-yellow-200"
+      : "bg-blue-50 text-blue-700 border-blue-200"
       }`}>
       {posicion}
     </span>
@@ -41,6 +42,8 @@ export default async function EquipoPage({ params }: Props) {
   if (!equipo) {
     notFound();
   }
+
+  const datosArbitraje = getArbitrajesDeEquipo(equipo.nombre);
 
   return (
     <div className="min-h-screen bg-slate-50/50 pb-10 sm:pb-20">
@@ -85,7 +88,54 @@ export default async function EquipoPage({ params }: Props) {
               </div>
             </div>
           </div>
+          <div className="mb-10 sm:mb-12">
+            <h2 className="text-2xl sm:text-3xl font-black uppercase tracking-tight text-[#0b4a6f] border-b-2 border-slate-100 pb-3 mb-6 flex items-center gap-3">
+              <span className="w-1.5 sm:w-2 h-6 sm:h-8 bg-yellow-400 rounded-full inline-block"></span>
+              Arbitrajes
+            </h2>
 
+            <div className="mb-5 inline-flex items-center rounded-xl bg-slate-100 px-4 py-3 shadow-sm">
+              <span className="text-sm sm:text-base font-bold text-slate-600 uppercase tracking-wide">
+                Partidos arbitrados:
+              </span>
+              <span className="ml-3 text-xl sm:text-2xl font-black text-[#0b4a6f]">
+                {datosArbitraje.total}
+              </span>
+            </div>
+
+            {datosArbitraje.arbitrajes.length > 0 ? (
+              <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2">
+                {datosArbitraje.arbitrajes.map((partido) => (
+                  <div
+                    key={partido.id}
+                    className="rounded-xl border border-slate-200 bg-slate-50 p-4 shadow-sm"
+                  >
+                    <p className="text-[11px] sm:text-xs font-bold uppercase tracking-widest text-slate-500">
+                      Jornada {partido.jornada}
+                    </p>
+
+                    <p className="mt-1 text-base sm:text-lg font-black text-slate-800">
+                      {partido.local} vs {partido.visitante}
+                    </p>
+
+                    <p className="mt-2 text-sm font-semibold text-[#0b4a6f]">
+                      Resultado: {partido.resultado ?? "Sin resultado"}
+                    </p>
+
+                    <p className="mt-2 text-xs sm:text-sm text-slate-500">
+                      {partido.dia ?? "Fecha por confirmar"}
+                      {partido.hora ? ` · ${partido.hora}` : ""}
+                      {partido.campo ? ` · Campo ${partido.campo}` : ""}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="rounded-xl border border-dashed border-slate-300 bg-slate-50 p-4 text-sm text-slate-500">
+                Este equipo todavía no ha arbitrado ningún partido finalizado.
+              </div>
+            )}
+          </div>
           <div>
             <h2 className="text-2xl sm:text-3xl font-black uppercase tracking-tight text-[#0b4a6f] border-b-2 border-slate-100 pb-3 mb-6 flex items-center gap-3">
               <span className="w-1.5 sm:w-2 h-6 sm:h-8 bg-yellow-400 rounded-full inline-block"></span>
