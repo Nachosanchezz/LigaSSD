@@ -27,6 +27,7 @@ export type Partido = {
   motivo?: string;
   resultado?: string;
   resumen?: ResumenPartido;
+  mvp?: string;
 };
 
 export type Jornada = {
@@ -44,8 +45,8 @@ export const jornadas: Jornada[] = [
         id: "j1-torre-beldes-filosofos",
         local: "TORRE BELDES",
         visitante: "FILÓSOFOS",
-        dia: "Lunes 18 de marzo",
-        hora: "20:00",
+        dia: "",
+        hora: "",
         campo: "1",
         arbitra: "AUTOARBITRAJE",
         estado: "Aplazado",
@@ -75,6 +76,7 @@ export const jornadas: Jornada[] = [
             { jugador: "Nicolás Sánchez", asistente: "Nacho Ramírez" },
           ],
         },
+        mvp: "JIMMY",
       },
       {
         id: "j1-old-school-acai-boys",
@@ -100,6 +102,7 @@ export const jornadas: Jornada[] = [
             { jugador: "Gol cedido", asistente: "Sin asistencia" },
           ],
         },
+        mvp: "RAFA",
       },
     ],
   },
@@ -137,6 +140,7 @@ export const jornadas: Jornada[] = [
             { jugador: "Cedido", asistente: "Sin asistencia" },
           ],
         },
+        mvp: "COCO",
       },
       {
         id: "j2-acai-boys-atalaya",
@@ -162,15 +166,16 @@ export const jornadas: Jornada[] = [
             { jugador: "Jimmy", asistente: "Sin asistencia", minuto: 37 },
           ],
         },
+        mvp: "JIMMY",
       },
       {
         id: "j2-bodo-dream-spiti2",
         local: "BODØ DREAM",
         visitante: "SPITI2",
-        dia: "Lunes 16 de marzo",
-        hora: "20:30",
+        dia: "",
+        hora: "",
         campo: "1",
-        arbitra: "Autoarbitraje",
+        arbitra: "AUTOARBITRAJE",
         estado: "Aplazado",
         motivo: "Falta de jugadores en BODØ DREAM",
       },

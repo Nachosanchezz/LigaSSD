@@ -87,6 +87,12 @@ export default async function PartidoDetallePage({ params }: Props) {
                 {partido.arbitra}
               </div>
             )}
+            {partido.mvp && (
+              <div className="rounded-lg bg-[#f7f3e9] px-3 py-2 text-sm text-slate-700">
+                <span className="font-semibold text-[#0b4a6f]">MVP:</span>{" "}
+                {partido.mvp}
+              </div>
+            )}
           </div>
         </div>
 

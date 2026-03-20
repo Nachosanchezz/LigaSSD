@@ -21,14 +21,13 @@ function nombreCompletoJugador(jugador: {
 
 const getShieldForPosition = (posicion?: string) => {
   if (!posicion) return <span className="text-slate-400 font-medium">-</span>;
-  
+
   const isPortero = posicion.toLowerCase().includes("portero");
   return (
-    <span className={`inline-flex px-1.5 sm:px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider shadow-sm border ${
-      isPortero 
-        ? "bg-yellow-100 text-yellow-800 border-yellow-200" 
+    <span className={`inline-flex px-1.5 sm:px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider shadow-sm border ${isPortero
+        ? "bg-yellow-100 text-yellow-800 border-yellow-200"
         : "bg-blue-50 text-blue-700 border-blue-200"
-    }`}>
+      }`}>
       {posicion}
     </span>
   );
@@ -62,7 +61,7 @@ export default async function EquipoPage({ params }: Props) {
 
       <section className="mx-auto max-w-4xl px-3 sm:px-6 -mt-16 sm:-mt-24 relative z-10">
         <div className="rounded-2xl sm:rounded-[2rem] border border-slate-100 bg-white p-4 sm:p-10 shadow-xl shadow-[#0b4a6f]/5">
-          
+
           <div className="flex flex-col items-center mb-8 sm:mb-12">
             <div className="relative -mt-16 sm:-mt-24 mb-4 sm:mb-6 h-28 w-28 sm:h-40 sm:w-40 rounded-full bg-slate-50 border-4 sm:border-8 border-white shadow-xl flex items-center justify-center p-4">
               <Image
@@ -109,7 +108,7 @@ export default async function EquipoPage({ params }: Props) {
                     <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center font-black text-slate-400 text-xl shrink-0">
                       {jugador.nombre.charAt(0)}
                     </div>
-                    
+
                     <div className="space-y-1 w-full flex flex-col justify-center">
                       <div className="flex items-center justify-between">
                         {jugador.apodo ? (
@@ -119,7 +118,7 @@ export default async function EquipoPage({ params }: Props) {
                         )}
                         {getShieldForPosition(jugador.posicion)}
                       </div>
-                      
+
                       <div className="flex items-center justify-between text-[10px] sm:text-xs">
                         {jugador.edad && (
                           <span className="text-slate-600 font-medium bg-slate-100 px-1.5 py-0.5 rounded">

@@ -23,8 +23,8 @@ export const equipos: Equipo[] = [
     integrantes: [
       {
         id: "old-school-cifu",
-        nombre: "Cifu",
-        primerApellido: "",
+        nombre: "Alejandro",
+        primerApellido: "Cifuentes",
         apodo: "Cifu",
         edad: 24,
         posicion: "Cierre",
@@ -322,7 +322,7 @@ export const equipos: Equipo[] = [
       {
         id: "acai-boys-carlos-charly",
         nombre: "Carlos",
-        primerApellido: "",
+        primerApellido: "González",
         apodo: "Charly",
         edad: 24,
         posicion: "Ala",
@@ -404,7 +404,7 @@ export const equipos: Equipo[] = [
         primerApellido: "Marín",
         apodo: "Nico Marín",
         edad: 24,
-        posicion: "Cierre",
+        posicion: "Pívot",
         piernaBuena: "Derecha",
       },
       {
@@ -440,7 +440,7 @@ export const equipos: Equipo[] = [
         primerApellido: "Rodríguez",
         apodo: "Barca",
         edad: 24,
-        posicion: "Cierre",
+        posicion: "Pívot",
         piernaBuena: "Derecha",
       },
       {
