@@ -192,8 +192,26 @@ export const jornadas: Jornada[] = [
         dia: "Lunes 23 de marzo",
         hora: "21:20",
         campo: "1",
-        arbitra: "FILÓSOFOS",
-        estado: "Programado",
+        arbitra: "SPITI2",
+        estado: "Finalizado",
+        resultado: "4-6",
+        resumen: {
+          local: [
+            { jugador: "Lucho", asistente: "Sin asistencia", minuto: 1 },
+            { jugador: "Gabi", asistente: "Miguel Morán", minuto: 4 },
+            { jugador: "Gabi", asistente: "Miguel Morán", minuto: 23 },
+            { jugador: "Miguel Morán", asistente: "Sin asistencia", minuto: 31 },
+          ],
+          visitante: [
+            { jugador: "Nico Sánchez", asistente: "Nacho Ram", minuto: 10 },
+            { jugador: "Nacho Ram", asistente: "Nico Sánchez", minuto: 19 },
+            { jugador: "Sotto (PP)", asistente: "Sin asistencia", minuto: 24 },
+            { jugador: "Juan", asistente: "Sin asistencia", minuto: 26 },
+            { jugador: "Nico Sánchez", asistente: "Nacho Ram", minuto: 27 },
+            { jugador: "Nacho Ram", asistente: "Sin asistencia", minuto: 34 },
+          ],
+        },
+        mvp: "PEDRO",
       },
       {
         id: "j3-filosofos-acai-boys",
