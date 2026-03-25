@@ -235,7 +235,7 @@ export const equipos: Equipo[] = [
         id: "spiti2-borja-sanchez-harguindey",
         nombre: "Borja",
         primerApellido: "Sánchez-Harguindey",
-        apodo: "Borja",
+        apodo: "Borjita",
         edad: 24,
         posicion: "Ala",
         piernaBuena: "Izquierda",

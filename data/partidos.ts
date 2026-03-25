@@ -206,7 +206,7 @@ export const jornadas: Jornada[] = [
             { jugador: "Nico Sánchez", asistente: "Nacho Ram", minuto: 10 },
             { jugador: "Nacho Ram", asistente: "Nico Sánchez", minuto: 19 },
             { jugador: "Sotto (PP)", asistente: "Sin asistencia", minuto: 24 },
-            { jugador: "Juan", asistente: "Sin asistencia", minuto: 26 },
+            { jugador: "Juninho", asistente: "Sin asistencia", minuto: 26 },
             { jugador: "Nico Sánchez", asistente: "Nacho Ram", minuto: 27 },
             { jugador: "Nacho Ram", asistente: "Sin asistencia", minuto: 34 },
           ],
@@ -235,10 +235,10 @@ export const jornadas: Jornada[] = [
         resultado: "5-3",
         resumen: {
           local: [
-            { jugador: "Borja", asistente: "Sin asistencia", minuto: 11 },
+            { jugador: "Borjita", asistente: "Sin asistencia", minuto: 11 },
             { jugador: "Cedido", asistente: "Sin asistencia", minuto: 26 },
             { jugador: "Caco", asistente: "Sin asistencia", minuto: 32 },
-            { jugador: "Borja", asistente: "Sin asistencia", minuto: 34 },
+            { jugador: "Borjita", asistente: "Sin asistencia", minuto: 34 },
             { jugador: "Cedido", asistente: "Sin asistencia", minuto: 36 },
           ],
           visitante: [
@@ -247,7 +247,7 @@ export const jornadas: Jornada[] = [
             { jugador: "Cedido", asistente: "Rome", minuto: 35 },
           ],
         },
-        mvp: "BORJA",
+        mvp: "BORJITA",
       },
     ],
   },
