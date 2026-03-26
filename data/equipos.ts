@@ -377,7 +377,7 @@ export const equipos: Equipo[] = [
         id: "acai-boys-carlos-portero",
         nombre: "Carlos",
         primerApellido: "Sánchez",
-        apodo: "Charly",
+        apodo: "Carlos",
         edad: 25,
         posicion: "Portero",
         piernaBuena: "Derecha",

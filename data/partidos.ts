@@ -221,7 +221,24 @@ export const jornadas: Jornada[] = [
         hora: "21:15",
         campo: "1",
         arbitra: "TORRE BELDES",
-        estado: "Programado",
+        estado: "Finalizado",
+        resultado: "5-4",
+        resumen: {
+          local: [
+            { jugador: "Cedido", asistente: "Chete", minuto: 6 },
+            { jugador: "Salva", asistente: "Sin asistencia", minuto: 8 },
+            { jugador: "Salva", asistente: "Sin asistencia", minuto: 30 },
+            { jugador: "Cedido", asistente: "Sin asistencia", minuto: 37 },
+            { jugador: "Cedido", asistente: "Sin asistencia", minuto: 40 },
+          ],
+          visitante: [
+            { jugador: "Cedido", asistente: "Mario", minuto: 12 },
+            { jugador: "Pato", asistente: "Charly", minuto: 23 },
+            { jugador: "Pueyo", asistente: "Charly", minuto: 31 },
+            { jugador: "Charly", asistente: "Pueyo", minuto: 38 },
+          ],
+        },
+        mvp: "CHARLY",
       },
       {
         id: "j3-spiti2-atalaya",
