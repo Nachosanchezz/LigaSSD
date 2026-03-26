@@ -226,8 +226,8 @@ export const jornadas: Jornada[] = [
         resumen: {
           local: [
             { jugador: "Cedido", asistente: "Chete", minuto: 6 },
-            { jugador: "Salva", asistente: "Sin asistencia", minuto: 8 },
-            { jugador: "Salva", asistente: "Sin asistencia", minuto: 30 },
+            { jugador: "Vasal JR", asistente: "Sin asistencia", minuto: 8 },
+            { jugador: "Vasal JR", asistente: "Sin asistencia", minuto: 30 },
             { jugador: "Cedido", asistente: "Sin asistencia", minuto: 37 },
             { jugador: "Cedido", asistente: "Sin asistencia", minuto: 40 },
           ],
