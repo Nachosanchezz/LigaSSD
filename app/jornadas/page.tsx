@@ -29,7 +29,7 @@ export default function JornadasPage() {
             >
               {/* Accents */}
               <div className="absolute top-0 right-0 w-32 h-32 bg-yellow-400/5 rounded-full blur-3xl"></div>
-              
+
               <div className="mb-6 sm:mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between border-b-2 border-slate-50 pb-4 sm:pb-6 relative z-10">
                 <h2 className="text-2xl sm:text-4xl font-black text-[#0b4a6f] uppercase tracking-tight flex items-center gap-3">
                   <span className="w-1.5 sm:w-2 h-6 sm:h-8 bg-yellow-400 rounded-full inline-block"></span>
@@ -116,6 +116,17 @@ export default function JornadasPage() {
                             {partido.campo}
                           </div>
                         )}
+                        {partido.arbitra && (
+                          <div className="inline-flex items-center gap-1.5 rounded-lg bg-slate-50 border border-slate-100 px-2 sm:px-3 py-1 text-[9px] sm:text-xs font-medium text-slate-600">
+                            <svg className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                            {partido.arbitra}
+                          </div>
+                        )}
+                        {partido.mvp && (
+                          <div className="inline-flex items-center gap-1.5 rounded-lg bg-[#f5f1e8] border border-[#e8dfcf] px-2 sm:px-3 py-1 text-[9px] sm:text-xs font-semibold text-[#0b4a6f]">
+                            <span className="font-black">MVP:</span> {partido.mvp}
+                          </div>
+                        )}
                       </div>
                     </div>
                   ) : (
@@ -163,13 +174,12 @@ export default function JornadasPage() {
                       {/* Info Footer */}
                       <div className="mt-3 sm:mt-5 flex flex-wrap items-center justify-center sm:justify-start gap-2 border-t border-slate-50 pt-3">
                         <div
-                          className={`inline-flex items-center rounded-lg border px-2 sm:px-3 py-1 text-[9px] sm:text-xs font-bold uppercase tracking-wide w-fit ${
-                            partido.estado === "Aplazado"
+                          className={`inline-flex items-center rounded-lg border px-2 sm:px-3 py-1 text-[9px] sm:text-xs font-bold uppercase tracking-wide w-fit ${partido.estado === "Aplazado"
                               ? "bg-red-50 text-red-700 border-red-100"
                               : partido.estado === "Programado"
-                              ? "bg-blue-50 text-blue-700 border-blue-100"
-                              : "bg-amber-50 text-amber-700 border-amber-100"
-                          }`}
+                                ? "bg-blue-50 text-blue-700 border-blue-100"
+                                : "bg-amber-50 text-amber-700 border-amber-100"
+                            }`}
                         >
                           {partido.estado}
                         </div>
@@ -186,7 +196,7 @@ export default function JornadasPage() {
                             {partido.campo}
                           </div>
                         )}
-                        
+
                         {partido.arbitra && (
                           <div className="inline-flex items-center gap-1.5 rounded-lg bg-yellow-50 border border-yellow-100 px-2 sm:px-3 py-1 text-[9px] sm:text-xs font-medium text-yellow-800">
                             <svg className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
