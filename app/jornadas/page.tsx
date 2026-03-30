@@ -1,24 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
 import { jornadas } from "../../data/partidos";
-import { equipos } from "../../data/equipos";
+import { logosEquipos } from "../../data/equipos";
+import PageHeader from "@/components/PageHeader";
+import { Calendar, MapPin, User } from "lucide-react";
 
 export default function JornadasPage() {
-  const logosEquipos = Object.fromEntries(
-    equipos.map((equipo) => [equipo.nombre, equipo.logo])
-  ) as Record<string, string>;
-
   return (
     <div className="min-h-screen bg-slate-50/50 pb-10 sm:pb-20">
-      {/* Header Banner */}
-      <div className="bg-[#091f36] pt-12 sm:pt-16 pb-20 sm:pb-24 px-4 sm:px-6 text-center border-b border-indigo-900/30">
-        <h1 className="text-3xl sm:text-4xl md:text-6xl font-black uppercase tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-white to-blue-200 drop-shadow-sm">
-          Jornadas
-        </h1>
-        <p className="mt-2 sm:mt-4 text-blue-200 font-medium max-w-2xl mx-auto uppercase tracking-wide text-[10px] sm:text-sm">
-          Calendario y Resultados de los Partidos
-        </p>
-      </div>
+      <PageHeader title="Jornadas" subtitle="Calendario y Resultados de los Partidos" />
 
       <section className="mx-auto max-w-5xl px-3 sm:px-6 -mt-10 sm:-mt-12 relative z-10">
         <div className="space-y-8 sm:space-y-12">
@@ -52,7 +42,7 @@ export default function JornadasPage() {
               </div>
 
               <div className="grid gap-4 sm:gap-6 relative z-10">
-                {jornada.partidos.map((partido, index) => {
+                {jornada.partidos.map((partido) => {
                   const esFinalizado = partido.estado === "Finalizado";
 
                   const contenido = esFinalizado ? (
@@ -106,19 +96,19 @@ export default function JornadasPage() {
                         </div>
                         {partido.dia && partido.hora && (
                           <div className="inline-flex items-center gap-1.5 rounded-lg bg-slate-50 border border-slate-100 px-2 sm:px-3 py-1 text-[9px] sm:text-xs font-medium text-slate-600">
-                            <svg className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                            <Calendar className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-slate-400" />
                             {partido.dia} · {partido.hora}
                           </div>
                         )}
                         {partido.campo && (
                           <div className="inline-flex items-center gap-1.5 rounded-lg bg-slate-50 border border-slate-100 px-2 sm:px-3 py-1 text-[9px] sm:text-xs font-medium text-slate-600">
-                            <svg className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                            <MapPin className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-slate-400" />
                             {partido.campo}
                           </div>
                         )}
                         {partido.arbitra && (
                           <div className="inline-flex items-center gap-1.5 rounded-lg bg-slate-50 border border-slate-100 px-2 sm:px-3 py-1 text-[9px] sm:text-xs font-medium text-slate-600">
-                            <svg className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                            <User className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-slate-400" />
                             {partido.arbitra}
                           </div>
                         )}
@@ -192,14 +182,14 @@ export default function JornadasPage() {
 
                         {partido.campo && (
                           <div className="inline-flex items-center gap-1.5 rounded-lg bg-slate-50 border border-slate-100 px-2 sm:px-3 py-1 text-[9px] sm:text-xs font-medium text-slate-600">
-                            <svg className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                            <MapPin className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-slate-400" />
                             {partido.campo}
                           </div>
                         )}
 
                         {partido.arbitra && (
                           <div className="inline-flex items-center gap-1.5 rounded-lg bg-yellow-50 border border-yellow-100 px-2 sm:px-3 py-1 text-[9px] sm:text-xs font-medium text-yellow-800">
-                            <svg className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                            <User className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-yellow-600" />
                             {partido.arbitra}
                           </div>
                         )}
@@ -210,7 +200,7 @@ export default function JornadasPage() {
                   if (esFinalizado) {
                     return (
                       <Link
-                        key={index}
+                        key={partido.id}
                         href={`/partidos/${partido.id}`}
                         className="group block rounded-[1.5rem] border border-slate-100 bg-white px-3 sm:px-6 py-4 sm:py-5 transition-all hover:border-[#0b4a6f]/30 hover:shadow-lg hover:shadow-[#0b4a6f]/10 shadow-sm"
                       >
@@ -221,7 +211,7 @@ export default function JornadasPage() {
 
                   return (
                     <div
-                      key={index}
+                      key={partido.id}
                       className="rounded-[1.5rem] border border-slate-100/60 bg-slate-50/50 px-3 sm:px-6 py-4 sm:py-5 opacity-90 transition-opacity hover:opacity-100"
                     >
                       {contenido}
