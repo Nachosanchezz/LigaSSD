@@ -525,3 +525,7 @@ export const equipos: Equipo[] = [
     ],
   },
 ];
+
+export const logosEquipos: Record<string, string> = Object.fromEntries(
+  equipos.map((equipo) => [equipo.nombre, equipo.logo])
+);

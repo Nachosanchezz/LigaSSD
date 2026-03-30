@@ -1,6 +1,8 @@
 import Image from "next/image";
 import { jornadas } from "../../data/partidos";
-import { equipos } from "../../data/equipos";
+import { equipos, logosEquipos } from "../../data/equipos";
+import { getRankTrophy } from "@/lib/helpers";
+import PageHeader from "@/components/PageHeader";
 
 type FilaClasificacion = {
   equipo: string;
@@ -87,35 +89,16 @@ function calcularClasificacion(): FilaClasificacion[] {
   return clasificacion;
 }
 
-const getRankTrophy = (index: number) => {
-  if (index === 0) return "🥇";
-  if (index === 1) return "🥈";
-  if (index === 2) return "🥉";
-  return <span className="text-slate-400 font-mono text-sm sm:text-base font-bold">{index + 1}</span>;
-};
-
 export default function ClasificacionPage() {
   const clasificacion = calcularClasificacion();
 
-  const logosEquipos = Object.fromEntries(
-    equipos.map((equipo) => [equipo.nombre, equipo.logo])
-  ) as Record<string, string>;
-
   return (
     <div className="min-h-screen bg-slate-50/50 pb-10 sm:pb-20">
-      {/* Header Banner */}
-      <div className="bg-[#091f36] pt-12 sm:pt-16 pb-20 sm:pb-24 px-4 sm:px-6 text-center border-b border-indigo-900/30">
-        <h1 className="text-3xl sm:text-4xl md:text-6xl font-black uppercase tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-white to-blue-200 drop-shadow-sm">
-          Clasificación
-        </h1>
-        <p className="mt-2 sm:mt-4 text-blue-200 font-medium max-w-2xl mx-auto uppercase tracking-wide text-[10px] sm:text-sm">
-          Tabla General de la Temporada
-        </p>
-      </div>
+      <PageHeader title="Clasificación" subtitle="Tabla General de la Temporada" />
 
       <section className="mx-auto max-w-6xl px-3 sm:px-6 -mt-10 sm:-mt-12 relative z-10">
         <div className="overflow-hidden rounded-2xl sm:rounded-3xl bg-white shadow-xl shadow-[#0b4a6f]/5 border border-slate-100">
-          
+
           <div className="overflow-x-auto w-full p-2 sm:p-4">
             <table className="min-w-full border-collapse">
               <thead>
@@ -166,11 +149,11 @@ export default function ClasificacionPage() {
                     <td className="px-2 sm:px-4 py-3 sm:py-5 text-center font-mono text-xs sm:text-sm text-slate-500 hidden sm:table-cell">{fila.pp}</td>
                     <td className="px-2 sm:px-4 py-3 sm:py-5 text-center font-mono text-xs sm:text-sm text-green-600 hidden md:table-cell">{fila.gf}</td>
                     <td className="px-2 sm:px-4 py-3 sm:py-5 text-center font-mono text-xs sm:text-sm text-red-500 hidden md:table-cell">{fila.gc}</td>
-                    
+
                     <td className="px-2 sm:px-4 py-3 sm:py-5 text-center">
                       <span className={`inline-flex px-1.5 sm:px-2.5 py-0.5 sm:py-1 rounded-md text-[10px] sm:text-xs font-bold font-mono tracking-wider shadow-sm border ${
-                        fila.dg > 0 
-                          ? "bg-green-50 text-green-700 border-green-200" 
+                        fila.dg > 0
+                          ? "bg-green-50 text-green-700 border-green-200"
                           : fila.dg < 0
                             ? "bg-red-50 text-red-700 border-red-200"
                             : "bg-slate-100 text-slate-600 border-slate-200"
