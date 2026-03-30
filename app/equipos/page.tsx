@@ -16,7 +16,7 @@ export default function EquiposPage() {
       </div>
 
       <section className="mx-auto max-w-6xl px-4 sm:px-6 -mt-10 sm:-mt-12 relative z-10">
-        <div className="grid gap-6 sm:gap-8 lg:grid-cols-3 xl:gap-10">
+        <div className="grid grid-cols-2 gap-4 sm:gap-8 lg:grid-cols-3 xl:gap-10">
           {equipos.map((equipo) => (
             <Link
               key={equipo.slug}

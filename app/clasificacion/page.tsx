@@ -126,9 +126,9 @@ export default function ClasificacionPage() {
                       {getRankTrophy(index)}
                     </td>
 
-                    <td className="px-3 sm:px-6 py-3 sm:py-5">
+                    <td className="px-2 sm:px-6 py-3 sm:py-5">
                       <div className="flex items-center gap-2 sm:gap-4">
-                        <div className="shrink-0 h-8 w-8 sm:h-12 sm:w-12 rounded-full overflow-hidden bg-white ring-2 ring-slate-100 shadow-sm flex items-center justify-center p-1 sm:p-1.5 transition-transform group-hover:scale-105 group-hover:ring-[#0b4a6f]/20">
+                        <div className="shrink-0 h-7 w-7 sm:h-12 sm:w-12 rounded-full overflow-hidden bg-white ring-2 ring-slate-100 shadow-sm flex items-center justify-center p-1 sm:p-1.5 transition-transform group-hover:scale-105 group-hover:ring-[#0b4a6f]/20">
                           <Image
                             src={logosEquipos[fila.equipo]}
                             alt={fila.equipo}
@@ -137,7 +137,7 @@ export default function ClasificacionPage() {
                             className="h-full w-full object-contain"
                           />
                         </div>
-                        <span className="font-bold text-slate-800 text-sm sm:text-base sm:text-lg group-hover:text-[#0b4a6f] transition-colors line-clamp-1">
+                        <span className="font-bold text-slate-800 text-xs sm:text-base sm:text-lg group-hover:text-[#0b4a6f] transition-colors leading-tight">
                           {fila.equipo}
                         </span>
                       </div>

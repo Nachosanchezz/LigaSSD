@@ -50,6 +50,28 @@ function crearMapaJugadores() {
   return mapa;
 }
 
+function calcularMvps(): FilaEstadistica[] {
+  const tabla: Record<string, FilaEstadistica> = {};
+  const mapaJugadores = crearMapaJugadores();
+
+  for (const jornada of jornadas) {
+    for (const partido of jornada.partidos) {
+      if (partido.estado !== "Finalizado" || !partido.mvp) continue;
+      const info = mapaJugadores[normalizarTexto(partido.mvp)];
+      if (!info) continue;
+      if (!tabla[info.id]) {
+        tabla[info.id] = { id: info.id, jugador: info.jugadorMostrado, equipo: info.equipo, logo: info.logo, valor: 0 };
+      }
+      tabla[info.id].valor += 1;
+    }
+  }
+
+  return Object.values(tabla).sort((a, b) => {
+    if (b.valor !== a.valor) return b.valor - a.valor;
+    return a.jugador.localeCompare(b.jugador);
+  });
+}
+
 function calcularStat(campo: "jugador" | "asistente"): FilaEstadistica[] {
   const tabla: Record<string, FilaEstadistica> = {};
   const mapaJugadores = crearMapaJugadores();
@@ -168,15 +190,19 @@ function TablaEstadistica({
 export default function EstadisticasPage() {
   const goleadores = calcularStat("jugador");
   const asistentes = calcularStat("asistente");
+  const mvps = calcularMvps();
 
   return (
     <div className="min-h-screen bg-slate-50/50 pb-10 sm:pb-20">
-      <PageHeader title="Estadísticas" subtitle="Tabla de Goleadores y Asistencias de la Temporada" />
+      <PageHeader title="Estadísticas" subtitle="Goleadores, Asistencias y MVPs de la Temporada" />
 
       <section className="mx-auto max-w-6xl px-3 sm:px-6 -mt-10 sm:-mt-12">
         <div className="grid gap-6 sm:gap-12 lg:grid-cols-2">
           <TablaEstadistica titulo="Pichichi" filas={goleadores} etiquetaValor="Goles" />
           <TablaEstadistica titulo="Asistencias" filas={asistentes} etiquetaValor="Asists." />
+        </div>
+        <div className="mt-6 sm:mt-12">
+          <TablaEstadistica titulo="MVPs" filas={mvps} etiquetaValor="MVPs" />
         </div>
       </section>
     </div>
