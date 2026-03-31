@@ -7,6 +7,10 @@ type ResultadoEntry = Pick<Partido, "resultado" | "mvp" | "resumen">;
 type ResultadosRecord = Record<string, ResultadoEntry>;
 
 async function fetchResultados(): Promise<ResultadosRecord> {
+  if (!process.env.SUPABASE_URL) {
+    return {};
+  }
+
   const supabase = createClient();
 
   const [{ data: resultados, error: e1 }, { data: goles, error: e2 }] =
