@@ -7,7 +7,7 @@ export const metadata = { robots: "noindex" };
 
 function LoginForm({ error }: { error?: string }) {
   return (
-    <div className="min-h-screen bg-[#091f36] flex items-center justify-center px-4">
+    <div className="bg-[#091f36] px-4 pt-16 pb-12 flex flex-col items-center">
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
           <div className="text-4xl mb-3">⚽</div>
