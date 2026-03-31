@@ -13,6 +13,7 @@ export default function Navbar() {
     { name: "Estadísticas", path: "/estadisticas" },
     { name: "Jugadores", path: "/jugadores" },
     { name: "Equipos", path: "/equipos" },
+    { name: "Split 1", path: "/split1" },
   ];
 
   return (
