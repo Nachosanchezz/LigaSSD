@@ -1,11 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
-import { jornadas } from "../../data/partidos";
 import { logosEquipos } from "../../data/equipos";
 import PageHeader from "@/components/PageHeader";
 import { Calendar, MapPin, User } from "lucide-react";
+import { getJornadasConResultados } from "@/lib/queries";
 
-export default function JornadasPage() {
+export default async function JornadasPage() {
+  const jornadas = await getJornadasConResultados();
+
   return (
     <div className="min-h-screen bg-slate-50/50 pb-10 sm:pb-20">
       <PageHeader title="Jornadas" subtitle="Calendario y Resultados de los Partidos" />

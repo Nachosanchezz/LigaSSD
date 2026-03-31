@@ -1,8 +1,9 @@
 import Image from "next/image";
-import { jornadas } from "../../data/partidos";
 import { equipos } from "../../data/equipos";
 import { getRankTrophy, nombreCompletoJugador } from "@/lib/helpers";
 import PageHeader from "@/components/PageHeader";
+import { getJornadasConResultados } from "@/lib/queries";
+import type { Jornada } from "@/data/partidos";
 
 type FilaEstadistica = {
   id: string;
@@ -50,7 +51,7 @@ function crearMapaJugadores() {
   return mapa;
 }
 
-function calcularMvps(): FilaEstadistica[] {
+function calcularMvps(jornadas: Jornada[]): FilaEstadistica[] {
   const tabla: Record<string, FilaEstadistica> = {};
   const mapaJugadores = crearMapaJugadores();
 
@@ -72,7 +73,7 @@ function calcularMvps(): FilaEstadistica[] {
   });
 }
 
-function calcularStat(campo: "jugador" | "asistente"): FilaEstadistica[] {
+function calcularStat(campo: "jugador" | "asistente", jornadas: Jornada[]): FilaEstadistica[] {
   const tabla: Record<string, FilaEstadistica> = {};
   const mapaJugadores = crearMapaJugadores();
 
@@ -187,10 +188,11 @@ function TablaEstadistica({
   );
 }
 
-export default function EstadisticasPage() {
-  const goleadores = calcularStat("jugador");
-  const asistentes = calcularStat("asistente");
-  const mvps = calcularMvps();
+export default async function EstadisticasPage() {
+  const jornadas = await getJornadasConResultados();
+  const goleadores = calcularStat("jugador", jornadas);
+  const asistentes = calcularStat("asistente", jornadas);
+  const mvps = calcularMvps(jornadas);
 
   return (
     <div className="min-h-screen bg-slate-50/50 pb-10 sm:pb-20">
