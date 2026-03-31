@@ -1,8 +1,9 @@
 import Image from "next/image";
-import { jornadas } from "../../data/partidos";
 import { equipos, logosEquipos } from "../../data/equipos";
 import { getRankTrophy } from "@/lib/helpers";
 import PageHeader from "@/components/PageHeader";
+import { getJornadasConResultados } from "@/lib/queries";
+import type { Jornada } from "@/data/partidos";
 
 type FilaClasificacion = {
   equipo: string;
@@ -16,7 +17,7 @@ type FilaClasificacion = {
   dg: number;
 };
 
-function calcularClasificacion(): FilaClasificacion[] {
+function calcularClasificacion(jornadas: Jornada[]): FilaClasificacion[] {
   const tabla: Record<string, FilaClasificacion> = {};
 
   for (const equipo of equipos) {
@@ -89,8 +90,9 @@ function calcularClasificacion(): FilaClasificacion[] {
   return clasificacion;
 }
 
-export default function ClasificacionPage() {
-  const clasificacion = calcularClasificacion();
+export default async function ClasificacionPage() {
+  const jornadas = await getJornadasConResultados();
+  const clasificacion = calcularClasificacion(jornadas);
 
   return (
     <div className="min-h-screen bg-slate-50/50 pb-10 sm:pb-20">

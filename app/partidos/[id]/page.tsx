@@ -1,24 +1,25 @@
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { jornadas } from "../../../data/partidos";
+import { jornadas as jornadasStaticas } from "../../../data/partidos";
 import { logosEquipos } from "../../../data/equipos";
 import { Calendar, MapPin, User, Trophy } from "lucide-react";
+import { getJornadasConResultados } from "@/lib/queries";
 
 type Props = {
   params: Promise<{ id: string }>;
 };
 
 export function generateStaticParams() {
-  return jornadas
+  return jornadasStaticas
     .flatMap((jornada) => jornada.partidos)
-    .filter((partido) => partido.estado === "Finalizado")
     .map((partido) => ({ id: partido.id }));
 }
 
 export default async function PartidoDetallePage({ params }: Props) {
   const { id } = await params;
 
+  const jornadas = await getJornadasConResultados();
   const partido = jornadas
     .flatMap((jornada) => jornada.partidos)
     .find((p) => p.id === id);

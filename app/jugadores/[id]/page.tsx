@@ -1,9 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { equipos, logosEquipos } from "@/data/equipos";
-import { jornadas } from "@/data/partidos";
+import { equipos } from "@/data/equipos";
 import { nombreCompletoJugador } from "@/lib/helpers";
+import { getJornadasConResultados } from "@/lib/queries";
+import type { Jornada } from "@/data/partidos";
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -23,7 +24,7 @@ function esValorIgnorable(texto?: string) {
   return v === "sin asistencia" || v === "gol cedido" || v === "cedido";
 }
 
-function calcularStatsJugador(jugador: (typeof equipos)[0]["integrantes"][0]) {
+function calcularStatsJugador(jugador: (typeof equipos)[0]["integrantes"][0], jornadas: Jornada[]) {
   let goles = 0;
   let asistencias = 0;
   let mvps = 0;
@@ -74,7 +75,8 @@ export default async function JugadorPage({ params }: Props) {
 
   if (!jugador || !equipo) notFound();
 
-  const stats = calcularStatsJugador(jugador);
+  const jornadas = await getJornadasConResultados();
+  const stats = calcularStatsJugador(jugador, jornadas);
   const nombreCompleto = nombreCompletoJugador(jugador);
 
   const posicionColor = jugador.posicion?.toLowerCase().includes("portero")

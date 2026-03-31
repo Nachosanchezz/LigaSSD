@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { equipos } from "../../../data/equipos";
 import { getArbitrajesDeEquipo } from "@/lib/arbitrajes";
 import { nombreCompletoJugador } from "@/lib/helpers";
+import { getJornadasConResultados } from "@/lib/queries";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -36,7 +37,8 @@ export default async function EquipoPage({ params }: Props) {
     notFound();
   }
 
-  const datosArbitraje = getArbitrajesDeEquipo(equipo.nombre);
+  const jornadas = await getJornadasConResultados();
+  const datosArbitraje = getArbitrajesDeEquipo(equipo.nombre, jornadas);
 
   return (
     <div className="min-h-screen bg-slate-50/50 pb-10 sm:pb-20">
