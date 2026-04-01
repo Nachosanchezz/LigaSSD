@@ -1,26 +1,11 @@
 import Link from "next/link";
 import PageHeader from "@/components/PageHeader";
+import TeamLogoSplit1 from "@/components/TeamLogoSplit1";
 import {
-  equiposSplit1,
   clasificacionSplit1,
   goleadoresSplit1,
   statsSplit1,
 } from "@/data/split1";
-
-function TeamAvatar({ nombre, size = "md" }: { nombre: string; size?: "sm" | "md" | "lg" }) {
-  const equipo = equiposSplit1.find((e) => e.nombre === nombre);
-  const color = equipo?.color ?? "6B7280";
-  const letra = (equipo?.corto ?? nombre).charAt(0);
-  const sizeClasses = size === "lg" ? "h-16 w-16 text-2xl" : size === "sm" ? "h-8 w-8 text-xs" : "h-12 w-12 text-base";
-  return (
-    <div
-      className={`${sizeClasses} rounded-full flex items-center justify-center font-black text-white shadow-md shrink-0`}
-      style={{ backgroundColor: `#${color}` }}
-    >
-      {letra}
-    </div>
-  );
-}
 
 export default function Split1Page() {
   const top3 = clasificacionSplit1.slice(0, 3);
@@ -36,7 +21,7 @@ export default function Split1Page() {
         <div className="overflow-hidden rounded-2xl sm:rounded-3xl bg-gradient-to-br from-[#091f36] to-[#0b4a6f] shadow-xl p-6 sm:p-10 text-center text-white">
           <p className="text-yellow-400 text-xs sm:text-sm font-bold uppercase tracking-widest mb-3">Campeón del Split 1</p>
           <div className="flex items-center justify-center gap-4 sm:gap-6 mb-4">
-            <TeamAvatar nombre={statsSplit1.campeón} size="lg" />
+            <TeamLogoSplit1 nombre={statsSplit1.campeón} size="lg" />
             <h2 className="text-2xl sm:text-4xl font-black uppercase tracking-tight text-white leading-tight">
               {statsSplit1.campeón}
             </h2>
@@ -83,7 +68,8 @@ export default function Split1Page() {
             <div className="divide-y divide-slate-50">
               {top3.map((fila, i) => (
                 <div key={fila.equipo} className="flex items-center gap-3 sm:gap-4 px-5 py-4">
-                  <span className="text-xl font-black text-slate-300 w-6 shrink-0">{i === 0 ? "🥇" : i === 1 ? "🥈" : "🥉"}</span>
+                  <span className="text-xl w-6 shrink-0">{i === 0 ? "🥇" : i === 1 ? "🥈" : "🥉"}</span>
+                  <TeamLogoSplit1 nombre={fila.equipo} size="sm" />
                   <span className="font-bold text-slate-800 text-sm flex-1 truncate">{fila.equipo}</span>
                   <span className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-[#091f36] to-[#0b4a6f] text-sm font-black text-white shadow-sm">
                     {fila.pts}
@@ -104,7 +90,8 @@ export default function Split1Page() {
             <div className="divide-y divide-slate-50">
               {top3Scorers.map((jugador, i) => (
                 <div key={jugador.nombre} className="flex items-center gap-3 sm:gap-4 px-5 py-4">
-                  <span className="text-xl font-black text-slate-300 w-6 shrink-0">{i === 0 ? "🥇" : i === 1 ? "🥈" : "🥉"}</span>
+                  <span className="text-xl w-6 shrink-0">{i === 0 ? "🥇" : i === 1 ? "🥈" : "🥉"}</span>
+                  <TeamLogoSplit1 nombre={jugador.equipo} size="sm" />
                   <div className="flex-1 min-w-0">
                     <p className="font-bold text-slate-800 text-sm truncate">{jugador.nombre}</p>
                     <p className="text-[10px] text-slate-400 truncate">{jugador.equipo}</p>

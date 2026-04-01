@@ -1,6 +1,6 @@
 import PageHeader from "@/components/PageHeader";
+import TeamLogoSplit1 from "@/components/TeamLogoSplit1";
 import { jornadasSplit1, equiposSplit1 } from "@/data/split1";
-
 
 function getCorto(nombre: string) {
   return equiposSplit1.find((e) => e.nombre === nombre)?.corto ?? nombre;
@@ -24,12 +24,13 @@ export default function Split1PartidosPage() {
                 const localGana = partido.golesLocal > partido.golesVisitante;
                 const visitanteGana = partido.golesVisitante > partido.golesLocal;
                 return (
-                  <div key={i} className="px-4 sm:px-6 py-3 sm:py-4 flex items-center gap-2 sm:gap-4">
+                  <div key={i} className="px-4 sm:px-6 py-3 sm:py-4 flex items-center gap-2 sm:gap-3">
                     {/* Local */}
-                    <div className="flex items-center flex-1 min-w-0 justify-end">
+                    <div className="flex items-center gap-2 flex-1 min-w-0 justify-end">
                       <span className={`font-bold text-xs sm:text-sm truncate ${localGana ? "text-slate-800" : "text-slate-400"}`}>
                         {getCorto(partido.local)}
                       </span>
+                      <TeamLogoSplit1 nombre={partido.local} size="sm" />
                     </div>
 
                     {/* Marcador */}
@@ -48,7 +49,8 @@ export default function Split1PartidosPage() {
                     </div>
 
                     {/* Visitante */}
-                    <div className="flex items-center flex-1 min-w-0">
+                    <div className="flex items-center gap-2 flex-1 min-w-0">
+                      <TeamLogoSplit1 nombre={partido.visitante} size="sm" />
                       <span className={`font-bold text-xs sm:text-sm truncate ${visitanteGana ? "text-slate-800" : "text-slate-400"}`}>
                         {getCorto(partido.visitante)}
                       </span>
