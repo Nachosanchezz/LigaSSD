@@ -4,6 +4,7 @@ export type EquipoSplit1 = {
   nombre: string;
   corto: string;
   color: string;
+  slug: string;
   jugadores: string[];
 };
 
@@ -38,48 +39,56 @@ export const equiposSplit1: EquipoSplit1[] = [
     nombre: "FILÓSOFOS DE LA REDONDA",
     corto: "FILÓSOFOS",
     color: "7C3AED",
+    slug: "filosofos",
     jugadores: ["ROME", "NACHO", "MIGUEL MORÁN", "PEDRO (P)", "RODRI URRU", "NICOPLASMAN", "GONZÁLEZ", "GOLCEDIDOPROPIAFIL"],
   },
   {
     nombre: "ATALAYA DEL ARCIPRESTE",
     corto: "ATALAYA",
     color: "EA580C",
+    slug: "atalaya",
     jugadores: ["NACHITO", "MATU", "PETIT", "JIMMY", "GON AYLLÓN", "NALDA", "HÉCTOR", "GOLCEDIDOPROPIAADA"],
   },
   {
     nombre: "TORRE BELDES",
     corto: "TORRE BELDES",
     color: "059669",
+    slug: "torre-beldes",
     jugadores: ["LOUIS", "TRIPERO", "LUCAS", "COCO", "LUCHO", "SOTTO", "NICO MARÍN", "GOLCEDIDOPROPIATB"],
   },
   {
     nombre: "ESPESITOS FC",
     corto: "ESPESITOS",
     color: "0891B2",
+    slug: "espesitos",
     jugadores: ["BEL", "BORJA", "KIKE", "JAIME VALENCIANO", "RAFA", "FER", "MARCO", "GOLCEDIDOPROPIAESP"],
   },
   {
     nombre: "ETHILICO DE BILBAO",
     corto: "ETHILICO",
     color: "DC2626",
+    slug: "ethilico",
     jugadores: ["JORGE (P)", "NICO PUEYO", "CÉSAR", "JAVI HERRERA", "LILO", "PABLO HURTADO", "PUKU", "MINGUI", "GOLCEDIDOPROPIAEDB"],
   },
   {
     nombre: "REAL CARTAGENA APRIETA",
     corto: "CARTAGENA",
     color: "1D4ED8",
+    slug: "cartagena",
     jugadores: ["ÁLVARO", "JUAN", "MARIO", "POW", "DEMA", "JULI", "DANI WEST", "GUILLE", "GOLCEDIDOPROPIARCA"],
   },
   {
     nombre: "CLUB BRUJO",
     corto: "CLUB BRUJO",
     color: "9333EA",
+    slug: "brujos",
     jugadores: ["DELAS", "GON", "RUI (P)", "ALEX DÍAZ", "FITER", "BARCA", "JAIME", "NACHO RAM", "GOLCEDIDOPROPIABRU"],
   },
   {
     nombre: "TORREZNOS",
     corto: "TORREZNOS",
     color: "B45309",
+    slug: "torreznos",
     jugadores: ["GOYO", "ALO", "DANI PUEYO (P)", "URRU", "JUAN SH", "JORDI", "DAN", "TITO", "GOLCEDIDOPROPIATOR"],
   },
 ];

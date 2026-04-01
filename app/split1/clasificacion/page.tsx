@@ -1,6 +1,6 @@
 import PageHeader from "@/components/PageHeader";
-import { equiposSplit1, clasificacionSplit1 } from "@/data/split1";
-
+import TeamLogoSplit1 from "@/components/TeamLogoSplit1";
+import { clasificacionSplit1 } from "@/data/split1";
 
 export default function Split1ClasificacionPage() {
   return (
@@ -31,9 +31,12 @@ export default function Split1ClasificacionPage() {
                         {medals[index] ?? <span className="text-sm sm:text-base font-bold text-slate-400">{index + 1}</span>}
                       </td>
                       <td className="px-2 sm:px-6 py-3 sm:py-5">
-                        <span className="font-bold text-slate-800 text-xs sm:text-base group-hover:text-[#0b4a6f] transition-colors leading-tight">
-                          {fila.equipo}
-                        </span>
+                        <div className="flex items-center gap-2 sm:gap-4">
+                          <TeamLogoSplit1 nombre={fila.equipo} size="sm" />
+                          <span className="font-bold text-slate-800 text-xs sm:text-base group-hover:text-[#0b4a6f] transition-colors leading-tight">
+                            {fila.equipo}
+                          </span>
+                        </div>
                       </td>
                       <td className="px-2 sm:px-4 py-3 sm:py-5 text-center font-mono text-xs sm:text-sm font-semibold text-slate-600">{fila.pj}</td>
                       <td className="px-2 sm:px-4 py-3 sm:py-5 text-center font-mono text-xs sm:text-sm text-green-600 hidden md:table-cell">{fila.gf}</td>

@@ -1,4 +1,5 @@
 import PageHeader from "@/components/PageHeader";
+import TeamLogoSplit1 from "@/components/TeamLogoSplit1";
 import { equiposSplit1, goleadoresSplit1 } from "@/data/split1";
 
 
@@ -40,7 +41,10 @@ export default function Split1EstadisticasPage() {
                       {i + 1}
                     </td>
                     <td className="px-3 sm:px-5 py-3">
-                      <span className="font-bold text-slate-800 text-xs sm:text-sm">{jugador.nombre}</span>
+                      <div className="flex items-center gap-2">
+                        <TeamLogoSplit1 nombre={jugador.equipo} size="sm" />
+                        <span className="font-bold text-slate-800 text-xs sm:text-sm">{jugador.nombre}</span>
+                      </div>
                     </td>
                     <td className="px-3 sm:px-5 py-3 text-xs text-slate-500 hidden sm:table-cell">{jugador.equipo}</td>
                     <td className="px-3 sm:px-5 py-3 text-center">
@@ -79,7 +83,10 @@ export default function Split1EstadisticasPage() {
                   <tr key={`${jugador.nombre}-${jugador.equipo}`} className="hover:bg-slate-50/60 transition-colors">
                     <td className="px-3 sm:px-5 py-3 text-center font-bold text-slate-300 text-sm">{i + 1}</td>
                     <td className="px-3 sm:px-5 py-3">
-                      <span className="font-bold text-slate-800 text-xs sm:text-sm">{jugador.nombre}</span>
+                      <div className="flex items-center gap-2">
+                        <TeamLogoSplit1 nombre={jugador.equipo} size="sm" />
+                        <span className="font-bold text-slate-800 text-xs sm:text-sm">{jugador.nombre}</span>
+                      </div>
                     </td>
                     <td className="px-3 sm:px-5 py-3 text-xs text-slate-500 hidden sm:table-cell">{jugador.equipo}</td>
                     <td className="px-3 sm:px-5 py-3 text-center">
@@ -115,7 +122,10 @@ export default function Split1EstadisticasPage() {
                   {withCards.map((jugador) => (
                     <tr key={`${jugador.nombre}-${jugador.equipo}`} className="hover:bg-slate-50/60 transition-colors">
                       <td className="px-3 sm:px-5 py-3">
-                        <span className="font-bold text-slate-800 text-xs sm:text-sm">{jugador.nombre}</span>
+                        <div className="flex items-center gap-2">
+                          <TeamLogoSplit1 nombre={jugador.equipo} size="sm" />
+                          <span className="font-bold text-slate-800 text-xs sm:text-sm">{jugador.nombre}</span>
+                        </div>
                       </td>
                       <td className="px-3 sm:px-5 py-3 text-xs text-slate-500 hidden sm:table-cell">{jugador.equipo}</td>
                       <td className="px-3 sm:px-5 py-3 text-center">
