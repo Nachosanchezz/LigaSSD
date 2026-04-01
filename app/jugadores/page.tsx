@@ -1,5 +1,7 @@
 import Image from "next/image";
+import Link from "next/link";
 import { equipos } from "../../data/equipos";
+import { nombreCompletoJugador } from "@/lib/helpers";
 
 type FilaJugador = {
   id: string;
@@ -11,15 +13,6 @@ type FilaJugador = {
   posicion?: string;
   piernaBuena?: string;
 };
-
-function nombreCompletoJugador(jugador: {
-  nombre: string;
-  primerApellido?: string;
-}) {
-  return [jugador.nombre, jugador.primerApellido]
-    .filter((parte) => parte && parte.trim() !== "")
-    .join(" ");
-}
 
 function obtenerJugadores(): FilaJugador[] {
   const filas: FilaJugador[] = [];
@@ -103,12 +96,12 @@ export default function JugadoresPage() {
                     className="group transition-colors hover:bg-slate-50/80"
                   >
                     <td className="px-3 sm:px-6 py-3 sm:py-4">
-                      <div className="flex flex-col">
-                        <span className="font-bold text-slate-800 text-sm sm:text-base whitespace-nowrap sm:whitespace-normal">{fila.jugador}</span>
+                      <Link href={`/jugadores/${fila.id}`} className="flex flex-col hover:underline decoration-[#0b4a6f]">
+                        <span className="font-bold text-slate-800 text-sm sm:text-base whitespace-nowrap sm:whitespace-normal group-hover:text-[#0b4a6f] transition-colors">{fila.jugador}</span>
                         {fila.apodo && (
                           <span className="text-xs sm:text-sm font-medium text-slate-500 italic mt-0.5">"{fila.apodo}"</span>
                         )}
-                      </div>
+                      </Link>
                     </td>
 
                     <td className="px-3 sm:px-6 py-3 sm:py-4">

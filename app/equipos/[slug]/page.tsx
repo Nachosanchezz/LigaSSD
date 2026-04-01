@@ -3,21 +3,15 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { equipos } from "../../../data/equipos";
 import { getArbitrajesDeEquipo } from "@/lib/arbitrajes";
+import { nombreCompletoJugador } from "@/lib/helpers";
+import { getJornadasConResultados } from "@/lib/queries";
 
 type Props = {
-  params: Promise<{
-    slug: string;
-  }>;
+  params: Promise<{ slug: string }>;
 };
 
-function nombreCompletoJugador(jugador: {
-  nombre: string;
-  primerApellido?: string;
-  segundoApellido?: string;
-}) {
-  return [jugador.nombre, jugador.primerApellido, jugador.segundoApellido]
-    .filter((parte) => parte && parte.trim() !== "")
-    .join(" ");
+export function generateStaticParams() {
+  return equipos.map((equipo) => ({ slug: equipo.slug }));
 }
 
 const getShieldForPosition = (posicion?: string) => {
@@ -43,7 +37,8 @@ export default async function EquipoPage({ params }: Props) {
     notFound();
   }
 
-  const datosArbitraje = getArbitrajesDeEquipo(equipo.nombre);
+  const jornadas = await getJornadasConResultados();
+  const datosArbitraje = getArbitrajesDeEquipo(equipo.nombre, jornadas);
 
   return (
     <div className="min-h-screen bg-slate-50/50 pb-10 sm:pb-20">
@@ -88,6 +83,7 @@ export default async function EquipoPage({ params }: Props) {
               </div>
             </div>
           </div>
+
           <div className="mb-10 sm:mb-12">
             <h2 className="text-2xl sm:text-3xl font-black uppercase tracking-tight text-[#0b4a6f] border-b-2 border-slate-100 pb-3 mb-6 flex items-center gap-3">
               <span className="w-1.5 sm:w-2 h-6 sm:h-8 bg-yellow-400 rounded-full inline-block"></span>
@@ -136,6 +132,7 @@ export default async function EquipoPage({ params }: Props) {
               </div>
             )}
           </div>
+
           <div>
             <h2 className="text-2xl sm:text-3xl font-black uppercase tracking-tight text-[#0b4a6f] border-b-2 border-slate-100 pb-3 mb-6 flex items-center gap-3">
               <span className="w-1.5 sm:w-2 h-6 sm:h-8 bg-yellow-400 rounded-full inline-block"></span>
@@ -145,7 +142,7 @@ export default async function EquipoPage({ params }: Props) {
             <div className="grid gap-3 sm:gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
               {equipo.integrantes.map((jugador) => (
                 <div
-                  key={nombreCompletoJugador(jugador)}
+                  key={jugador.id}
                   className="group rounded-xl border border-slate-200 bg-white hover:bg-slate-50 overflow-hidden shadow-sm transition-all hover:-translate-y-1 hover:shadow-md"
                 >
                   <div className="bg-slate-100 px-3 py-2 flex items-center justify-between border-b border-slate-200 group-hover:bg-[#091f36] transition-colors">

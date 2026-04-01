@@ -1,6 +1,9 @@
 import Image from "next/image";
-import { jornadas } from "../../data/partidos";
 import { equipos } from "../../data/equipos";
+import { getRankTrophy, nombreCompletoJugador } from "@/lib/helpers";
+import PageHeader from "@/components/PageHeader";
+import { getJornadasConResultados } from "@/lib/queries";
+import type { Jornada } from "@/data/partidos";
 
 type FilaEstadistica = {
   id: string;
@@ -10,7 +13,6 @@ type FilaEstadistica = {
   valor: number;
 };
 
-// ... keep existing normalizar, etc
 function normalizarTexto(texto: string) {
   return texto
     .normalize("NFD")
@@ -19,52 +21,29 @@ function normalizarTexto(texto: string) {
     .toLowerCase();
 }
 
-function nombreCompletoJugador(jugador: {
-  nombre: string;
-  primerApellido?: string;
-}) {
-  return [jugador.nombre, jugador.primerApellido]
-    .filter((parte) => parte && parte.trim() !== "")
-    .join(" ");
-}
-
 function esValorIgnorable(texto?: string) {
   if (!texto) return true;
-
   const valor = normalizarTexto(texto);
-
-  return valor === "sin asistencia" || valor === "gol cedido";
+  return valor === "sin asistencia" || valor === "gol cedido" || valor === "cedido";
 }
 
 function crearMapaJugadores() {
-  const mapa: Record<
-    string,
-    {
-      id: string;
-      jugadorMostrado: string;
-      equipo: string;
-      logo: string;
-    }
-  > = {};
+  const mapa: Record<string, { id: string; jugadorMostrado: string; equipo: string; logo: string }> = {};
 
   for (const equipo of equipos) {
     for (const jugador of equipo.integrantes) {
-      const nombreCompleto = nombreCompletoJugador(jugador);
-      const nombreSolo = jugador.nombre;
-      const apodo = jugador.apodo;
-
       const info = {
         id: jugador.id,
-        jugadorMostrado: nombreCompleto,
+        jugadorMostrado: nombreCompletoJugador(jugador),
         equipo: equipo.nombre,
         logo: equipo.logo,
       };
 
-      mapa[normalizarTexto(nombreCompleto)] = info;
-      mapa[normalizarTexto(nombreSolo)] = info;
+      mapa[normalizarTexto(nombreCompletoJugador(jugador))] = info;
+      mapa[normalizarTexto(jugador.nombre)] = info;
 
-      if (apodo && apodo.trim() !== "") {
-        mapa[normalizarTexto(apodo)] = info;
+      if (jugador.apodo && jugador.apodo.trim() !== "") {
+        mapa[normalizarTexto(jugador.apodo)] = info;
       }
     }
   }
@@ -72,7 +51,29 @@ function crearMapaJugadores() {
   return mapa;
 }
 
-function calcularGoleadores(): FilaEstadistica[] {
+function calcularMvps(jornadas: Jornada[]): FilaEstadistica[] {
+  const tabla: Record<string, FilaEstadistica> = {};
+  const mapaJugadores = crearMapaJugadores();
+
+  for (const jornada of jornadas) {
+    for (const partido of jornada.partidos) {
+      if (partido.estado !== "Finalizado" || !partido.mvp) continue;
+      const info = mapaJugadores[normalizarTexto(partido.mvp)];
+      if (!info) continue;
+      if (!tabla[info.id]) {
+        tabla[info.id] = { id: info.id, jugador: info.jugadorMostrado, equipo: info.equipo, logo: info.logo, valor: 0 };
+      }
+      tabla[info.id].valor += 1;
+    }
+  }
+
+  return Object.values(tabla).sort((a, b) => {
+    if (b.valor !== a.valor) return b.valor - a.valor;
+    return a.jugador.localeCompare(b.jugador);
+  });
+}
+
+function calcularStat(campo: "jugador" | "asistente", jornadas: Jornada[]): FilaEstadistica[] {
   const tabla: Record<string, FilaEstadistica> = {};
   const mapaJugadores = crearMapaJugadores();
 
@@ -80,41 +81,16 @@ function calcularGoleadores(): FilaEstadistica[] {
     for (const partido of jornada.partidos) {
       if (partido.estado !== "Finalizado" || !partido.resumen) continue;
 
-      for (const gol of partido.resumen.local) {
-        if (esValorIgnorable(gol.jugador)) continue;
+      for (const gol of [...partido.resumen.local, ...partido.resumen.visitante]) {
+        const valor = gol[campo];
+        if (esValorIgnorable(valor)) continue;
 
-        const info = mapaJugadores[normalizarTexto(gol.jugador)];
+        const info = mapaJugadores[normalizarTexto(valor!)];
         if (!info) continue;
 
         if (!tabla[info.id]) {
-          tabla[info.id] = {
-            id: info.id,
-            jugador: info.jugadorMostrado,
-            equipo: info.equipo,
-            logo: info.logo,
-            valor: 0,
-          };
+          tabla[info.id] = { id: info.id, jugador: info.jugadorMostrado, equipo: info.equipo, logo: info.logo, valor: 0 };
         }
-
-        tabla[info.id].valor += 1;
-      }
-
-      for (const gol of partido.resumen.visitante) {
-        if (esValorIgnorable(gol.jugador)) continue;
-
-        const info = mapaJugadores[normalizarTexto(gol.jugador)];
-        if (!info) continue;
-
-        if (!tabla[info.id]) {
-          tabla[info.id] = {
-            id: info.id,
-            jugador: info.jugadorMostrado,
-            equipo: info.equipo,
-            logo: info.logo,
-            valor: 0,
-          };
-        }
-
         tabla[info.id].valor += 1;
       }
     }
@@ -125,67 +101,6 @@ function calcularGoleadores(): FilaEstadistica[] {
     return a.jugador.localeCompare(b.jugador);
   });
 }
-
-function calcularAsistencias(): FilaEstadistica[] {
-  const tabla: Record<string, FilaEstadistica> = {};
-  const mapaJugadores = crearMapaJugadores();
-
-  for (const jornada of jornadas) {
-    for (const partido of jornada.partidos) {
-      if (partido.estado !== "Finalizado" || !partido.resumen) continue;
-
-      for (const gol of partido.resumen.local) {
-        if (esValorIgnorable(gol.asistente)) continue;
-
-        const info = mapaJugadores[normalizarTexto(gol.asistente!)];
-        if (!info) continue;
-
-        if (!tabla[info.id]) {
-          tabla[info.id] = {
-            id: info.id,
-            jugador: info.jugadorMostrado,
-            equipo: info.equipo,
-            logo: info.logo,
-            valor: 0,
-          };
-        }
-
-        tabla[info.id].valor += 1;
-      }
-
-      for (const gol of partido.resumen.visitante) {
-        if (esValorIgnorable(gol.asistente)) continue;
-
-        const info = mapaJugadores[normalizarTexto(gol.asistente!)];
-        if (!info) continue;
-
-        if (!tabla[info.id]) {
-          tabla[info.id] = {
-            id: info.id,
-            jugador: info.jugadorMostrado,
-            equipo: info.equipo,
-            logo: info.logo,
-            valor: 0,
-          };
-        }
-
-        tabla[info.id].valor += 1;
-      }
-    }
-  }
-
-  return Object.values(tabla).sort((a, b) => {
-    if (b.valor !== a.valor) return b.valor - a.valor;
-    return a.jugador.localeCompare(b.jugador);
-  });
-}
-
-const getRankTrophy = (index: number) => {
-  if (index === 0) return "🥇";
-  if (index === 1) return "🥈";
-  if (index === 2) return "🥉";
-  return <span className="text-slate-400 font-mono text-sm sm:text-base">{index + 1}</span>;
-};
 
 function TablaEstadistica({
   titulo,
@@ -273,35 +188,23 @@ function TablaEstadistica({
   );
 }
 
-export default function EstadisticasPage() {
-  const goleadores = calcularGoleadores();
-  const asistentes = calcularAsistencias();
+export default async function EstadisticasPage() {
+  const jornadas = await getJornadasConResultados();
+  const goleadores = calcularStat("jugador", jornadas);
+  const asistentes = calcularStat("asistente", jornadas);
+  const mvps = calcularMvps(jornadas);
 
   return (
     <div className="min-h-screen bg-slate-50/50 pb-10 sm:pb-20">
-      {/* Page Header */}
-      <div className="bg-[#091f36] pt-12 sm:pt-16 pb-20 sm:pb-24 px-4 sm:px-6 text-center border-b border-indigo-900/30">
-        <h1 className="text-3xl sm:text-4xl md:text-6xl font-black uppercase tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-white to-blue-200 drop-shadow-sm">
-          Estadísticas
-        </h1>
-        <p className="mt-2 sm:mt-4 text-blue-200 font-medium max-w-2xl mx-auto uppercase tracking-wide text-[10px] sm:text-sm">
-          Tabla de Goleadores y Asistencias de la Temporada
-        </p>
-      </div>
+      <PageHeader title="Estadísticas" subtitle="Goleadores, Asistencias y MVPs de la Temporada" />
 
       <section className="mx-auto max-w-6xl px-3 sm:px-6 -mt-10 sm:-mt-12">
         <div className="grid gap-6 sm:gap-12 lg:grid-cols-2">
-          <TablaEstadistica
-            titulo="Pichichi"
-            filas={goleadores}
-            etiquetaValor="Goles"
-          />
-
-          <TablaEstadistica
-            titulo="Asistencias"
-            filas={asistentes}
-            etiquetaValor="Asists."
-          />
+          <TablaEstadistica titulo="Pichichi" filas={goleadores} etiquetaValor="Goles" />
+          <TablaEstadistica titulo="Asistencias" filas={asistentes} etiquetaValor="Asists." />
+        </div>
+        <div className="mt-6 sm:mt-12">
+          <TablaEstadistica titulo="MVPs" filas={mvps} etiquetaValor="MVPs" />
         </div>
       </section>
     </div>
