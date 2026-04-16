@@ -109,6 +109,33 @@ export async function guardarResultado(
   return {};
 }
 
+export async function guardarArbitra(
+  partidoId: string,
+  arbitra: string
+): Promise<{ error?: string }> {
+  if (!(await isAuthenticated())) {
+    return { error: "No autorizado" };
+  }
+
+  const trimmed = arbitra.trim();
+  if (!trimmed) {
+    return { error: "El árbitro no puede estar vacío" };
+  }
+
+  const supabase = createAdminClient();
+  const { error } = await supabase
+    .from("arbitros")
+    .upsert(
+      { partido_id: partidoId, arbitra: trimmed },
+      { onConflict: "partido_id" }
+    );
+
+  if (error) return { error: error.message };
+
+  revalidatePath("/", "layout");
+  return {};
+}
+
 export async function borrarResultado(
   partidoId: string
 ): Promise<{ error?: string }> {

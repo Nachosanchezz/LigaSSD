@@ -3,28 +3,41 @@ import { createClient } from "./supabase";
 import { jornadas as jornadasStaticas } from "@/data/partidos";
 import type { Jornada, Partido } from "@/data/partidos";
 
-type ResultadoEntry = Pick<Partido, "resultado" | "mvp" | "resumen">;
-type ResultadosRecord = Record<string, ResultadoEntry>;
+type PartidoOverrides = {
+  resultado?: string;
+  mvp?: string;
+  resumen?: {
+    local: { jugador: string; asistente?: string; minuto?: number }[];
+    visitante: { jugador: string; asistente?: string; minuto?: number }[];
+  };
+  arbitra?: string;
+};
 
-async function fetchResultados(): Promise<ResultadosRecord> {
+type OverridesRecord = Record<string, PartidoOverrides>;
+
+async function fetchOverrides(): Promise<OverridesRecord> {
   if (!process.env.SUPABASE_URL) {
     return {};
   }
 
   const supabase = createClient();
 
-  const [{ data: resultados, error: e1 }, { data: goles, error: e2 }] =
-    await Promise.all([
-      supabase.from("resultados").select("*"),
-      supabase.from("goles").select("*").order("orden"),
-    ]);
+  const [
+    { data: resultados, error: e1 },
+    { data: goles, error: e2 },
+    { data: arbitros, error: e3 },
+  ] = await Promise.all([
+    supabase.from("resultados").select("*"),
+    supabase.from("goles").select("*").order("orden"),
+    supabase.from("arbitros").select("*"),
+  ]);
 
-  if (e1 || e2) {
-    console.error("Supabase error:", e1 ?? e2);
+  if (e1 || e2 || e3) {
+    console.error("Supabase error:", e1 ?? e2 ?? e3);
     return {};
   }
 
-  const record: ResultadosRecord = {};
+  const record: OverridesRecord = {};
 
   for (const r of resultados ?? []) {
     const golesLocal = (goles ?? [])
@@ -52,24 +65,44 @@ async function fetchResultados(): Promise<ResultadosRecord> {
     };
   }
 
+  // Merge árbitros (pueden existir aunque el partido no tenga resultado aún)
+  for (const a of arbitros ?? []) {
+    if (record[a.partido_id]) {
+      record[a.partido_id].arbitra = a.arbitra;
+    } else {
+      record[a.partido_id] = { arbitra: a.arbitra };
+    }
+  }
+
   return record;
 }
 
-const getCachedResultados = unstable_cache(
-  fetchResultados,
+const getCachedOverrides = unstable_cache(
+  fetchOverrides,
   ["resultados"],
   { tags: ["resultados"] }
 );
 
 export async function getJornadasConResultados(): Promise<Jornada[]> {
-  const resultados = await getCachedResultados();
+  const overrides = await getCachedOverrides();
 
   return jornadasStaticas.map((j) => ({
     ...j,
     partidos: j.partidos.map((p) => {
-      const r = resultados[p.id];
-      if (r) return { ...p, estado: "Finalizado" as const, ...r };
-      return p;
+      const o = overrides[p.id];
+      if (!o) return p;
+
+      const merged: Partido = { ...p };
+      // Árbitro desde Supabase tiene prioridad sobre el dato estático
+      if (o.arbitra) merged.arbitra = o.arbitra;
+      // Solo marcar como Finalizado si hay resultado en Supabase
+      if (o.resultado) {
+        merged.estado = "Finalizado";
+        merged.resultado = o.resultado;
+        merged.mvp = o.mvp;
+        merged.resumen = o.resumen;
+      }
+      return merged;
     }),
   }));
 }
