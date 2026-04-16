@@ -1,7 +1,7 @@
 import { unstable_cache } from "next/cache";
 import { createClient } from "./supabase";
 import { jornadas as jornadasStaticas } from "@/data/partidos";
-import type { Jornada, Partido } from "@/data/partidos";
+import type { Jornada, Partido, EstadoPartido } from "@/data/partidos";
 
 type PartidoOverrides = {
   resultado?: string;
@@ -11,6 +11,8 @@ type PartidoOverrides = {
     visitante: { jugador: string; asistente?: string; minuto?: number }[];
   };
   arbitra?: string;
+  estadoOverride?: EstadoPartido;
+  motivoOverride?: string;
 };
 
 type OverridesRecord = Record<string, PartidoOverrides>;
@@ -26,14 +28,16 @@ async function fetchOverrides(): Promise<OverridesRecord> {
     { data: resultados, error: e1 },
     { data: goles, error: e2 },
     { data: arbitros, error: e3 },
+    { data: estados, error: e4 },
   ] = await Promise.all([
     supabase.from("resultados").select("*"),
     supabase.from("goles").select("*").order("orden"),
     supabase.from("arbitros").select("*"),
+    supabase.from("estados_partido").select("*"),
   ]);
 
-  if (e1 || e2 || e3) {
-    console.error("Supabase error:", e1 ?? e2 ?? e3);
+  if (e1 || e2 || e3 || e4) {
+    console.error("Supabase error:", e1 ?? e2 ?? e3 ?? e4);
     return {};
   }
 
@@ -74,6 +78,19 @@ async function fetchOverrides(): Promise<OverridesRecord> {
     }
   }
 
+  // Merge estados (aplazado, etc.)
+  for (const e of estados ?? []) {
+    if (record[e.partido_id]) {
+      record[e.partido_id].estadoOverride = e.estado as EstadoPartido;
+      record[e.partido_id].motivoOverride = e.motivo ?? undefined;
+    } else {
+      record[e.partido_id] = {
+        estadoOverride: e.estado as EstadoPartido,
+        motivoOverride: e.motivo ?? undefined,
+      };
+    }
+  }
+
   return record;
 }
 
@@ -95,7 +112,12 @@ export async function getJornadasConResultados(): Promise<Jornada[]> {
       const merged: Partido = { ...p };
       // Árbitro desde Supabase tiene prioridad sobre el dato estático
       if (o.arbitra) merged.arbitra = o.arbitra;
-      // Solo marcar como Finalizado si hay resultado en Supabase
+      // Estado override (ej: Aplazado desde admin), solo si NO hay resultado
+      if (o.estadoOverride && !o.resultado) {
+        merged.estado = o.estadoOverride;
+        merged.motivo = o.motivoOverride;
+      }
+      // Resultado (Finalizado) tiene máxima prioridad
       if (o.resultado) {
         merged.estado = "Finalizado";
         merged.resultado = o.resultado;

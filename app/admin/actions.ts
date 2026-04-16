@@ -136,6 +136,47 @@ export async function guardarArbitra(
   return {};
 }
 
+export async function guardarAplazado(
+  partidoId: string,
+  motivo: string
+): Promise<{ error?: string }> {
+  if (!(await isAuthenticated())) {
+    return { error: "No autorizado" };
+  }
+
+  const supabase = createAdminClient();
+  const { error } = await supabase
+    .from("estados_partido")
+    .upsert(
+      { partido_id: partidoId, estado: "Aplazado", motivo: motivo.trim() || null },
+      { onConflict: "partido_id" }
+    );
+
+  if (error) return { error: error.message };
+
+  revalidatePath("/", "layout");
+  return {};
+}
+
+export async function quitarAplazado(
+  partidoId: string
+): Promise<{ error?: string }> {
+  if (!(await isAuthenticated())) {
+    return { error: "No autorizado" };
+  }
+
+  const supabase = createAdminClient();
+  const { error } = await supabase
+    .from("estados_partido")
+    .delete()
+    .eq("partido_id", partidoId);
+
+  if (error) return { error: error.message };
+
+  revalidatePath("/", "layout");
+  return {};
+}
+
 export async function borrarResultado(
   partidoId: string
 ): Promise<{ error?: string }> {
