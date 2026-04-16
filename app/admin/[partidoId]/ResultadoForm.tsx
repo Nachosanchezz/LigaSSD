@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { guardarResultado, borrarResultado } from "../actions";
+import { guardarResultado, borrarResultado, guardarArbitra } from "../actions";
 
 type GolEntry = {
   jugador: string;
@@ -16,6 +16,7 @@ type Props = {
   partidoId: string;
   local: string;
   visitante: string;
+  arbitraActual?: string;
   resultadoActual?: {
     resultado: string;
     mvp?: string;
@@ -30,10 +31,16 @@ export default function ResultadoForm({
   partidoId,
   local,
   visitante,
+  arbitraActual,
   resultadoActual,
 }: Props) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
+
+  // Árbitro
+  const [arbitra, setArbitra] = useState(arbitraActual ?? "");
+  const [arbitraOk, setArbitraOk] = useState(false);
+  const [arbitraError, setArbitraError] = useState("");
 
   const [resultado, setResultado] = useState(
     resultadoActual?.resultado ?? ""
@@ -55,6 +62,19 @@ export default function ResultadoForm({
   );
   const [error, setError] = useState("");
   const [showDelete, setShowDelete] = useState(false);
+
+  function handleSaveArbitra() {
+    setArbitraError("");
+    setArbitraOk(false);
+    startTransition(async () => {
+      const res = await guardarArbitra(partidoId, arbitra);
+      if (res.error) {
+        setArbitraError(res.error);
+      } else {
+        setArbitraOk(true);
+      }
+    });
+  }
 
   function updateGol(
     lista: GolEntry[],
@@ -121,6 +141,39 @@ export default function ResultadoForm({
 
   return (
     <div className="space-y-6">
+      {/* Árbitro */}
+      <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-3">
+        <label className="block text-xs font-black uppercase tracking-widest text-slate-500">
+          Árbitro (equipo)
+        </label>
+        <div className="flex gap-2">
+          <input
+            type="text"
+            value={arbitra}
+            onChange={(e) => { setArbitra(e.target.value); setArbitraOk(false); }}
+            placeholder="Ej: ATALAYA"
+            className="flex-1 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-bold text-[#091f36] uppercase tracking-wide focus:outline-none focus:border-[#0b4a6f] focus:bg-white transition"
+          />
+          <button
+            onClick={handleSaveArbitra}
+            disabled={isPending || !arbitra.trim()}
+            className="rounded-xl bg-[#0b4a6f] text-white font-black px-4 py-3 text-sm uppercase tracking-wide hover:bg-[#091f36] active:scale-95 transition disabled:opacity-40 disabled:cursor-not-allowed shrink-0"
+          >
+            {isPending ? "…" : "Guardar"}
+          </button>
+        </div>
+        {arbitraOk && (
+          <p className="text-green-600 text-xs font-bold text-center bg-green-50 rounded-lg py-2 border border-green-100">
+            ✓ Árbitro actualizado
+          </p>
+        )}
+        {arbitraError && (
+          <p className="text-red-600 text-xs font-bold text-center bg-red-50 rounded-lg py-2 border border-red-100">
+            {arbitraError}
+          </p>
+        )}
+      </div>
+
       {/* Resultado y MVP */}
       <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-4">
         <div>
