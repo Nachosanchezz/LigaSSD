@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { guardarResultado, borrarResultado, guardarArbitra } from "../actions";
+import { guardarResultado, borrarResultado, guardarArbitra, guardarAplazado, quitarAplazado } from "../actions";
 
 type GolEntry = {
   jugador: string;
@@ -17,6 +17,8 @@ type Props = {
   local: string;
   visitante: string;
   arbitraActual?: string;
+  estadoActual?: string;
+  motivoActual?: string;
   resultadoActual?: {
     resultado: string;
     mvp?: string;
@@ -32,6 +34,8 @@ export default function ResultadoForm({
   local,
   visitante,
   arbitraActual,
+  estadoActual,
+  motivoActual,
   resultadoActual,
 }: Props) {
   const router = useRouter();
@@ -41,6 +45,12 @@ export default function ResultadoForm({
   const [arbitra, setArbitra] = useState(arbitraActual ?? "");
   const [arbitraOk, setArbitraOk] = useState(false);
   const [arbitraError, setArbitraError] = useState("");
+
+  // Aplazado
+  const [isAplazado, setIsAplazado] = useState(estadoActual === "Aplazado");
+  const [motivo, setMotivo] = useState(motivoActual ?? "");
+  const [aplazadoOk, setAplazadoOk] = useState(false);
+  const [aplazadoError, setAplazadoError] = useState("");
 
   const [resultado, setResultado] = useState(
     resultadoActual?.resultado ?? ""
@@ -72,6 +82,35 @@ export default function ResultadoForm({
         setArbitraError(res.error);
       } else {
         setArbitraOk(true);
+      }
+    });
+  }
+
+  function handleGuardarAplazado() {
+    setAplazadoError("");
+    setAplazadoOk(false);
+    startTransition(async () => {
+      const res = await guardarAplazado(partidoId, motivo);
+      if (res.error) {
+        setAplazadoError(res.error);
+      } else {
+        setIsAplazado(true);
+        setAplazadoOk(true);
+      }
+    });
+  }
+
+  function handleQuitarAplazado() {
+    setAplazadoError("");
+    setAplazadoOk(false);
+    startTransition(async () => {
+      const res = await quitarAplazado(partidoId);
+      if (res.error) {
+        setAplazadoError(res.error);
+      } else {
+        setIsAplazado(false);
+        setMotivo("");
+        setAplazadoOk(false);
       }
     });
   }
@@ -173,6 +212,73 @@ export default function ResultadoForm({
           </p>
         )}
       </div>
+
+      {/* Estado: Aplazado (solo si no está Finalizado) */}
+      {!resultadoActual && (
+        <div className={`rounded-2xl border p-5 shadow-sm space-y-3 ${isAplazado ? "bg-red-50 border-red-200" : "bg-white border-slate-200"}`}>
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-black uppercase tracking-widest text-slate-500">
+              Estado del partido
+            </span>
+            {isAplazado && (
+              <span className="text-[10px] font-black uppercase tracking-wide bg-red-100 text-red-600 px-2 py-0.5 rounded-full">
+                Aplazado
+              </span>
+            )}
+          </div>
+
+          {isAplazado ? (
+            <>
+              <div>
+                <label className="block text-xs font-semibold text-slate-500 mb-1.5">
+                  Motivo del aplazamiento
+                </label>
+                <input
+                  type="text"
+                  value={motivo}
+                  onChange={(e) => { setMotivo(e.target.value); setAplazadoOk(false); }}
+                  placeholder="Ej: Falta de jugadores en ATALAYA"
+                  className="w-full rounded-xl border border-red-200 bg-white px-4 py-3 text-sm text-slate-800 focus:outline-none focus:border-red-400 focus:bg-white transition"
+                />
+              </div>
+              <div className="flex gap-2">
+                <button
+                  onClick={handleGuardarAplazado}
+                  disabled={isPending}
+                  className="flex-1 rounded-xl bg-red-600 text-white font-black py-2.5 text-sm uppercase tracking-wide hover:bg-red-700 active:scale-95 transition disabled:opacity-40"
+                >
+                  {isPending ? "…" : "Actualizar"}
+                </button>
+                <button
+                  onClick={handleQuitarAplazado}
+                  disabled={isPending}
+                  className="flex-1 rounded-xl border border-slate-200 bg-white text-slate-600 font-bold py-2.5 text-sm hover:bg-slate-50 active:scale-95 transition disabled:opacity-40"
+                >
+                  Quitar aplazado
+                </button>
+              </div>
+            </>
+          ) : (
+            <button
+              onClick={() => setIsAplazado(true)}
+              className="w-full rounded-xl border border-dashed border-slate-300 text-slate-500 font-bold py-3 text-sm hover:border-red-300 hover:text-red-500 hover:bg-red-50 active:scale-95 transition"
+            >
+              Marcar como Aplazado
+            </button>
+          )}
+
+          {aplazadoOk && (
+            <p className="text-green-600 text-xs font-bold text-center bg-green-50 rounded-lg py-2 border border-green-100">
+              ✓ Estado actualizado
+            </p>
+          )}
+          {aplazadoError && (
+            <p className="text-red-600 text-xs font-bold text-center bg-red-50 rounded-lg py-2 border border-red-200">
+              {aplazadoError}
+            </p>
+          )}
+        </div>
+      )}
 
       {/* Resultado y MVP */}
       <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-4">

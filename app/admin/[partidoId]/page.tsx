@@ -73,6 +73,8 @@ export default async function AdminPartidoPage({ params }: Props) {
           local={partido.local}
           visitante={partido.visitante}
           arbitraActual={partido.arbitra}
+          estadoActual={partido.estado}
+          motivoActual={partido.motivo}
           resultadoActual={resultadoActual}
         />
       </div>
