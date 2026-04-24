@@ -123,7 +123,7 @@ El problema de Atalaya no está bajo palos. Bajo palos tienen un milagro. El pro
 —"Yo pensaba que era tuyo."
 —"Eso no estaba en el acta."
 
-Y encima ficharon al presidente de Filósofos, campeón del split anterior. Sobre el papel: experiencia, mentalidad ganadora, liderazgo. En la práctica: misterio. Atalaya necesitaba un ascensor y de momento parece una derrama más.
+Y encima ficharon al presidente de Filósofos, campeón del split anterior. Sobre el papel: experiencia, mentalidad ganadora, liderazgo. En la práctica: misterio. Atalaya necesitaba un ascensor y de momento parece una derrama más, una barca a la deriva.
 
 El resumen es sencillo: Jimmy sostiene, el resto discute la derrama.
 
