@@ -2,6 +2,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { getJornadasConResultados } from "@/lib/queries";
 import { equipos, logosEquipos } from "@/data/equipos";
+import { noticias } from "@/data/noticias";
+import NoticiasCarrusel from "@/components/NoticiasCarrusel";
 
 function calcularTop3(jornadas: Awaited<ReturnType<typeof getJornadasConResultados>>) {
   const tabla: Record<string, { equipo: string; pts: number; dg: number; gf: number }> = {};
@@ -163,6 +165,8 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+
+      <NoticiasCarrusel noticias={noticias} />
 
       {/* About */}
       <section className="relative z-20 px-4 sm:px-6 py-12 sm:py-16 bg-white border-t border-slate-100">
