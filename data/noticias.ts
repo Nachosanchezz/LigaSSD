@@ -11,6 +11,106 @@ export type Noticia = {
 
 export const noticias: Noticia[] = [
   {
+    id: "torre-beldes-filosofos-1",
+    equipoSlug: "torre-beldes",
+    titular: "Torre Beldes adelanta a Filósofos: el pueblo no tendrá títulos, pero sí memoria",
+    subtitular: "Filósofos empata con Bodo Dream, pierde la batalla del ego y deja vivo el milagro municipal",
+    cuerpo: `Hay partidos que deciden ligas. Hay partidos que definen temporadas. Y luego hay partidos que acaban en empate, no los gana nadie, pero dejan a Torre Beldes descorchando ironía como si acabara de levantar la Champions en la plaza del pueblo.
+
+Ayer se jugó el gran partido de la liga regular: Filósofos contra Bodo Dream. El duelo gordo. Por un lado, Filósofos, con Nacho al frente del ego académico-deportivo. Por otro, Bodo Dream, el equipo de Juan, invicto, serio y con ese ligero aroma a plantilla premium cocinada en despacho.
+
+El contexto era sencillo: quien ganase, se ponía primero.
+
+Pero no ganó nadie.
+
+Empate.
+
+Y ese empate abrió una puerta que parecía cerrada: Torre Beldes todavía puede ganar la liga regular. Con una condición bastante absurda: Bodo Dream tiene que perder contra Açai Boys, el último clasificado. Es decir, el equipo invicto de Juan tiene que caer contra el equipo que no ha ganado todavía. Hace falta fe, sí. Hace falta una alineación de planetas. Hace falta que Açai Boys pase de bowl de frutas a milagro deportivo en menos de una jornada.
+
+Pero matemáticamente se puede. Y cuando algo se puede, Torre Beldes lo convierte en discurso.
+
+Porque lo verdaderamente importante no es solo que el pueblo siga vivo. Lo realmente delicioso es que Torre Beldes ha terminado por delante de Filósofos. Y eso, en esta liga, no es un dato: es una declaración de guerra.
+
+Filósofos podrá hablar de enfrentamientos directos, de historia, de merecimientos y de superioridad táctica. Podrá convocar una charla TED con espinilleras y explicar que "el fútbol no se entiende solo desde la clasificación". Pero la realidad es bastante más simple:
+
+Torre Beldes ha quedado por delante.
+
+Duele. Porque Filósofos lleva toda la temporada con ese aire de equipo que no solo juega, sino que viene a explicarte el sentido de la competición. No ganan partidos: elaboran argumentos. No empatan: gestionan escenarios complejos. Y cuando ganan, no celebran: redactan una conclusión.
+
+Pero ahora llega Torre Beldes, con su orgullo municipal y su humildad de mentira, y les dice: "Muy bonito todo, pero mirad la tabla."
+
+Al final, en una liga, el ego no puntúa. La filosofía tampoco. Lo que puntúa es cerrar la fase regular por delante del rival que lleva semanas mirándote por encima del hombro.
+
+Pase lo que pase, Filósofos ya no puede quedar por delante de Torre Beldes. Y eso, para el pueblo, vale casi como un título. De hecho, en Torre Beldes probablemente ya estén preparando la pancarta:
+
+"Por encima de Filósofos. Temporada 2."
+
+Ahora todo depende de Açai Boys. El último clasificado. El equipo gafado. El bowl de frutas con botas. La última esperanza del pueblo.
+
+¿Probable que tumben a Bodo Dream? No demasiado. ¿Posible? Sí. ¿Suficiente para que Torre Beldes se pase la semana dando la turra? Absolutamente.
+
+Filósofos podrá decir que el empate fue digno, que el partido era difícil y que la liga está igualada. Y todo será verdad.
+
+Pero la frase que va a sonar más fuerte será otra:
+
+"Habéis quedado por debajo de Torre Beldes."
+
+Y no hay tratado filosófico que arregle eso.`,
+    imagen: "/noticias/torre-beldes-filosofos.png",
+    fecha: "8 may 2026",
+    etiqueta: "BREAKING",
+  },
+  {
+    id: "torre-beldes-pelea-1",
+    equipoSlug: "torre-beldes",
+    titular: "Torre Beldes explota por dentro: Sotto y Lucho llegan a las manos por una teoría nuclear que nadie pidió",
+    subtitular: "La directiva estudia sanciones mientras el presidente Louis intenta poner orden con más buena intención que contundencia",
+    cuerpo: `El vestuario de Torre Beldes vive un auténtico polvorín. Ayer estalló una pelea entre Pablo Sotto y Álvaro Aguilar, conocido como Lucho, que acabó con ambos llegando a las manos, medio equipo separando como pudo y el presidente Louis intentando imponer autoridad con la misma contundencia con la que defiende: poca, pero con buena intención.
+
+La directiva ya estudiaría una sanción para ambos. No se contempla castigo deportivo, porque Torre Beldes está demasiado cerca de soñar con la liga regular como para ponerse digno justo ahora. Pero en el club aseguran que habrá consecuencias.
+
+Cuáles, todavía no se sabe. Y eso, en Torre Beldes, casi da más miedo.
+
+El origen fue tan absurdo que parece inventado por alguien con fiebre. Todo empezó con una conversación sobre qué carrera era más difícil, hasta que Sotto, futuro físico nuclear e incapaz de escuchar la palabra "energía" sin ponerse académico, soltó que "el fútbol sala, en realidad, es una simulación termodinámica de partículas en un sistema cerrado".
+
+Nadie pidió esa frase. Nadie la entendió. Nadie salió mejor de ella.
+
+Pero Sotto siguió. Intentó explicar el vestuario como un reactor nuclear: Mori era el moderador; Pow, el portero polaco de dos metros, era la barra de control; Álvaro MK era la energía potencial; Coco, lesionado y fiestero, era una partícula inestable; y Louis era "la pérdida energética del sistema".
+
+Louis no supo si aquello era una explicación científica o una falta de respeto, así que decidió ofenderse a medias.
+
+El que no esperó fue Lucho.
+
+Tras varios minutos escuchando a Sotto convertir el vestuario en una central nuclear, soltó la frase que lo cambió todo:
+
+"Tú serás físico nuclear, pero no sabes ni cargar el móvil sin pedir cable."
+
+Y ahí se acabó la ciencia.
+
+Sotto pidió respeto para la física. Lucho pidió respeto para la vida real. La discusión subió de temperatura y en segundos, Torre Beldes pasó de charla de vestuario a recreación municipal del Big Bang.
+
+Llegaron los empujones, los agarrones y ese momento clásico en el que nadie sabe si separar o grabar.
+
+Mori intentó mediar, pero su diplomacia duró menos que una promesa de humildad de Torre Beldes. Coco apareció cojeando: mucho "parad ya" y poca velocidad punta. Pow se plantó en la puerta — con dos metros de portero polaco, la salida se convirtió en frontera internacional. Y cuando apareció Álvaro MK, el volumen bajó notablemente. No por madurez colectiva, sino porque cuando aparece el fuertecito, el cuerpo recuerda que quiere llegar vivo al lunes.
+
+Entonces llegó Louis. Levantó la mano, pidió silencio y trató de poner orden. No hubo discurso épico ni amenaza definitiva. Solo esa mezcla de autoridad improvisada y preocupación real de quien sabe que su equipo está peleando por la liga, pero puede autodestruirse por una conversación sobre física nuclear.
+
+El incidente llega en el peor momento posible. Torre Beldes está arriba, ha quedado por delante de Filósofos y todavía sueña con ganar la liga regular si Bodo Dream pierde contra Açai Boys. Y ha decidido gestionar ese momento histórico convirtiendo el vestuario en una mezcla entre clase magistral, after mal cerrado y junta de vecinos con testosterona.
+
+Sotto insiste en que todo fue una reacción en cadena. Lucho asegura que la única cadena fue la de tonterías que tuvo que escuchar antes de explotar.
+
+Torre Beldes quería ser campeón. De momento, tendrá que conformarse con ser noticia.
+
+No por un gol. No por una táctica.
+
+Sino porque Sotto y Lucho llegaron a las manos después de una discusión que empezó con física nuclear, siguió con cargadores de móvil y acabó con la directiva preparando una sanción que todavía nadie conoce.
+
+Y eso, en Torre Beldes, es probablemente lo más peligroso de todo.`,
+    imagen: "/noticias/pelea-torre-beldes.png",
+    fecha: "8 may 2026",
+    etiqueta: "EXCLUSIVA",
+  },
+  {
     id: "torre-beldes-1",
     equipoSlug: "torre-beldes",
     titular: "Torre Beldes: mucho MVP, mucho ruido… y al final filosofía aplicada",
