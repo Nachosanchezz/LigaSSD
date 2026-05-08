@@ -1,8 +1,9 @@
 import Link from "next/link";
-import { redirect } from "next/navigation";
 import { isAuthenticated, login, logout } from "./actions";
 import { getJornadasConResultados } from "@/lib/queries";
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 export const metadata = { robots: "noindex" };
 
 function LoginForm({ error }: { error?: string }) {

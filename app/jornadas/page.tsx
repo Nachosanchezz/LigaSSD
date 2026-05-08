@@ -5,6 +5,9 @@ import PageHeader from "@/components/PageHeader";
 import { Calendar, MapPin, User } from "lucide-react";
 import { getJornadasConResultados } from "@/lib/queries";
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export default async function JornadasPage() {
   const jornadas = await getJornadasConResultados();
 

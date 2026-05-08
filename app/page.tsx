@@ -5,6 +5,9 @@ import { equipos, logosEquipos } from "@/data/equipos";
 import { noticias } from "@/data/noticias";
 import NoticiasCarrusel from "@/components/NoticiasCarrusel";
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 function calcularTop3(jornadas: Awaited<ReturnType<typeof getJornadasConResultados>>) {
   const tabla: Record<string, { equipo: string; pts: number; dg: number; gf: number }> = {};
   for (const eq of equipos) {

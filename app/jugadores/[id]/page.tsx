@@ -10,6 +10,9 @@ type Props = {
   params: Promise<{ id: string }>;
 };
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export function generateStaticParams() {
   return equipos.flatMap((eq) => eq.integrantes.map((j) => ({ id: j.id })));
 }

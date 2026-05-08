@@ -4,6 +4,8 @@ import { isAuthenticated } from "../actions";
 import { getJornadasConResultados } from "@/lib/queries";
 import ResultadoForm from "./ResultadoForm";
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 export const metadata = { robots: "noindex" };
 
 type Props = {

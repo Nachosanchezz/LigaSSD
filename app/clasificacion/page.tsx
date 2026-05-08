@@ -5,6 +5,9 @@ import PageHeader from "@/components/PageHeader";
 import { getJornadasConResultados } from "@/lib/queries";
 import type { Jornada } from "@/data/partidos";
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 type FilaClasificacion = {
   equipo: string;
   pj: number;

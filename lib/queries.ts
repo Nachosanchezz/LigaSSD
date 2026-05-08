@@ -1,4 +1,3 @@
-import { unstable_cache } from "next/cache";
 import { createClient } from "./supabase";
 import { jornadas as jornadasStaticas } from "@/data/partidos";
 import type { Jornada, Partido, EstadoPartido } from "@/data/partidos";
@@ -94,14 +93,8 @@ async function fetchOverrides(): Promise<OverridesRecord> {
   return record;
 }
 
-const getCachedOverrides = unstable_cache(
-  fetchOverrides,
-  ["resultados"],
-  { tags: ["resultados"] }
-);
-
 export async function getJornadasConResultados(): Promise<Jornada[]> {
-  const overrides = await getCachedOverrides();
+  const overrides = await fetchOverrides();
 
   return jornadasStaticas.map((j) => ({
     ...j,
