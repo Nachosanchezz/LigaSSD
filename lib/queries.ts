@@ -1,6 +1,8 @@
 import { createClient } from "./supabase";
 import { jornadas as jornadasStaticas } from "@/data/partidos";
 import type { Jornada, Partido, EstadoPartido } from "@/data/partidos";
+import { cuartosPlayoff, semifinalesPlayoff, finalPlayoff } from "@/data/playoffs";
+import type { PartidoPlayoff } from "@/data/playoffs";
 
 type PartidoOverrides = {
   resultado?: string;
@@ -120,4 +122,78 @@ export async function getJornadasConResultados(): Promise<Jornada[]> {
       return merged;
     }),
   }));
+}
+
+function calcularGanadorPlayoff(resultado: string, local: string, visitante: string): string | undefined {
+  const [l, v] = resultado.split("-").map(Number);
+  if (isNaN(l) || isNaN(v) || l === v) return undefined;
+  return l > v ? local : visitante;
+}
+
+export async function getPlayoffConResultados(): Promise<{
+  cuartos: PartidoPlayoff[];
+  semifinales: PartidoPlayoff[];
+  final: PartidoPlayoff;
+}> {
+  if (!process.env.SUPABASE_URL) {
+    return { cuartos: cuartosPlayoff, semifinales: semifinalesPlayoff, final: finalPlayoff };
+  }
+
+  const supabase = createClient();
+  const ids = ["qf1", "qf2", "qf3", "sf1", "sf2", "final"];
+
+  const [{ data: resultados }, { data: goles }] = await Promise.all([
+    supabase.from("resultados").select("partido_id, resultado, mvp").in("partido_id", ids),
+    supabase.from("goles").select("*").in("partido_id", ids).order("orden"),
+  ]);
+
+  const rMap: Record<string, { resultado: string; mvp?: string }> = {};
+  for (const r of resultados ?? []) {
+    rMap[r.partido_id] = { resultado: r.resultado, mvp: r.mvp ?? undefined };
+  }
+
+  const golesMap: Record<string, PartidoPlayoff["resumen"]> = {};
+  for (const g of goles ?? []) {
+    if (!golesMap[g.partido_id]) golesMap[g.partido_id] = { local: [], visitante: [] };
+    const evento = { jugador: g.jugador, asistente: g.asistente ?? undefined, minuto: g.minuto ?? undefined };
+    if (g.equipo_tipo === "local") golesMap[g.partido_id]!.local.push(evento);
+    else golesMap[g.partido_id]!.visitante.push(evento);
+  }
+
+  function applyResult(match: PartidoPlayoff): PartidoPlayoff {
+    const r = rMap[match.id];
+    if (!r) return match;
+    return {
+      ...match,
+      resultado: r.resultado,
+      mvp: r.mvp,
+      resumen: golesMap[match.id],
+      ganador: calcularGanadorPlayoff(r.resultado, match.local, match.visitante),
+      estado: "Finalizado",
+    };
+  }
+
+  // Cuartos
+  const cuartos = cuartosPlayoff.map(applyResult);
+  const [qf1, qf2, qf3] = cuartos;
+
+  // Semifinales (equipos se resuelven de los cuartos)
+  const sf2: PartidoPlayoff = applyResult({
+    ...semifinalesPlayoff[0],
+    local: qf1.ganador ?? "Gan. QF1",
+    visitante: qf2.ganador ?? "Gan. QF2",
+  });
+  const sf1: PartidoPlayoff = applyResult({
+    ...semifinalesPlayoff[1],
+    visitante: qf3.ganador ?? "Gan. QF3",
+  });
+
+  // Final
+  const fin: PartidoPlayoff = applyResult({
+    ...finalPlayoff,
+    local: sf2.ganador ?? "Gan. SF2",
+    visitante: sf1.ganador ?? "Gan. SF1",
+  });
+
+  return { cuartos, semifinales: [sf2, sf1], final: fin };
 }

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { isAuthenticated, login, logout } from "./actions";
-import { getJornadasConResultados } from "@/lib/queries";
+import { getJornadasConResultados, getPlayoffConResultados } from "@/lib/queries";
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -55,13 +55,30 @@ export default async function AdminPage({
     return <LoginForm error={sp.error} />;
   }
 
-  const jornadas = await getJornadasConResultados();
+  const [jornadas, playoff] = await Promise.all([
+    getJornadasConResultados(),
+    getPlayoffConResultados(),
+  ]);
   const partidos = jornadas.flatMap((j) =>
     j.partidos.map((p) => ({ ...p, jornada: j.numero }))
   );
 
   const pendientes = partidos.filter((p) => p.estado !== "Finalizado");
   const finalizados = partidos.filter((p) => p.estado === "Finalizado");
+
+  const PLAYOFF_LABELS: Record<string, string> = {
+    qf1: "QF1 — Cuartos",
+    qf2: "QF2 — Cuartos",
+    qf3: "QF3 — Cuartos",
+    sf1: "SF1 — Semifinal",
+    sf2: "SF2 — Semifinal",
+    final: "Gran Final",
+  };
+  const todosPlayoff = [
+    ...playoff.cuartos,
+    ...playoff.semifinales,
+    playoff.final,
+  ];
 
   return (
     <div className="min-h-screen bg-slate-100 pb-16">
@@ -147,6 +164,55 @@ export default async function AdminPage({
                 </Link>
               ))
             )}
+          </div>
+        </section>
+
+        {/* Playoffs */}
+        <section>
+          <h2 className="text-xs font-black uppercase tracking-widest text-slate-500 mb-3">
+            Playoffs
+          </h2>
+          <div className="space-y-2">
+            {todosPlayoff.map((p) => {
+              const teamsKnown = !p.local.startsWith("Gan.") && !p.visitante.startsWith("Gan.");
+              return (
+                <Link
+                  key={p.id}
+                  href={teamsKnown ? `/admin/playoffs/${p.id}` : "#"}
+                  className={`flex items-center justify-between bg-white rounded-2xl border border-slate-200 px-4 py-4 shadow-sm transition group ${
+                    teamsKnown
+                      ? "hover:border-[#0b4a6f]/40 hover:shadow-md cursor-pointer"
+                      : "opacity-50 cursor-not-allowed"
+                  }`}
+                  aria-disabled={!teamsKnown}
+                >
+                  <div>
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">
+                      {PLAYOFF_LABELS[p.id] ?? p.id}
+                    </p>
+                    <p className="font-bold text-slate-800 text-sm mt-0.5 group-hover:text-[#0b4a6f] transition">
+                      {p.local} vs {p.visitante}
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    {p.estado === "Finalizado" ? (
+                      <span className="text-base font-black text-[#0b4a6f] font-mono">{p.resultado}</span>
+                    ) : (
+                      <span className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded-full ${
+                        teamsKnown ? "bg-amber-100 text-amber-700" : "bg-slate-100 text-slate-400"
+                      }`}>
+                        {teamsKnown ? "Pendiente" : "Por determinar"}
+                      </span>
+                    )}
+                    {teamsKnown && (
+                      <svg className="w-4 h-4 text-slate-400 group-hover:text-[#0b4a6f] transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+                      </svg>
+                    )}
+                  </div>
+                </Link>
+              );
+            })}
           </div>
         </section>
 

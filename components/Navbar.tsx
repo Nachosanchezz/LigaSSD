@@ -9,6 +9,7 @@ export default function Navbar() {
 
   const links = [
     { name: "Clasificación", path: "/clasificacion" },
+    { name: "Playoffs", path: "/playoffs" },
     { name: "Jornadas", path: "/jornadas" },
     { name: "Estadísticas", path: "/estadisticas" },
     { name: "Jugadores", path: "/jugadores" },
