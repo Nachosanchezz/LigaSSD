@@ -109,13 +109,13 @@ export default function EstadisticasTabs({
   return (
     <>
       {/* Selector de pestañas */}
-      <div className="flex gap-2 mb-8">
+      <div className="flex border-b-2 border-slate-200 mb-8">
         <button
           onClick={() => setTab("liga")}
-          className={`px-5 py-2.5 rounded-xl text-sm font-black uppercase tracking-wide transition-all ${
+          className={`px-6 py-3 text-sm font-black uppercase tracking-wide transition-all border-b-[3px] -mb-[2px] ${
             tab === "liga"
-              ? "bg-[#091f36] text-white shadow-lg"
-              : "bg-white text-slate-500 border border-slate-200 hover:border-[#0b4a6f] hover:text-[#0b4a6f]"
+              ? "border-[#091f36] text-[#091f36]"
+              : "border-transparent text-slate-400 hover:text-slate-600"
           }`}
         >
           Liga Regular
@@ -123,10 +123,10 @@ export default function EstadisticasTabs({
         {hayDatosPlayoff && (
           <button
             onClick={() => setTab("playoff")}
-            className={`px-5 py-2.5 rounded-xl text-sm font-black uppercase tracking-wide transition-all ${
+            className={`px-6 py-3 text-sm font-black uppercase tracking-wide transition-all border-b-[3px] -mb-[2px] ${
               tab === "playoff"
-                ? "bg-yellow-400 text-[#091f36] shadow-lg"
-                : "bg-white text-slate-500 border border-slate-200 hover:border-yellow-400 hover:text-yellow-600"
+                ? "border-yellow-400 text-yellow-600"
+                : "border-transparent text-slate-400 hover:text-slate-600"
             }`}
           >
             Playoff
