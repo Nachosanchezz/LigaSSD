@@ -37,7 +37,6 @@ function crearMapaJugadores() {
       };
 
       mapa[normalizarTexto(nombreCompletoJugador(jugador))] = info;
-      mapa[normalizarTexto(jugador.nombre)] = info;
 
       if (jugador.apodo && jugador.apodo.trim() !== "") {
         mapa[normalizarTexto(jugador.apodo)] = info;

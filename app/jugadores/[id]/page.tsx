@@ -35,7 +35,6 @@ function calcularStatsJugador(jugador: (typeof equipos)[0]["integrantes"][0], jo
 
   // Build lookup keys for this player
   const keys = new Set<string>();
-  keys.add(normalizarTexto(jugador.nombre));
   keys.add(normalizarTexto(nombreCompletoJugador(jugador)));
   if (jugador.apodo) keys.add(normalizarTexto(jugador.apodo));
 
