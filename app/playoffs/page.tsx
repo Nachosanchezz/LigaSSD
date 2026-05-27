@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import PageHeader from "@/components/PageHeader";
 import { logosEquipos } from "@/data/equipos";
 import { getPlayoffConResultados } from "@/lib/queries";
@@ -111,6 +112,51 @@ function MatchCard({
     scoreVisitante !== undefined &&
     scoreVisitante > scoreLocal;
 
+  const isFinished = match.estado === "Finalizado";
+
+  const inner = (
+    <div
+      className={`bg-white rounded-xl border-2 overflow-hidden shadow-sm transition-shadow ${
+        isFinished
+          ? "border-[#0b4a6f]/30 shadow-[#0b4a6f]/10 hover:shadow-md hover:border-[#0b4a6f]/50"
+          : "border-slate-100"
+      }`}
+    >
+      {isFinished && match.resultado && (
+        <div className="bg-gradient-to-r from-[#091f36] to-[#0b4a6f] text-center px-3 py-1 flex items-center justify-center gap-2">
+          <span className="text-white font-black text-sm tracking-widest">
+            {match.resultado}
+          </span>
+          <span className="text-[9px] font-bold uppercase tracking-widest text-blue-200 opacity-70">
+            Ver acta →
+          </span>
+        </div>
+      )}
+      {match.estado === "Programado" && match.dia && (
+        <div className="bg-slate-50 border-b border-slate-100 px-3 py-1 text-center">
+          <span className="text-[10px] text-slate-500 font-medium">
+            {match.dia}
+            {match.hora ? ` · ${match.hora}` : ""}
+          </span>
+        </div>
+      )}
+      <TeamSlot
+        name={match.local}
+        seed={match.seedLocal}
+        isWinner={localWins || match.ganador === match.local}
+        isBye={match.localEsBye}
+        score={scoreLocal}
+      />
+      <div className="border-t border-slate-100 mx-0" />
+      <TeamSlot
+        name={match.visitante}
+        seed={match.seedVisitante}
+        isWinner={visitanteWins || match.ganador === match.visitante}
+        score={scoreVisitante}
+      />
+    </div>
+  );
+
   return (
     <div className="w-full">
       {label && (
@@ -118,43 +164,11 @@ function MatchCard({
           {label}
         </p>
       )}
-      <div
-        className={`bg-white rounded-xl border-2 overflow-hidden shadow-sm ${
-          match.estado === "Finalizado"
-            ? "border-[#0b4a6f]/30 shadow-[#0b4a6f]/10"
-            : "border-slate-100"
-        }`}
-      >
-        {match.estado === "Finalizado" && match.resultado && (
-          <div className="bg-gradient-to-r from-[#091f36] to-[#0b4a6f] text-center px-3 py-1">
-            <span className="text-white font-black text-sm tracking-widest">
-              {match.resultado}
-            </span>
-          </div>
-        )}
-        {match.estado === "Programado" && match.dia && (
-          <div className="bg-slate-50 border-b border-slate-100 px-3 py-1 text-center">
-            <span className="text-[10px] text-slate-500 font-medium">
-              {match.dia}
-              {match.hora ? ` · ${match.hora}` : ""}
-            </span>
-          </div>
-        )}
-        <TeamSlot
-          name={match.local}
-          seed={match.seedLocal}
-          isWinner={localWins || match.ganador === match.local}
-          isBye={match.localEsBye}
-          score={scoreLocal}
-        />
-        <div className="border-t border-slate-100 mx-0" />
-        <TeamSlot
-          name={match.visitante}
-          seed={match.seedVisitante}
-          isWinner={visitanteWins || match.ganador === match.visitante}
-          score={scoreVisitante}
-        />
-      </div>
+      {isFinished ? (
+        <Link href={`/playoffs/${match.id}`}>{inner}</Link>
+      ) : (
+        inner
+      )}
     </div>
   );
 }
