@@ -11,6 +11,266 @@ export type Noticia = {
 
 export const noticias: Noticia[] = [
   {
+    id: "torre-beldes-campeones-final",
+    equipoSlug: "torre-beldes",
+    titular: "Torre Beldes toca el cielo: 5-4 a Old School y el pueblo ya tiene su split",
+    subtitular: "El equipo de Louis gana una final apretadísima, sin Miguel, callando bocas y convirtiendo el “este año sí” en algo peligrosamente real",
+    cuerpo: `Hay frases que en el fútbol se dicen mucho y casi nunca significan nada.
+
+"Este año sí."
+
+Normalmente es mentira. Normalmente es humo. Normalmente es un audio motivacional de pretemporada que acaba en semifinales, en excusas o en alguien diciendo que "el proyecto necesita tiempo".
+
+Pero esta vez no.
+
+Esta vez Torre Beldes ganó el segundo split.
+
+Y lo hizo como solo podía hacerlo Torre Beldes: sufriendo, mandando en el marcador, mirando de reojo al desastre, dejando que Old School se acercara una y otra vez y terminando con un 5-4 que seguramente envejeció a media plantilla cinco años en una sola noche.
+
+La final fue igualada, tensa y con ese punto de caos que necesita cualquier partido importante de esta liga para ser recordado. Torre Beldes fue siempre por delante. Old School, fiel a su nueva versión de puzzle perfectamente montado, fue siempre a remolque, apretando, molestando y recordando que no había llegado a la final por casualidad.
+
+Pero cada vez que el partido parecía abrir una puerta al drama, Torre Beldes encontraba la forma de cerrarla.
+
+A veces con fútbol.
+
+A veces con carácter.
+
+A veces con esa energía de equipo del pueblo que no sabes si es orgullo competitivo o pura cabezonería municipal.
+
+Y tiene mucho mérito, porque Torre Beldes jugó la final sin Miguel, su MVP del primer split. No estaba. Lesionado. Fuera. Baja sensible. De esas que antes del partido sirven para preparar la excusa perfecta por si todo sale mal.
+
+Pero no hizo falta.
+
+Torre Beldes no ganó porque le sobrara talento. No ganó porque tuviera el camino fácil. No ganó porque la final se pusiera cómoda. Ganó porque hizo lo que llevaba toda la temporada prometiendo entre risas, piques y frases demasiado grandes para un grupo de WhatsApp:
+
+competir de verdad.
+
+Y claro, ahora toca revisar el archivo.
+
+Porque durante mucho tiempo, Torre Beldes fue ese equipo del que todo el mundo hablaba con una mezcla de respeto y cachondeo. Que si mucho nombre. Que si mucho fichaje. Que si mucho MVP. Que si mucho pueblo. Que si Louis se viene arriba. Que si Lucho, Sotto y compañía viven en una película. Que si cuando llega la hora buena siempre aparece alguien para bajarles los humos.
+
+Pues ya no.
+
+Primero rompieron la maldición contra Filósofos con un 8-2 que todavía debe estar doliendo en alguna biblioteca. Y después, cuando tocaba rematar la historia, ganaron la final.
+
+No hay más.
+
+Filósofos fuera. Bodo Dream fuera. Old School derrotado. Torre Beldes campeón.
+
+La administración podrá revisar actas, inventar formatos, equilibrar plantillas, crear calendarios, medir coeficientes, consultar Excels y hacer como que todo estaba bajo control. Pero al final el segundo split se lo llevó el equipo que más ruido había hecho y que, por una vez, tuvo el detalle de respaldarlo con resultados.
+
+Eso es lo peligroso de Torre Beldes ahora.
+
+Antes hablaban mucho.
+
+Ahora hablan mucho y encima tienen razón.
+
+Old School, eso sí, merece respeto. El equipo que empezó siendo un Mister Potato con piezas de distintas cajas terminó la temporada jugando como un conjunto serio, competitivo y muy bien encajado. Llegaron a la final cargándose a Bodo Dream, jugaron bien, pelearon hasta el final y obligaron a Torre Beldes a ganar el título de verdad, no de paseo.
+
+Pero una final no entiende de cuentos bonitos.
+
+Old School tuvo épica.
+
+Torre Beldes tuvo el marcador.
+
+Y en una noche de 5-4, eso es todo lo que importa.
+
+Para Torre Beldes, esta victoria tiene sabor especial. Porque no es solo ganar una final. Es ganar después de haber acumulado memes, dudas, piques, derrotas antiguas, traumas contra Filósofos y semanas enteras de gente esperando que Torre Beldes volviera a hacer una de Torre Beldes.
+
+Pero esta vez no hubo caída.
+
+Esta vez no hubo chiste final contra ellos.
+
+Esta vez el chiste lo contaron ellos.
+
+Y probablemente lo van a contar muchas veces.
+
+Demasiadas.
+
+Porque si algo está claro es que Torre Beldes campeón no va a ser un equipo discreto. No van a levantar el título y volver tranquilamente a casa. No. Van a recordarlo. Van a reenviar fotos. Van a rescatar mensajes antiguos. Van a hablar del 8-2, del 5-4, de la final, de la semifinal, de Miguel lesionado, de Louis presidente campeón y de cómo nadie confiaba en ellos hasta que ya era demasiado tarde.
+
+El pueblo ha ganado.
+
+Y cuando el pueblo gana, no celebra.
+
+Hace ruido.
+
+El segundo split termina con Torre Beldes en lo más alto. Un equipo que empezó entre dudas, siguió entre piques, sobrevivió a sus propios dramas internos, rompió su maldición histórica y acabó levantando el título en una final apretada contra un Old School que vendió carísima la derrota.
+
+No fue perfecto.
+
+No fue cómodo.
+
+No fue tranquilo.
+
+Pero fue suyo.
+
+Torre Beldes ya no necesita decir "este año sí".
+
+Ahora puede decir algo bastante más insoportable:
+
+"Os lo dijimos."`,
+    imagen: "/noticias/torrebeldes-campeones.png",
+    fecha: "9 jun 2026",
+    etiqueta: "CAMPEÓN",
+  },
+  {
+    id: "old-school-bodo-dream-playoff",
+    equipoSlug: "old-school",
+    titular: "Old School deja de ser Mr. Potato: 10-8 a Bodo Dream y el puzzle ya está en la final",
+    subtitular: "El equipo hecho a piezas encaja en el mejor momento, tumba al campeón de la liga regular y convierte a Rafa en MVP sorpresa",
+    cuerpo: `Durante meses, Old School fue ese equipo al que mirabas y pensabas: "no sé muy bien qué es esto, pero algo intenta ser". Un grupo montado por piezas, con nombre en inglés de flipados y ese aire de Mister Potato futbolístico en el que cada parte parecía venir de una caja distinta.
+
+Pues bien.
+
+Parece que alguien encontró el manual.
+
+Porque Old School está en la final. Y no llegó sobreviviendo ni rascando una heroicidad de barro. Llegó cargándose a Bodo Dream, campeón de la liga regular, en una semifinal desatada que terminó 10-8. Un marcador que no parece de fútbol sala, sino del descanso de un All-Star sin defensa.
+
+Lo más sorprendente no fue solo ganar. Fue cómo.
+
+El equipo que durante la temporada parecía un puzzle torcido, con piezas de distinto tamaño y química de mercadillo, apareció de repente como un bloque. Juntos, combinativos, ordenados y, por momentos, sorprendentemente bien cosidos. El Mister Potato, contra todo pronóstico, tenía cara reconocible.
+
+Y enfrente estaba Bodo Dream, que no era precisamente un rival menor. El equipo de Juan, uno de los administradores, había ganado la liga regular con su mezcla habitual de plantilla premium, regularidad y sospecha simpática de que, cuando montas la liga, siempre ayuda saber demasiado.
+
+Pero llegó Old School.
+
+Y le metió diez.
+
+Durante semanas se decía que Old School no tenía una estrella clara. Que iba más en bloque. Que competía, sí, pero que le faltaba ese jugador que apareciera en los días grandes.
+
+Pues apareció Rafa.
+
+Rafa se llevó el MVP y firmó la gran sorpresa de la semifinal. No llegó como galáctico, ni como salvador anunciado, ni como nombre inflado por el marketing del vestuario. Apareció cuando más hacía falta y le dio sentido a todo el proyecto.
+
+Mientras Bodo Dream venía con la chapa del campeón regular, con Pedro bajo palos en modo porterazo y con Juan mirando la competición desde la zona noble, Old School respondió como responden los equipos que por fin se creen lo que son: jugando juntos, corriendo juntos y atacando como si alguien hubiera apretado el botón correcto.
+
+El meme del Mister Potato se giró.
+
+Antes eran piezas raras, fichajes low cost, química dudosa y manual perdido. Ahora resulta que las piezas no solo encajaron: encajaron en semifinales y contra el favorito.
+
+Eso es lo cruel de los playoffs. La liga regular te da prestigio, mérito y derecho a ir un poco de serio por la vida. Pero luego llega una semifinal a partido único, te meten un 10-8 y descubres que haber sido el más regular no siempre te salva del caos bien organizado.
+
+Bodo Dream fue el mejor de la fase regular.
+
+Pero ese día, el mejor fue Old School.
+
+Y eso cambia el relato.
+
+El supuesto equipo improvisado eliminó al campeón. El puzzle sin instrucciones dejó fuera al proyecto más estable. El nombre en inglés que sonaba a flipada se convirtió, al menos por una noche, en una declaración de intenciones.
+
+Old School está en la final. Rafa sale como MVP sorpresa. Bodo Dream se queda con el consuelo de haber sido muy bueno durante la liga regular… hasta que el Mister Potato decidió montarse solo.
+
+Y cuando el caos se organiza, pasan estas cosas.
+
+Que el equipo hecho a piezas te gana una semifinal.
+
+Que el favorito se queda fuera.
+
+Y que el puzzle termina encajando justo cuando más duele.`,
+    imagen: "/noticias/oldschool-rafa.png",
+    fecha: "28 may 2026",
+    etiqueta: "BREAKING",
+  },
+  {
+    id: "torre-beldes-filosofos-playoff",
+    equipoSlug: "torre-beldes",
+    titular: "Torre Beldes rompe la maldición: 8-2 a Filósofos y primera carcajada histórica del pueblo",
+    subtitular: "El equipo de Louis pasa a la final, firma su primera victoria contra su bestia negra y deja a Filósofos buscando explicaciones donde solo había un marcador",
+    cuerpo: `Hay días que cambian una temporada. Hay días que cambian una rivalidad. Y luego está el día en el que Torre Beldes le mete un 8-2 a Filósofos en semifinales de playoffs y media liga tiene que comprobar dos veces el resultado para asegurarse de que no era un error de la web.
+
+Porque sí.
+
+Pasó.
+
+Torre Beldes ganó a Filósofos.
+
+Y no ganó de casualidad, ni por la mínima, ni con un gol rebotado en el último minuto. Ganó 8-2. Ocho. Dos. Un resultado que no se lee: se digiere. La primera victoria en la historia de Torre Beldes contra su bestia negra llegó de la forma más cruel posible para Filósofos: con baño de realidad, pase a la final y el equipo del pueblo por fin con permiso oficial para hablar más de la cuenta.
+
+Durante toda la temporada, la rivalidad había ido acumulando capas. Pique entre presidentes, mensajes cruzados, ego, memoria histórica y esa sensación de que Filósofos siempre aparecía justo cuando Torre Beldes empezaba a creerse algo. Era el examen de Álgebra del pueblo. El muro. La asignatura pendiente. El equipo que le tenía tomada la matrícula.
+
+Pero esta vez el guion cambió.
+
+Y cambió mucho.
+
+Torre Beldes llegó a la semifinal con un plan. Algo extraño, porque en Torre Beldes muchas veces el plan suele ser correr, protestar, venirse arriba y luego preguntarse qué ha pasado. Pero esta vez hubo cambios tácticos, cabeza y una idea bastante clara: jugar a lo que tenían que jugar.
+
+Y les salió.
+
+Louis, Lucho, Sotto, Miguel, Pow y compañía entendieron el partido desde el principio. No fueron a demostrar que eran más listos. No fueron a ganar el debate. No fueron a convencer a nadie con teorías. Fueron a hacer daño donde tocaba, a competir como tocaba y a dejar a Filósofos sin esa comodidad tan suya de equipo que normalmente parece tener siempre una explicación preparada.
+
+Filósofos, por su parte, no encontró la manera.
+
+El equipo presidido por Nacho, acostumbrado a mirar este duelo desde arriba, se encontró con algo nuevo: Torre Beldes no estaba nervioso, no estaba acomplejado y no estaba esperando el golpe habitual. Esta vez el pueblo no fue a sobrevivir a Filósofos.
+
+Fue a pasarles la mano por la cara.
+
+Y eso se notó.
+
+El partido fue una de esas noches en las que todo lo que durante meses había sido trauma se convirtió en gasolina. Cada gol de Torre Beldes no era solo un gol. Era un mensaje. Era un "ahora qué". Era una captura antigua volviendo a circular. Era Louis sonriendo como quien llevaba demasiado tiempo esperando este momento.
+
+Porque si alguien tenía ganas de esta victoria, era él.
+
+Louis, presidente de Torre Beldes, llevaba toda la rivalidad cargando con el peso de las derrotas, las bromas, los precedentes y esa superioridad filosófica que tanto gusta en el otro lado. Y por fin pudo mirar a Nacho, no como administrador, no como rival histórico, no como filósofo jefe, sino como alguien que acababa de comerse un 8-2 en semifinales.
+
+Hay pocas teorías que arreglen eso.
+
+Filósofos podrá hablar de contexto, de partido raro, de mala noche, de sensaciones o de lo que quiera. Pero un 8-2 no deja demasiado margen para la literatura. Es un marcador que entra en la sala, se sienta en la mesa y pide silencio.
+
+También hubo polémica, claro. Porque en esta liga no puede pasar algo importante sin que alguien señale al árbitro, al reglamento o al primo del que estaba mirando desde la banda. La jugada más discutida llegó con una posible roja a Pow, el portero de Torre Beldes, que pudo haber cambiado el partido y que dejó a Filósofos con la sensación de que quizá la historia también les debía alguna excusa.
+
+Pero incluso con polémica, el relato no se cae.
+
+Porque puedes discutir una jugada. Puedes debatir una roja. Puedes decir que el partido tuvo momentos raros. Lo que no puedes hacer es mirar un 8-2 y fingir que todo fue por el árbitro. Eso no es una decisión arbitral. Eso es una mudanza emocional.
+
+Filósofos no perdió por una acción. Perdió porque Torre Beldes jugó mejor, compitió mejor y, por primera vez en mucho tiempo, pareció entender exactamente qué partido estaba jugando.
+
+Y ahí está la verdadera noticia.
+
+No es solo que Torre Beldes esté en la final. No es solo que haya eliminado a Filósofos. Es que lo hizo justo contra el equipo que más necesitaba ganar. Contra el rival que más dolía. Contra el escudo que siempre aparecía en sus pesadillas deportivas.
+
+La maldición se rompió.
+
+Y se rompió con ocho goles.
+
+Ahora Torre Beldes llega a la final con el pecho inflado, el grupo de WhatsApp ardiendo y una frase que probablemente se repetirá durante semanas:
+
+"Os metimos ocho."
+
+Filósofos, mientras tanto, tendrá que hacer lo que mejor sabe: pensar. Pensar qué pasó, pensar cómo se les escapó, pensar cómo un equipo al que tantas veces habían frenado terminó mandándolos a casa con semejante golpe.
+
+Eso sí, esta vez no hay charla TED que valga.
+
+Porque el fútbol, de vez en cuando, deja de ser filosofía y se convierte en una cosa mucho más simple:
+
+marcar ocho goles.
+
+Torre Beldes ya está en la final.
+
+Filósofos ya está fuera.
+
+Y Louis, Lucho, Sotto, Miguel, Pouw y compañía ya tienen lo que llevaban esperando toda la vida deportiva de esta liga:
+
+una victoria contra Filósofos.
+
+La primera.
+
+La más grande.
+
+La que no se explica.
+
+La que se enseña.
+
+Porque durante mucho tiempo Filósofos tuvo la historia.
+
+Pero esta vez Torre Beldes tuvo el marcador.
+
+Y con un 8-2, la historia se reescribe sola.`,
+    imagen: "/noticias/torrebeldes-filosofos-playoff.png",
+    fecha: "28 may 2026",
+    etiqueta: "BREAKING",
+  },
+  {
     id: "torre-beldes-filosofos-1",
     equipoSlug: "torre-beldes",
     titular: "Torre Beldes adelanta a Filósofos: el pueblo no tendrá títulos, pero sí memoria",
