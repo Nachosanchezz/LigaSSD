@@ -83,7 +83,8 @@ export const equiposSplit3: EquipoSplit3[] = [
     id: "lui",
     nombre: "TORRE BELDES",
     slug: "torre-beldes",
-    logo: "/equipos/torre-beldes.png",
+    // Rebranding del Split 3: el escudo antiguo sigue en el archivo del Split 2
+    logo: "/equipos/torrebeldesnuevo.jpeg",
     color: "#7c3aed",
     presupuesto: 230,
     plantilla: [
