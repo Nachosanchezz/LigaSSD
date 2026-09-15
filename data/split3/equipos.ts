@@ -30,6 +30,7 @@ export const equiposSplit3: EquipoSplit3[] = [
     id: "borja",
     nombre: "LOS TERCIOS",
     slug: "los-tercios",
+    logo: "/equipos/lostercios.jpeg",
     color: "#0b4a6f",
     presupuesto: 200,
     plantilla: [

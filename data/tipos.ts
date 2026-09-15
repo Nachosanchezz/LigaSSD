@@ -23,6 +23,8 @@ export type Partido = {
   visitante: string;
   dia?: string;
   hora?: string;
+  /** Fecha y hora en formato máquina (ISO), para la cuenta atrás */
+  iso?: string;
   campo?: string;
   arbitra?: string;
   estado: EstadoPartido;

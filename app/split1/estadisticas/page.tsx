@@ -14,7 +14,7 @@ export default function Split1EstadisticasPage() {
 
   return (
     <div className="min-h-screen bg-slate-50/50 pb-10 sm:pb-20">
-      <PageHeader title="Estadísticas" subtitle="Split 1 · Sep 2024 – Feb 2025" />
+      <PageHeader kicker="Split 1" title="Estadísticas" subtitle="Sep 2024 – Feb 2025" />
 
       <div className="mx-auto max-w-6xl px-3 sm:px-6 -mt-10 sm:-mt-12 relative z-10 space-y-6">
 

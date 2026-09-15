@@ -1,7 +1,9 @@
 import Link from "next/link";
 import Escudo from "@/components/Escudo";
 import NoticiasCarrusel from "@/components/NoticiasCarrusel";
+import ProximoPartido from "@/components/ProximoPartido";
 import { noticias } from "@/data/noticias";
+import { bote, jugadoresQuePagan } from "@/data/split3/bote";
 import { equiposSplit3 } from "@/data/split3/equipos";
 import { ladoGanador, leerMarcador } from "@/lib/resultado";
 import { escudoSplit3, getSplit3, partidosFaseFinal } from "@/lib/split3";
@@ -27,6 +29,11 @@ export default async function HomePage() {
   const proximosPartidos = partidos
     .filter((p) => p.estado === "Programado")
     .slice(0, 3);
+
+  const proximo = proximosPartidos[0];
+  const jornadaDelProximo = split.jornadas.find((jornada) =>
+    jornada.partidos.some((partido) => partido.id === proximo?.id)
+  );
 
   const rankColors = ["text-yellow-500", "text-slate-400", "text-amber-600"];
   const rankLabels = ["1º", "2º", "3º"];
@@ -67,6 +74,36 @@ export default async function HomePage() {
         </div>
         <div className="absolute -bottom-1 left-0 right-0 h-10 sm:h-16 w-full bg-slate-50 [clip-path:polygon(0_100%,100%_0,100%_100%)]"></div>
       </section>
+
+      {/* Cifras del split */}
+      <section className="relative z-20 border-b border-slate-200/60 bg-white">
+        <dl className="mx-auto grid max-w-6xl grid-cols-2 sm:grid-cols-4 divide-x divide-slate-100">
+          {[
+            { etiqueta: "Equipos", valor: String(equiposSplit3.length), ruta: "/equipos" },
+            { etiqueta: "Jugadores", valor: String(jugadoresQuePagan), ruta: "/jugadores" },
+            { etiqueta: "Jornadas", valor: String(split.jornadas.length), ruta: "/jornadas" },
+            { etiqueta: "En juego", valor: `${bote} €`, ruta: "/bote" },
+          ].map(({ etiqueta, valor, ruta }) => (
+            <Link key={etiqueta} href={ruta} className="px-4 py-5 sm:py-7 text-center transition-colors hover:bg-slate-50">
+              <dd className="font-display text-3xl sm:text-5xl font-black italic text-[#091f36] tabular-nums">{valor}</dd>
+              <dt className="mt-1 font-mono text-[10px] uppercase tracking-[0.25em] text-slate-400">{etiqueta}</dt>
+            </Link>
+          ))}
+        </dl>
+      </section>
+
+      {proximo && (
+        <ProximoPartido
+          local={proximo.local}
+          visitante={proximo.visitante}
+          escudoLocal={escudoSplit3(proximo.local)}
+          escudoVisitante={escudoSplit3(proximo.visitante)}
+          cuando={[proximo.dia, proximo.hora].filter(Boolean).join(" · ") || "Fecha por confirmar"}
+          iso={proximo.iso}
+          campo={proximo.campo}
+          jornada={jornadaDelProximo ? `Jornada ${jornadaDelProximo.numero}` : "Fase final"}
+        />
+      )}
 
       {/* Live widgets */}
       <section className="relative z-20 px-4 sm:px-6 py-12 sm:py-16 bg-slate-50">
@@ -155,6 +192,24 @@ export default async function HomePage() {
 
           </div>
         </div>
+      </section>
+
+      {/* Palmarés */}
+      <section className="relative z-20 bg-slate-50 px-4 pb-10 sm:px-6">
+        <Link
+          href="/palmares"
+          className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 rounded-2xl border border-slate-200 bg-white px-6 py-5 text-center shadow-sm transition hover:border-[#0b4a6f]/40 hover:shadow-md sm:flex-row sm:text-left"
+        >
+          <span>
+            <span className="block font-mono text-[10px] uppercase tracking-[0.25em] text-slate-400">Un año de liga</span>
+            <span className="block text-xl font-black uppercase tracking-tight text-[#091f36] sm:text-2xl">
+              Palmarés y récords de la Liga SSD
+            </span>
+          </span>
+          <span className="shrink-0 rounded-lg bg-[#091f36] px-5 py-2.5 text-xs font-bold uppercase tracking-wide text-white">
+            Ver palmarés →
+          </span>
+        </Link>
       </section>
 
       <NoticiasCarrusel noticias={noticias} />

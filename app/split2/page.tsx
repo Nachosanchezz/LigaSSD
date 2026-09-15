@@ -49,7 +49,7 @@ export default async function Split2Page() {
 
   return (
     <div className="min-h-screen bg-slate-50/50 pb-10 sm:pb-20">
-      <PageHeader title="Split 2" subtitle="Mar – Jun 2026 · Liga regular y playoffs" />
+      <PageHeader kicker="Liga SSD" title="Split 2" subtitle="Mar – Jun 2026 · Liga regular y playoffs" />
 
       <div className="mx-auto max-w-6xl px-3 sm:px-6 -mt-10 sm:-mt-12 relative z-10 space-y-6">
 
@@ -85,6 +85,14 @@ export default async function Split2Page() {
             </div>
           </div>
         </div>
+
+        <Link
+          href="/palmares"
+          className="flex items-center justify-between gap-3 rounded-2xl border border-slate-100 bg-white px-5 py-4 shadow-sm transition hover:border-[#0b4a6f]/30 hover:shadow-md"
+        >
+          <span className="text-sm font-black uppercase tracking-wide text-[#091f36]">Palmarés de la liga</span>
+          <span className="text-xs font-bold uppercase tracking-wide text-[#0b4a6f]">Ver todos los splits →</span>
+        </Link>
 
         {/* Stats globales */}
         <div className="grid grid-cols-3 gap-3 sm:gap-6">

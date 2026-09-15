@@ -2,10 +2,16 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import Image from "next/image";
 
 export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const pathname = usePathname();
+
+  // La portada solo se marca en "/"; el resto, también en sus subpáginas
+  const esActivo = (path: string) =>
+    path === "/" ? pathname === "/" : pathname === path || pathname.startsWith(`${path}/`);
 
   const links = [
     { name: "Clasificación", path: "/clasificacion" },
@@ -14,7 +20,7 @@ export default function Navbar() {
     { name: "Estadísticas", path: "/estadisticas" },
     { name: "Jugadores", path: "/jugadores" },
     { name: "Equipos", path: "/equipos" },
-    { name: "Bote", path: "/bote" },
+    { name: "Draft", path: "/draft" },
     { name: "Split 2", path: "/split2" },
     { name: "Split 1", path: "/split1" },
   ];
@@ -45,16 +51,26 @@ export default function Navbar() {
 
         {/* Desktop Navigation Links */}
         <div className="hidden xl:flex items-center gap-0.5">
-          {links.map((link) => (
-            <Link
-              key={link.path}
-              href={link.path}
-              className="relative shrink-0 whitespace-nowrap px-2.5 py-2 text-sm font-semibold tracking-wide text-gray-200 transition-colors hover:text-white group uppercase"
-            >
-              {link.name}
-              <span className="absolute inset-x-2.5 -bottom-1 h-0.5 scale-x-0 bg-yellow-400 transition-transform duration-300 group-hover:scale-x-100"></span>
-            </Link>
-          ))}
+          {links.map((link) => {
+            const activo = esActivo(link.path);
+            return (
+              <Link
+                key={link.path}
+                href={link.path}
+                aria-current={activo ? "page" : undefined}
+                className={`relative shrink-0 whitespace-nowrap px-2.5 py-2 text-sm font-semibold tracking-wide transition-colors group uppercase ${
+                  activo ? "text-white" : "text-gray-300 hover:text-white"
+                }`}
+              >
+                {link.name}
+                <span
+                  className={`absolute inset-x-2.5 -bottom-1 h-0.5 bg-yellow-400 transition-transform duration-300 ${
+                    activo ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
+                  }`}
+                ></span>
+              </Link>
+            );
+          })}
         </div>
 
         {/* Mobile Menu Button */}
@@ -87,7 +103,12 @@ export default function Navbar() {
                 key={link.path}
                 href={link.path}
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="block px-4 py-3 rounded-lg text-base font-semibold tracking-wide text-gray-200 hover:bg-white/10 hover:text-white uppercase transition-colors"
+                aria-current={esActivo(link.path) ? "page" : undefined}
+                className={`block rounded-lg px-4 py-3 text-base font-semibold uppercase tracking-wide transition-colors ${
+                  esActivo(link.path)
+                    ? "bg-yellow-400 text-[#091f36]"
+                    : "text-gray-200 hover:bg-white/10 hover:text-white"
+                }`}
               >
                 {link.name}
               </Link>

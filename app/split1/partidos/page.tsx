@@ -9,7 +9,7 @@ function getCorto(nombre: string) {
 export default function Split1PartidosPage() {
   return (
     <div className="min-h-screen bg-slate-50/50 pb-10 sm:pb-20">
-      <PageHeader title="Partidos" subtitle="Split 1 · Sep 2024 – Feb 2025 · 56 partidos" />
+      <PageHeader kicker="Split 1" title="Partidos" subtitle="Sep 2024 – Feb 2025 · 56 partidos" />
 
       <div className="mx-auto max-w-5xl px-3 sm:px-6 -mt-10 sm:-mt-12 relative z-10 space-y-6">
         {jornadasSplit1.map((jornada) => (

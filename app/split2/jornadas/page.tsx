@@ -11,7 +11,7 @@ export default async function JornadasPage() {
 
   return (
     <div className="min-h-screen bg-slate-50/50 pb-10 sm:pb-20">
-      <PageHeader title="Jornadas" subtitle="Split 2 · Calendario y resultados" />
+      <PageHeader kicker="Split 2" title="Jornadas" subtitle="Calendario y resultados" />
 
       <section className="mx-auto max-w-5xl px-3 sm:px-6 -mt-10 sm:-mt-12 relative z-10">
         <JornadasLista

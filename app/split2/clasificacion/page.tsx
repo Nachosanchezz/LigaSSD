@@ -17,7 +17,7 @@ export default async function ClasificacionPage() {
 
   return (
     <div className="min-h-screen bg-slate-50/50 pb-10 sm:pb-20">
-      <PageHeader title="Clasificación" subtitle="Split 2 · Clasificación final de la liga regular" />
+      <PageHeader kicker="Split 2" title="Clasificación" subtitle="Clasificación final de la liga regular" />
 
       <section className="mx-auto max-w-6xl px-3 sm:px-6 -mt-10 sm:-mt-12 relative z-10">
         <div className="overflow-hidden rounded-2xl sm:rounded-3xl bg-white shadow-xl shadow-[#0b4a6f]/5 border border-slate-100">

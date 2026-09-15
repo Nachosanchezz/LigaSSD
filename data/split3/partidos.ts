@@ -9,7 +9,7 @@ import { equiposSplit3, type EquipoSplit3 } from "./equipos";
  */
 
 // Fecha, hora y campo de cada partido cuando se programe, por id de partido
-const PROGRAMACION: Record<string, Pick<Partido, "dia" | "hora" | "campo">> = {};
+const PROGRAMACION: Record<string, Pick<Partido, "dia" | "hora" | "campo" | "iso">> = {};
 
 // Cruces de la ronda `r` de la ida: un equipo fijo y el resto girando
 function cruces(equipos: EquipoSplit3[], r: number): [EquipoSplit3, EquipoSplit3][] {

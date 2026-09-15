@@ -18,7 +18,7 @@ export default async function EstadisticasPage() {
 
   return (
     <div className="min-h-screen bg-slate-50/50 pb-10 sm:pb-20">
-      <PageHeader title="Estadísticas" subtitle="Split 3 · Goleadores, asistencias y MVPs" />
+      <PageHeader kicker="Split 3" title="Estadísticas" subtitle="Goleadores, asistencias y MVPs" />
 
       <section className="mx-auto max-w-6xl px-3 sm:px-6 -mt-10 sm:-mt-12">
         <EstadisticasTabs

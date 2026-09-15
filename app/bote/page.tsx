@@ -10,7 +10,7 @@ import {
   premios,
 } from "@/data/split3/bote";
 
-export const metadata = { title: "Bote y premios · Liga SSD" };
+export const metadata = { title: "Bote y premios" };
 
 const euros = (valor: number) => `${valor.toLocaleString("es-ES")} €`;
 
@@ -19,7 +19,7 @@ export default function BotePage() {
 
   return (
     <div className="min-h-screen bg-slate-50/50 pb-10 sm:pb-20">
-      <PageHeader title="Bote y premios" subtitle="Split 3 · Cuánto se junta y cómo se reparte" />
+      <PageHeader kicker="Split 3" title="Bote y premios" subtitle="Cuánto se junta y cómo se reparte" />
 
       <section className="mx-auto max-w-4xl px-3 sm:px-6 -mt-10 sm:-mt-12 relative z-10 space-y-5 sm:space-y-6">
 

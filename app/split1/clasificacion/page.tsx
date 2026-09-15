@@ -5,7 +5,7 @@ import { clasificacionSplit1 } from "@/data/split1";
 export default function Split1ClasificacionPage() {
   return (
     <div className="min-h-screen bg-slate-50/50 pb-10 sm:pb-20">
-      <PageHeader title="Clasificación" subtitle="Split 1 · Sep 2024 – Feb 2025" />
+      <PageHeader kicker="Split 1" title="Clasificación" subtitle="Sep 2024 – Feb 2025" />
 
       <section className="mx-auto max-w-6xl px-3 sm:px-6 -mt-10 sm:-mt-12 relative z-10">
         <div className="overflow-hidden rounded-2xl sm:rounded-3xl bg-white shadow-xl shadow-[#0b4a6f]/5 border border-slate-100">
