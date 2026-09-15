@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { logosEquipos } from "@/data/equipos";
+import { logosEquipos } from "@/data/split2/equipos";
 import { getPlayoffConResultados } from "@/lib/queries";
 import { Trophy } from "lucide-react";
 
@@ -49,7 +49,7 @@ export default async function PlayoffMatchPage({ params }: Props) {
         <div className="absolute inset-0 bg-blue-900/20 mix-blend-multiply pointer-events-none" />
 
         <Link
-          href="/playoffs"
+          href="/split2/playoffs"
           className="relative z-10 inline-flex items-center gap-2 text-xs sm:text-sm font-bold uppercase tracking-wide text-blue-200 hover:text-yellow-400 transition-colors mb-6 sm:mb-8 bg-white/5 px-4 py-2 rounded-full border border-white/10"
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

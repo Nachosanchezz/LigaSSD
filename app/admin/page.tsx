@@ -1,6 +1,8 @@
 import Link from "next/link";
+import type { ReactNode } from "react";
 import { isAuthenticated, login, logout } from "./actions";
-import { getJornadasConResultados, getPlayoffConResultados } from "@/lib/queries";
+import type { Partido } from "@/data/tipos";
+import { getSplit3, partidosFaseFinal } from "@/lib/split3";
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -43,6 +45,73 @@ function LoginForm({ error }: { error?: string }) {
   );
 }
 
+function Flecha() {
+  return (
+    <svg className="w-4 h-4 text-slate-400 group-hover:text-[#0b4a6f] transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+    </svg>
+  );
+}
+
+// Un partido en las listas del admin. Sin enlace si aún no se sabe quién lo juega.
+function FilaAdmin({ partido, etiqueta, editable = true, derecha }: {
+  partido: Partido;
+  etiqueta: string;
+  editable?: boolean;
+  derecha: ReactNode;
+}) {
+  const clase = "flex items-center justify-between bg-white rounded-2xl border border-slate-200 px-4 py-4 shadow-sm transition group";
+  const contenido = (
+    <>
+      <div>
+        <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">{etiqueta}</p>
+        <p className="font-bold text-slate-800 text-sm mt-0.5 group-hover:text-[#0b4a6f] transition">
+          {partido.local} vs {partido.visitante}
+        </p>
+        {partido.dia && <p className="text-xs text-slate-400 mt-0.5">{partido.dia}</p>}
+      </div>
+      <div className="flex items-center gap-2">
+        {derecha}
+        {editable && <Flecha />}
+      </div>
+    </>
+  );
+
+  return editable ? (
+    <Link href={`/admin/${partido.id}`} className={`${clase} hover:border-[#0b4a6f]/40 hover:shadow-md`}>
+      {contenido}
+    </Link>
+  ) : (
+    <div className={`${clase} opacity-50`} aria-disabled>
+      {contenido}
+    </div>
+  );
+}
+
+function Estado({ partido }: { partido: Partido }) {
+  if (partido.estado === "Finalizado") {
+    return <span className="text-base font-black text-[#0b4a6f] font-mono">{partido.resultado}</span>;
+  }
+  return (
+    <span
+      className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded-full ${
+        partido.estado === "Aplazado" ? "bg-red-100 text-red-600" : "bg-amber-100 text-amber-700"
+      }`}
+    >
+      {partido.estado}
+    </span>
+  );
+}
+
+function Seccion({ titulo, children }: { titulo: string; children: ReactNode }) {
+  return (
+    <section>
+      <h2 className="text-xs font-black uppercase tracking-widest text-slate-500 mb-3">{titulo}</h2>
+      <div className="space-y-2">{children}</div>
+    </section>
+  );
+}
+
 export default async function AdminPage({
   searchParams,
 }: {
@@ -55,30 +124,17 @@ export default async function AdminPage({
     return <LoginForm error={sp.error} />;
   }
 
-  const [jornadas, playoff] = await Promise.all([
-    getJornadasConResultados(),
-    getPlayoffConResultados(),
-  ]);
-  const partidos = jornadas.flatMap((j) =>
-    j.partidos.map((p) => ({ ...p, jornada: j.numero }))
+  const split = await getSplit3();
+  const liguilla = split.jornadas.flatMap((j) =>
+    j.partidos.map((partido) => ({ partido, etiqueta: `Jornada ${j.numero}` }))
   );
+  const faseFinal = partidosFaseFinal(split);
 
-  const pendientes = partidos.filter((p) => p.estado !== "Finalizado");
-  const finalizados = partidos.filter((p) => p.estado === "Finalizado");
-
-  const PLAYOFF_LABELS: Record<string, string> = {
-    qf1: "QF1 — Cuartos",
-    qf2: "QF2 — Cuartos",
-    qf3: "QF3 — Cuartos",
-    sf1: "SF1 — Semifinal",
-    sf2: "SF2 — Semifinal",
-    final: "Gran Final",
-  };
-  const todosPlayoff = [
-    ...playoff.cuartos,
-    ...playoff.semifinales,
-    playoff.final,
-  ];
+  const pendientes = liguilla.filter(({ partido }) => partido.estado !== "Finalizado");
+  const finalizados = [
+    ...liguilla,
+    ...faseFinal.map((partido) => ({ partido, etiqueta: partido.ronda })),
+  ].filter(({ partido }) => partido.estado === "Finalizado");
 
   return (
     <div className="min-h-screen bg-slate-100 pb-16">
@@ -88,7 +144,7 @@ export default async function AdminPage({
           <h1 className="text-xl font-black text-white uppercase tracking-tight">
             Admin Panel
           </h1>
-          <p className="text-blue-300 text-xs mt-0.5">Liga SSD</p>
+          <p className="text-blue-300 text-xs mt-0.5">Liga SSD · Split 3</p>
         </div>
         <div className="flex items-center gap-3">
           <Link
@@ -109,156 +165,44 @@ export default async function AdminPage({
       </div>
 
       <div className="max-w-2xl mx-auto px-4 mt-6 space-y-8">
-        {/* Pendientes */}
-        <section>
-          <h2 className="text-xs font-black uppercase tracking-widest text-slate-500 mb-3">
-            Pendientes de resultado ({pendientes.length})
-          </h2>
-          <div className="space-y-2">
-            {pendientes.length === 0 ? (
-              <p className="text-center text-slate-400 text-sm py-6 bg-white rounded-2xl border border-slate-200">
-                Todos los partidos tienen resultado ✓
-              </p>
-            ) : (
-              pendientes.map((p) => (
-                <Link
-                  key={p.id}
-                  href={`/admin/${p.id}`}
-                  className="flex items-center justify-between bg-white rounded-2xl border border-slate-200 px-4 py-4 shadow-sm hover:border-[#0b4a6f]/40 hover:shadow-md transition group"
-                >
-                  <div>
-                    <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">
-                      Jornada {p.jornada}
-                    </p>
-                    <p className="font-bold text-slate-800 text-sm mt-0.5 group-hover:text-[#0b4a6f] transition">
-                      {p.local} vs {p.visitante}
-                    </p>
-                    {p.dia && (
-                      <p className="text-xs text-slate-400 mt-0.5">{p.dia}</p>
-                    )}
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span
-                      className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded-full ${
-                        p.estado === "Aplazado"
-                          ? "bg-red-100 text-red-600"
-                          : "bg-amber-100 text-amber-700"
-                      }`}
-                    >
-                      {p.estado}
-                    </span>
-                    <svg
-                      className="w-4 h-4 text-slate-400 group-hover:text-[#0b4a6f] transition"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M9 5l7 7-7 7"
-                      />
-                    </svg>
-                  </div>
-                </Link>
-              ))
-            )}
-          </div>
-        </section>
+        <Seccion titulo={`Liguilla · pendientes de resultado (${pendientes.length})`}>
+          {pendientes.length === 0 ? (
+            <p className="text-center text-slate-400 text-sm py-6 bg-white rounded-2xl border border-slate-200">
+              Todos los partidos de la liguilla tienen resultado ✓
+            </p>
+          ) : (
+            pendientes.map(({ partido, etiqueta }) => (
+              <FilaAdmin key={partido.id} partido={partido} etiqueta={etiqueta} derecha={<Estado partido={partido} />} />
+            ))
+          )}
+        </Seccion>
 
-        {/* Playoffs */}
-        <section>
-          <h2 className="text-xs font-black uppercase tracking-widest text-slate-500 mb-3">
-            Playoffs
-          </h2>
-          <div className="space-y-2">
-            {todosPlayoff.map((p) => {
-              const teamsKnown = !p.local.startsWith("Gan.") && !p.visitante.startsWith("Gan.");
-              return (
-                <Link
-                  key={p.id}
-                  href={teamsKnown ? `/admin/playoffs/${p.id}` : "#"}
-                  className={`flex items-center justify-between bg-white rounded-2xl border border-slate-200 px-4 py-4 shadow-sm transition group ${
-                    teamsKnown
-                      ? "hover:border-[#0b4a6f]/40 hover:shadow-md cursor-pointer"
-                      : "opacity-50 cursor-not-allowed"
-                  }`}
-                  aria-disabled={!teamsKnown}
-                >
-                  <div>
-                    <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">
-                      {PLAYOFF_LABELS[p.id] ?? p.id}
-                    </p>
-                    <p className="font-bold text-slate-800 text-sm mt-0.5 group-hover:text-[#0b4a6f] transition">
-                      {p.local} vs {p.visitante}
-                    </p>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    {p.estado === "Finalizado" ? (
-                      <span className="text-base font-black text-[#0b4a6f] font-mono">{p.resultado}</span>
-                    ) : (
-                      <span className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded-full ${
-                        teamsKnown ? "bg-amber-100 text-amber-700" : "bg-slate-100 text-slate-400"
-                      }`}>
-                        {teamsKnown ? "Pendiente" : "Por determinar"}
-                      </span>
-                    )}
-                    {teamsKnown && (
-                      <svg className="w-4 h-4 text-slate-400 group-hover:text-[#0b4a6f] transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
-                      </svg>
-                    )}
-                  </div>
-                </Link>
-              );
-            })}
-          </div>
-        </section>
+        <Seccion titulo="Play-in y playoff">
+          {faseFinal.map((partido) => (
+            <FilaAdmin
+              key={partido.id}
+              partido={partido}
+              etiqueta={partido.ronda}
+              editable={partido.definido}
+              derecha={
+                partido.definido ? (
+                  <Estado partido={partido} />
+                ) : (
+                  <span className="text-[10px] font-bold uppercase px-2 py-0.5 rounded-full bg-slate-100 text-slate-400">
+                    Por determinar
+                  </span>
+                )
+              }
+            />
+          ))}
+        </Seccion>
 
-        {/* Finalizados */}
         {finalizados.length > 0 && (
-          <section>
-            <h2 className="text-xs font-black uppercase tracking-widest text-slate-500 mb-3">
-              Con resultado ({finalizados.length})
-            </h2>
-            <div className="space-y-2">
-              {finalizados.map((p) => (
-                <Link
-                  key={p.id}
-                  href={`/admin/${p.id}`}
-                  className="flex items-center justify-between bg-white rounded-2xl border border-slate-200 px-4 py-4 shadow-sm hover:border-[#0b4a6f]/40 hover:shadow-md transition group"
-                >
-                  <div>
-                    <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">
-                      Jornada {p.jornada}
-                    </p>
-                    <p className="font-bold text-slate-800 text-sm mt-0.5 group-hover:text-[#0b4a6f] transition">
-                      {p.local} vs {p.visitante}
-                    </p>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-base font-black text-[#0b4a6f] font-mono">
-                      {p.resultado}
-                    </span>
-                    <svg
-                      className="w-4 h-4 text-slate-400 group-hover:text-[#0b4a6f] transition"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M9 5l7 7-7 7"
-                      />
-                    </svg>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </section>
+          <Seccion titulo={`Con resultado (${finalizados.length})`}>
+            {finalizados.map(({ partido, etiqueta }) => (
+              <FilaAdmin key={partido.id} partido={partido} etiqueta={etiqueta} derecha={<Estado partido={partido} />} />
+            ))}
+          </Seccion>
         )}
       </div>
     </div>

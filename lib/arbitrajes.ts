@@ -1,4 +1,4 @@
-import type { Jornada } from "@/data/partidos";
+import type { Jornada } from "@/data/split2/partidos";
 
 export function getArbitrajesDeEquipo(nombreEquipo: string, jornadas: Jornada[]) {
   const arbitrajes = jornadas.flatMap((jornada) =>

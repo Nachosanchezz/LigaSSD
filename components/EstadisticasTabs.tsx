@@ -1,25 +1,21 @@
 "use client";
 
-import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
+import Escudo from "@/components/Escudo";
 import { getRankTrophy } from "@/lib/helpers";
-
-export type FilaEstadistica = {
-  id: string;
-  jugador: string;
-  equipo: string;
-  logo: string;
-  valor: number;
-};
+import type { FilaEstadistica } from "@/lib/estadisticas";
 
 function TablaEstadistica({
   titulo,
   filas,
   etiquetaValor,
+  rutaJugadores,
 }: {
   titulo: string;
   filas: FilaEstadistica[];
   etiquetaValor: string;
+  rutaJugadores?: string;
 }) {
   return (
     <div className="overflow-hidden rounded-2xl sm:rounded-3xl bg-white shadow-xl shadow-[#0b4a6f]/5 border border-slate-100">
@@ -59,14 +55,25 @@ function TablaEstadistica({
                       <div className="hidden sm:flex h-8 w-8 sm:h-10 sm:w-10 shrink-0 overflow-hidden rounded-full bg-slate-100 ring-2 ring-white shadow-sm items-center justify-center text-[#091f36] font-bold text-xs sm:text-base">
                         {fila.jugador.charAt(0)}
                       </div>
-                      <div className="font-bold text-slate-800 text-sm sm:text-base group-hover:text-[#0b4a6f] transition-colors line-clamp-2">
-                        {fila.jugador}
-                      </div>
+                      {rutaJugadores ? (
+                        <Link
+                          href={`${rutaJugadores}/${fila.id}`}
+                          className="font-bold text-slate-800 text-sm sm:text-base group-hover:text-[#0b4a6f] transition-colors line-clamp-2 hover:underline"
+                        >
+                          {fila.jugador}
+                        </Link>
+                      ) : (
+                        <div className="font-bold text-slate-800 text-sm sm:text-base group-hover:text-[#0b4a6f] transition-colors line-clamp-2">
+                          {fila.jugador}
+                        </div>
+                      )}
                     </div>
                   </td>
                   <td className="px-2 sm:px-4 py-3 sm:py-5">
                     <div className="inline-flex items-center gap-1.5 sm:gap-3 rounded-full bg-slate-100/80 px-2 sm:px-4 py-1 sm:py-1.5 border border-slate-200/60 shadow-sm transition-transform group-hover:scale-105">
-                      <Image src={fila.logo} alt={fila.equipo} width={20} height={20} className="h-4 w-4 sm:h-5 sm:w-5 object-contain" />
+                      <span className="h-4 w-4 sm:h-5 sm:w-5 shrink-0">
+                        <Escudo nombre={fila.equipo} logo={fila.logo} color={fila.color} size={20} />
+                      </span>
                       <span className="text-xs sm:text-sm font-semibold text-slate-600 hidden xs:inline-block max-w-[80px] sm:max-w-none truncate">{fila.equipo}</span>
                     </div>
                   </td>
@@ -93,6 +100,10 @@ type Props = {
   asistentesPlayoff: FilaEstadistica[];
   mvpsPlayoff: FilaEstadistica[];
   hayDatosPlayoff: boolean;
+  /** Nombre de cada pestaña: la liga y la fase final */
+  etiquetas?: { liga: string; playoff: string };
+  /** Si se pasa, cada jugador enlaza a su ficha en `${rutaJugadores}/${id}` */
+  rutaJugadores?: string;
 };
 
 export default function EstadisticasTabs({
@@ -103,6 +114,8 @@ export default function EstadisticasTabs({
   asistentesPlayoff,
   mvpsPlayoff,
   hayDatosPlayoff,
+  etiquetas = { liga: "Liga Regular", playoff: "Playoff" },
+  rutaJugadores,
 }: Props) {
   const [tab, setTab] = useState<"liga" | "playoff">("liga");
 
@@ -118,7 +131,7 @@ export default function EstadisticasTabs({
               : "border-transparent text-slate-400 hover:text-slate-600"
           }`}
         >
-          Liga Regular
+          {etiquetas.liga}
         </button>
         {hayDatosPlayoff && (
           <button
@@ -129,7 +142,7 @@ export default function EstadisticasTabs({
                 : "border-transparent text-slate-400 hover:text-slate-600"
             }`}
           >
-            Playoff
+            {etiquetas.playoff}
           </button>
         )}
       </div>
@@ -137,11 +150,11 @@ export default function EstadisticasTabs({
       {tab === "liga" && (
         <>
           <div className="grid gap-6 sm:gap-12 lg:grid-cols-2">
-            <TablaEstadistica titulo="Pichichi" filas={goleadores} etiquetaValor="Goles" />
-            <TablaEstadistica titulo="Asistencias" filas={asistentes} etiquetaValor="Asists." />
+            <TablaEstadistica titulo="Pichichi" filas={goleadores} etiquetaValor="Goles" rutaJugadores={rutaJugadores} />
+            <TablaEstadistica titulo="Asistencias" filas={asistentes} etiquetaValor="Asists." rutaJugadores={rutaJugadores} />
           </div>
           <div className="mt-6 sm:mt-12">
-            <TablaEstadistica titulo="MVPs" filas={mvps} etiquetaValor="MVPs" />
+            <TablaEstadistica titulo="MVPs" filas={mvps} etiquetaValor="MVPs" rutaJugadores={rutaJugadores} />
           </div>
         </>
       )}
@@ -149,11 +162,11 @@ export default function EstadisticasTabs({
       {tab === "playoff" && (
         <>
           <div className="grid gap-6 sm:gap-12 lg:grid-cols-2">
-            <TablaEstadistica titulo="Pichichi Playoff" filas={goleadoresPlayoff} etiquetaValor="Goles" />
-            <TablaEstadistica titulo="Asistencias Playoff" filas={asistentesPlayoff} etiquetaValor="Asists." />
+            <TablaEstadistica titulo={`Pichichi ${etiquetas.playoff}`} filas={goleadoresPlayoff} etiquetaValor="Goles" rutaJugadores={rutaJugadores} />
+            <TablaEstadistica titulo={`Asistencias ${etiquetas.playoff}`} filas={asistentesPlayoff} etiquetaValor="Asists." rutaJugadores={rutaJugadores} />
           </div>
           <div className="mt-6 sm:mt-12">
-            <TablaEstadistica titulo="MVPs Playoff" filas={mvpsPlayoff} etiquetaValor="MVPs" />
+            <TablaEstadistica titulo={`MVPs ${etiquetas.playoff}`} filas={mvpsPlayoff} etiquetaValor="MVPs" rutaJugadores={rutaJugadores} />
           </div>
         </>
       )}

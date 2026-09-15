@@ -1,0 +1,40 @@
+// Tipos comunes a los splits con actas (del Split 2 en adelante)
+
+export type EstadoPartido =
+  | "Pendiente de programar"
+  | "Programado"
+  | "Aplazado"
+  | "Finalizado";
+
+export type EventoGol = {
+  jugador: string;
+  asistente?: string;
+  minuto?: number;
+};
+
+export type ResumenPartido = {
+  local: EventoGol[];
+  visitante: EventoGol[];
+};
+
+export type Partido = {
+  id: string;
+  local: string;
+  visitante: string;
+  dia?: string;
+  hora?: string;
+  campo?: string;
+  arbitra?: string;
+  estado: EstadoPartido;
+  motivo?: string;
+  resultado?: string;
+  resumen?: ResumenPartido;
+  mvp?: string;
+};
+
+export type Jornada = {
+  numero: number;
+  /** Con un número impar de equipos, el que no juega esa jornada */
+  descansa?: string;
+  partidos: Partido[];
+};

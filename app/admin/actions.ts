@@ -57,8 +57,9 @@ export async function guardarResultado(
 
   const { partidoId, resultado, mvp, golesLocal, golesVisitante } = data;
 
-  if (!resultado.match(/^\d+-\d+$/)) {
-    return { error: "Formato de resultado inválido. Usa el formato: 3-2" };
+  // Una eliminatoria empatada tras la prórroga lleva los penaltis: "4-4 (5-3 pen.)"
+  if (!resultado.match(/^\d+-\d+( \(\d+-\d+ pen\.\))?$/)) {
+    return { error: "Formato de resultado inválido. Usa 3-2, o 4-4 (5-3 pen.) si hubo penaltis" };
   }
 
   const supabase = createAdminClient();

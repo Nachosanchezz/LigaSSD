@@ -3,6 +3,8 @@ export type Jugador = {
   nombre: string;
   primerApellido?: string;
   apodo?: string;
+  /** Otras formas en que este jugador aparece escrito en las actas. */
+  alias?: string[];
   edad?: number;
   posicion?: "Portero" | "Cierre" | "Ala" | "Pívot" | "Universal";
   piernaBuena?: "Derecha" | "Izquierda" | "Ambas";
@@ -369,6 +371,7 @@ export const equipos: Equipo[] = [
         nombre: "Arturo",
         primerApellido: "Gutiérrez",
         apodo: "Arthur",
+        alias: ["Arturo"],
         edad: 31,
         posicion: "Cierre",
         piernaBuena: "Derecha",
@@ -518,6 +521,7 @@ export const equipos: Equipo[] = [
         nombre: "Louis",
         primerApellido: "de María",
         apodo: "Lui",
+        alias: ["Louis"],
         edad: 25,
         posicion: "Ala",
         piernaBuena: "Derecha",

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { isAuthenticated } from "../actions";
 import { getJornadasConResultados } from "@/lib/queries";
+import { getSplit3, partidosFaseFinal } from "@/lib/split3";
 import ResultadoForm from "./ResultadoForm";
 
 export const dynamic = 'force-dynamic';
@@ -12,6 +13,23 @@ type Props = {
   params: Promise<{ partidoId: string }>;
 };
 
+// Busca el partido en el Split 3 (liguilla, play-in y playoff) y, si no, en el Split 2
+async function buscarPartido(partidoId: string) {
+  const split = await getSplit3();
+  const delSplit3 = [
+    ...split.jornadas.flatMap((j) => j.partidos.map((partido) => ({ partido, etiqueta: `Jornada ${j.numero}` }))),
+    ...partidosFaseFinal(split)
+      .filter((partido) => partido.definido)
+      .map((partido) => ({ partido, etiqueta: partido.ronda })),
+  ].find(({ partido }) => partido.id === partidoId);
+  if (delSplit3) return delSplit3;
+
+  const jornadas = await getJornadasConResultados();
+  return jornadas
+    .flatMap((j) => j.partidos.map((partido) => ({ partido, etiqueta: `Split 2 · Jornada ${j.numero}` })))
+    .find(({ partido }) => partido.id === partidoId);
+}
+
 export default async function AdminPartidoPage({ params }: Props) {
   const { partidoId } = await params;
 
@@ -19,12 +37,9 @@ export default async function AdminPartidoPage({ params }: Props) {
     redirect("/admin");
   }
 
-  const jornadas = await getJornadasConResultados();
-  const partido = jornadas
-    .flatMap((j) => j.partidos)
-    .find((p) => p.id === partidoId);
-
-  if (!partido) notFound();
+  const encontrado = await buscarPartido(partidoId);
+  if (!encontrado) notFound();
+  const { partido, etiqueta } = encontrado;
 
   const resultadoActual =
     partido.estado === "Finalizado"
@@ -58,6 +73,7 @@ export default async function AdminPartidoPage({ params }: Props) {
           </svg>
           Volver
         </Link>
+        <p className="text-[10px] font-bold uppercase tracking-widest text-yellow-400 mb-1">{etiqueta}</p>
         <h1 className="text-lg font-black text-white uppercase tracking-tight leading-tight">
           {partido.local} vs {partido.visitante}
         </h1>

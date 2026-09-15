@@ -1,6 +1,7 @@
-import Image from "next/image";
 import Link from "next/link";
-import { equipos } from "@/data/equipos";
+import Escudo from "@/components/Escudo";
+import { equiposSplit3 } from "@/data/split3/equipos";
+import { plantillaSplit3 } from "@/lib/split3";
 
 export default function EquiposPage() {
   return (
@@ -11,42 +12,44 @@ export default function EquiposPage() {
           Franquicias
         </h1>
         <p className="mt-2 sm:mt-4 text-blue-200 font-medium max-w-2xl mx-auto uppercase tracking-wide text-[10px] sm:text-sm">
-          Los Equipos Que Conforman La Liga
+          Split 3 · Los seis equipos de la liga
         </p>
       </div>
 
       <section className="mx-auto max-w-6xl px-4 sm:px-6 -mt-10 sm:-mt-12 relative z-10">
         <div className="grid grid-cols-2 gap-4 sm:gap-8 lg:grid-cols-3 xl:gap-10">
-          {equipos.map((equipo) => (
-            <Link
-              key={equipo.slug}
-              href={`/equipos/${equipo.slug}`}
-              className="group relative flex flex-col items-center justify-center overflow-hidden rounded-2xl sm:rounded-3xl bg-white p-6 sm:p-8 text-center shadow-xl shadow-[#091f36]/5 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-[#091f36]/10 border border-slate-100"
-            >
-              {/* Decorative top border */}
-              <div className="absolute top-0 left-0 w-full h-1 sm:h-1.5 bg-gradient-to-r from-slate-200 via-yellow-400 to-slate-200 opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
-              
-              <div className="relative mb-4 sm:mb-6 flex h-28 w-28 sm:h-36 sm:w-36 items-center justify-center rounded-full bg-slate-50 border border-slate-100 shadow-inner group-hover:bg-slate-100 transition-colors p-3 sm:p-4">
-                <Image
-                  src={equipo.logo}
-                  alt={equipo.nombre}
-                  width={110}
-                  height={110}
-                  className="max-h-full w-auto object-contain transition-transform duration-500 group-hover:scale-110"
-                />
-              </div>
+          {equiposSplit3.map((equipo) => {
+            const plantilla = plantillaSplit3(equipo);
+            const presidente = plantilla.find((miembro) => miembro.presidente)?.persona;
 
-              <h2 className="text-center text-xl sm:text-2xl font-black uppercase tracking-tight text-slate-800 transition-colors group-hover:text-[#0b4a6f]">
-                {equipo.nombre}
-              </h2>
-              
-              <div className="mt-3 sm:mt-4 flex items-center justify-center gap-2">
-                <span className="inline-flex items-center justify-center rounded-full bg-slate-100 px-3 py-1 text-[10px] sm:text-xs font-bold uppercase tracking-wide text-slate-500 transition-colors group-hover:bg-[#0b4a6f] group-hover:text-white">
-                  Ver Perfil
-                </span>
-              </div>
-            </Link>
-          ))}
+            return (
+              <Link
+                key={equipo.id}
+                href={`/equipos/${equipo.slug}`}
+                className="group relative flex flex-col items-center justify-center overflow-hidden rounded-2xl sm:rounded-3xl bg-white p-6 sm:p-8 text-center shadow-xl shadow-[#091f36]/5 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-[#091f36]/10 border border-slate-100"
+              >
+                {/* Decorative top border */}
+                <div className="absolute top-0 left-0 w-full h-1 sm:h-1.5 bg-gradient-to-r from-slate-200 via-yellow-400 to-slate-200 opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
+
+                <div className="relative mb-4 sm:mb-6 flex h-28 w-28 sm:h-36 sm:w-36 items-center justify-center rounded-full bg-slate-50 border border-slate-100 shadow-inner group-hover:bg-slate-100 transition-colors p-3 sm:p-4">
+                  <Escudo nombre={equipo.nombre} logo={equipo.logo} color={equipo.color} size={110} className="transition-transform duration-500 group-hover:scale-110" />
+                </div>
+
+                <h2 className="text-center text-xl sm:text-2xl font-black uppercase tracking-tight text-slate-800 transition-colors group-hover:text-[#0b4a6f]">
+                  {equipo.nombre}
+                </h2>
+                <p className="mt-1 text-xs sm:text-sm text-slate-500">
+                  {presidente ? `Presidente: ${presidente.apodo ?? presidente.nombre}` : " "}
+                </p>
+
+                <div className="mt-3 sm:mt-4 flex items-center justify-center gap-2">
+                  <span className="inline-flex items-center justify-center rounded-full bg-slate-100 px-3 py-1 text-[10px] sm:text-xs font-bold uppercase tracking-wide text-slate-500 transition-colors group-hover:bg-[#0b4a6f] group-hover:text-white">
+                    {plantilla.length > 1 ? `${plantilla.length} jugadores` : "Ver equipo"}
+                  </span>
+                </div>
+              </Link>
+            );
+          })}
         </div>
       </section>
     </div>

@@ -1,87 +1,79 @@
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { equipos } from "@/data/equipos";
+import Escudo from "@/components/Escudo";
+import { getPersona, personas } from "@/data/personas";
+import { goleadoresSplit1 } from "@/data/split1";
+import { equipos as equiposSplit2 } from "@/data/split2/equipos";
+import { statsDeJugador, type StatsJugador } from "@/lib/estadisticas";
 import { nombreCompletoJugador } from "@/lib/helpers";
-import { getJornadasConResultados } from "@/lib/queries";
-import type { Jornada } from "@/data/partidos";
+import { clavesDeJugador, normalizarTexto } from "@/lib/jugadores";
+import { getJornadasConResultados, getPlayoffConResultados } from "@/lib/queries";
+import { equipoDePersona, getSplit3, partidosFaseFinal } from "@/lib/split3";
 
 type Props = {
   params: Promise<{ id: string }>;
 };
 
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 export function generateStaticParams() {
-  return equipos.flatMap((eq) => eq.integrantes.map((j) => ({ id: j.id })));
+  return personas.map((persona) => ({ id: persona.id }));
 }
 
-function normalizarTexto(texto: string) {
-  return texto.normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim().toLowerCase();
-}
+type FilaHistorial = {
+  split: string;
+  equipo: string;
+  ruta?: string;
+  goles: number;
+  asistencias: number;
+  /** El Split 1 no guardaba MVPs */
+  mvps?: number;
+};
 
-function esValorIgnorable(texto?: string) {
-  if (!texto) return true;
-  const v = normalizarTexto(texto);
-  return v === "sin asistencia" || v === "gol cedido" || v === "cedido";
-}
-
-function calcularStatsJugador(jugador: (typeof equipos)[0]["integrantes"][0], jornadas: Jornada[]) {
-  let goles = 0;
-  let asistencias = 0;
-  let mvps = 0;
-  const partidosJugados = new Set<string>();
-
-  // Build lookup keys for this player
-  const keys = new Set<string>();
-  keys.add(normalizarTexto(nombreCompletoJugador(jugador)));
-  if (jugador.apodo) keys.add(normalizarTexto(jugador.apodo));
-
-  const matchKey = (texto?: string) => texto && keys.has(normalizarTexto(texto));
-
-  for (const jornada of jornadas) {
-    for (const partido of jornada.partidos) {
-      if (partido.estado !== "Finalizado" || !partido.resumen) continue;
-
-      for (const gol of [...partido.resumen.local, ...partido.resumen.visitante]) {
-        if (!esValorIgnorable(gol.jugador) && matchKey(gol.jugador)) {
-          goles++;
-          partidosJugados.add(partido.id);
-        }
-        if (!esValorIgnorable(gol.asistente) && matchKey(gol.asistente)) {
-          asistencias++;
-          partidosJugados.add(partido.id);
-        }
-      }
-
-      if (partido.mvp && matchKey(partido.mvp)) {
-        mvps++;
-      }
-    }
-  }
-
-  return { goles, asistencias, mvps, partidosJugados: partidosJugados.size };
-}
-
+// Ficha única de cada persona: su equipo actual y sus números de todos los splits
 export default async function JugadorPage({ params }: Props) {
   const { id } = await params;
+  const persona = getPersona(id);
+  if (!persona) notFound();
 
-  let jugador: (typeof equipos)[0]["integrantes"][0] | undefined;
-  let equipo: (typeof equipos)[0] | undefined;
+  const equipo = equipoDePersona(persona.id);
+  const fichaje = equipo?.plantilla.find((candidato) => candidato.persona === persona.id);
+  const equipoSplit2 = persona.split2
+    ? equiposSplit2.find((candidato) => candidato.integrantes.some((jugador) => jugador.id === persona.split2))
+    : undefined;
 
-  for (const eq of equipos) {
-    const found = eq.integrantes.find((j) => j.id === id);
-    if (found) { jugador = found; equipo = eq; break; }
+  const [split3, jornadasSplit2, playoffSplit2] = await Promise.all([
+    getSplit3(),
+    equipoSplit2 ? getJornadasConResultados() : undefined,
+    equipoSplit2 ? getPlayoffConResultados() : undefined,
+  ]);
+
+  const statsSplit3 = equipo
+    ? statsDeJugador(persona, [...split3.jornadas.flatMap((j) => j.partidos), ...partidosFaseFinal(split3)])
+    : undefined;
+
+  const historial: FilaHistorial[] = [];
+  if (equipo && statsSplit3) {
+    historial.push({ split: "Split 3", equipo: equipo.nombre, ruta: `/equipos/${equipo.slug}`, ...statsSplit3 });
+  }
+  if (equipoSplit2 && jornadasSplit2 && playoffSplit2) {
+    const stats: StatsJugador = statsDeJugador(persona, [
+      ...jornadasSplit2.flatMap((j) => j.partidos),
+      ...playoffSplit2.cuartos,
+      ...playoffSplit2.semifinales,
+      playoffSplit2.final,
+    ]);
+    historial.push({ split: "Split 2", equipo: equipoSplit2.nombre, ruta: `/split2/equipos/${equipoSplit2.slug}`, ...stats });
+  }
+  // El Split 1 solo guardaba goles y asistencias, por nombre
+  const claves = new Set(clavesDeJugador(persona));
+  const filaSplit1 = goleadoresSplit1.find((fila) => claves.has(normalizarTexto(fila.nombre)));
+  if (filaSplit1) {
+    historial.push({ split: "Split 1", equipo: filaSplit1.equipo, goles: filaSplit1.goles, asistencias: filaSplit1.asistencias });
   }
 
-  if (!jugador || !equipo) notFound();
-
-  const jornadas = await getJornadasConResultados();
-  const stats = calcularStatsJugador(jugador, jornadas);
-  const nombreCompleto = nombreCompletoJugador(jugador);
-
-  const posicionColor = jugador.posicion?.toLowerCase().includes("portero")
+  const posicionColor = persona.posicion?.toLowerCase().includes("portero")
     ? "bg-yellow-100 text-yellow-800 border-yellow-200"
     : "bg-blue-50 text-blue-700 border-blue-200";
 
@@ -98,11 +90,11 @@ export default async function JugadorPage({ params }: Props) {
           Volver a jugadores
         </Link>
         <h1 className="relative z-10 text-3xl sm:text-5xl md:text-6xl font-black uppercase tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-white to-blue-200">
-          {nombreCompleto}
+          {nombreCompletoJugador(persona)}
         </h1>
-        {jugador.apodo && (
+        {persona.apodo && (
           <p className="relative z-10 mt-2 text-yellow-400 font-bold text-lg sm:text-xl italic">
-            "{jugador.apodo}"
+            &ldquo;{persona.apodo}&rdquo;
           </p>
         )}
       </div>
@@ -110,73 +102,121 @@ export default async function JugadorPage({ params }: Props) {
       <section className="mx-auto max-w-3xl px-3 sm:px-6 -mt-16 sm:-mt-24 relative z-10">
         <div className="rounded-2xl sm:rounded-[2rem] border border-slate-100 bg-white p-5 sm:p-10 shadow-xl shadow-[#0b4a6f]/5">
 
-          {/* Logo + info básica */}
+          {/* Equipo actual + info básica */}
           <div className="flex flex-col items-center mb-8 sm:mb-10">
             <div className="relative -mt-16 sm:-mt-24 mb-5 h-24 w-24 sm:h-36 sm:w-36 rounded-full bg-slate-50 border-4 sm:border-8 border-white shadow-xl flex items-center justify-center p-3">
-              <Image
-                src={equipo!.logo}
-                alt={equipo!.nombre}
-                width={120}
-                height={120}
-                className="max-h-full w-auto object-contain"
-              />
+              {equipo ? (
+                <Escudo nombre={equipo.nombre} logo={equipo.logo} color={equipo.color} size={120} />
+              ) : (
+                <span className="text-4xl font-black text-slate-300">{persona.nombre.charAt(0)}</span>
+              )}
             </div>
 
-            <Link
-              href={`/equipos/${equipo!.slug}`}
-              className="inline-flex items-center gap-2 rounded-full bg-slate-100 border border-slate-200 px-4 py-2 text-sm font-bold text-[#0b4a6f] hover:bg-[#0b4a6f] hover:text-white transition-colors"
-            >
-              {equipo!.nombre}
-            </Link>
+            {equipo ? (
+              <Link
+                href={`/equipos/${equipo.slug}`}
+                className="inline-flex items-center gap-2 rounded-full bg-slate-100 border border-slate-200 px-4 py-2 text-sm font-bold text-[#0b4a6f] hover:bg-[#0b4a6f] hover:text-white transition-colors"
+              >
+                {equipo.nombre}
+              </Link>
+            ) : (
+              <span className="text-sm font-semibold text-slate-400">No juega el Split 3</span>
+            )}
 
             <div className="mt-4 flex flex-wrap justify-center gap-2">
-              {jugador.posicion && (
+              {fichaje?.presidente && (
+                <span className="inline-flex px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-yellow-400 text-[#091f36]">
+                  Presidente
+                </span>
+              )}
+              {fichaje?.precio !== undefined && (
+                <span className="inline-flex px-3 py-1 rounded-full text-xs font-black bg-[#091f36] text-white">
+                  Fichado por {fichaje.precio} M€
+                </span>
+              )}
+              {persona.posicion && (
                 <span className={`inline-flex px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border ${posicionColor}`}>
-                  {jugador.posicion}
+                  {persona.posicion}
                 </span>
               )}
-              {jugador.edad && (
+              {persona.edad && (
                 <span className="inline-flex px-3 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-600 border border-slate-200">
-                  {jugador.edad} años
+                  {persona.edad} años
                 </span>
               )}
-              {jugador.piernaBuena && (
+              {persona.piernaBuena && (
                 <span className="inline-flex px-3 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-600 border border-slate-200 uppercase">
-                  {jugador.piernaBuena}
+                  {persona.piernaBuena}
                 </span>
               )}
             </div>
           </div>
 
-          {/* Stats */}
-          <h2 className="text-xl sm:text-2xl font-black uppercase tracking-tight text-[#0b4a6f] border-b-2 border-slate-100 pb-3 mb-6 flex items-center gap-3">
-            <span className="w-1.5 h-6 bg-yellow-400 rounded-full inline-block"></span>
-            Estadísticas
-          </h2>
-
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
-            {[
-              { label: "Goles", valor: stats.goles, color: "from-[#091f36] to-[#0b4a6f]" },
-              { label: "Asistencias", valor: stats.asistencias, color: "from-[#0b4a6f] to-blue-500" },
-              { label: "MVPs", valor: stats.mvps, color: "from-yellow-500 to-yellow-400" },
-              { label: "Partidos", valor: stats.partidosJugados, color: "from-slate-600 to-slate-500" },
-            ].map((stat) => (
-              <div key={stat.label} className="rounded-2xl overflow-hidden shadow-md">
-                <div className={`bg-gradient-to-br ${stat.color} p-4 sm:p-5 text-center`}>
-                  <div className="text-3xl sm:text-4xl font-black text-white">{stat.valor}</div>
-                </div>
-                <div className="bg-white px-2 py-2 text-center border border-slate-100 border-t-0 rounded-b-2xl">
-                  <span className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-slate-500">{stat.label}</span>
-                </div>
+          {/* Split 3 */}
+          {statsSplit3 && (
+            <>
+              <h2 className="text-xl sm:text-2xl font-black uppercase tracking-tight text-[#0b4a6f] border-b-2 border-slate-100 pb-3 mb-6 flex items-center gap-3">
+                <span className="w-1.5 h-6 bg-yellow-400 rounded-full inline-block"></span>
+                Split 3
+              </h2>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-10">
+                {[
+                  { label: "Goles", valor: statsSplit3.goles, color: "from-[#091f36] to-[#0b4a6f]" },
+                  { label: "Asistencias", valor: statsSplit3.asistencias, color: "from-[#0b4a6f] to-blue-500" },
+                  { label: "MVPs", valor: statsSplit3.mvps, color: "from-yellow-500 to-yellow-400" },
+                  { label: "Partidos", valor: statsSplit3.partidos, color: "from-slate-600 to-slate-500" },
+                ].map((stat) => (
+                  <div key={stat.label} className="rounded-2xl overflow-hidden shadow-md">
+                    <div className={`bg-gradient-to-br ${stat.color} p-4 sm:p-5 text-center`}>
+                      <div className="text-3xl sm:text-4xl font-black text-white">{stat.valor}</div>
+                    </div>
+                    <div className="bg-white px-2 py-2 text-center border border-slate-100 border-t-0 rounded-b-2xl">
+                      <span className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-slate-500">{stat.label}</span>
+                    </div>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
-
-          {stats.goles === 0 && stats.asistencias === 0 && stats.mvps === 0 && (
-            <p className="mt-6 text-center text-sm text-slate-400">
-              Aún no hay estadísticas registradas para este jugador.
-            </p>
+            </>
           )}
+
+          {/* Historial por split */}
+          <h2 className="text-xl sm:text-2xl font-black uppercase tracking-tight text-[#0b4a6f] border-b-2 border-slate-100 pb-3 mb-4 flex items-center gap-3">
+            <span className="w-1.5 h-6 bg-yellow-400 rounded-full inline-block"></span>
+            Historial
+          </h2>
+          {historial.length === 0 ? (
+            <p className="text-center text-sm text-slate-400">Primer split en la liga.</p>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="min-w-full border-collapse text-sm">
+                <thead>
+                  <tr className="border-b-2 border-slate-100 text-[10px] sm:text-xs font-bold uppercase tracking-wider text-slate-400">
+                    <th className="px-2 py-3 text-left">Split</th>
+                    <th className="px-2 py-3 text-left">Equipo</th>
+                    <th className="px-2 py-3 text-center">Goles</th>
+                    <th className="px-2 py-3 text-center">Asist.</th>
+                    <th className="px-2 py-3 text-center">MVPs</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-50">
+                  {historial.map((fila) => (
+                    <tr key={fila.split}>
+                      <td className="px-2 py-3 font-black text-[#091f36] whitespace-nowrap">{fila.split}</td>
+                      <td className="px-2 py-3 font-semibold text-slate-700">
+                        {fila.ruta ? <Link href={fila.ruta} className="hover:underline">{fila.equipo}</Link> : fila.equipo}
+                      </td>
+                      <td className="px-2 py-3 text-center font-mono font-bold text-slate-800">{fila.goles}</td>
+                      <td className="px-2 py-3 text-center font-mono font-bold text-slate-800">{fila.asistencias}</td>
+                      <td className="px-2 py-3 text-center font-mono font-bold text-slate-800">{fila.mvps ?? "—"}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+          <p className="mt-4 text-center text-[11px] text-slate-400">
+            Las actas no recogen quién jugó: &ldquo;partidos&rdquo; cuenta aquellos en los que marcó o asistió.
+          </p>
         </div>
       </section>
     </div>

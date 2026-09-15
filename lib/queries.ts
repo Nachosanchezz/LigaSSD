@@ -1,8 +1,9 @@
+import { cache } from "react";
 import { createClient } from "./supabase";
-import { jornadas as jornadasStaticas } from "@/data/partidos";
-import type { Jornada, Partido, EstadoPartido } from "@/data/partidos";
-import { cuartosPlayoff, semifinalesPlayoff, finalPlayoff } from "@/data/playoffs";
-import type { PartidoPlayoff } from "@/data/playoffs";
+import { jornadas as jornadasStaticas } from "@/data/split2/partidos";
+import type { Jornada, Partido, EstadoPartido } from "@/data/tipos";
+import { cuartosPlayoff, semifinalesPlayoff, finalPlayoff } from "@/data/split2/playoffs";
+import type { PartidoPlayoff } from "@/data/split2/playoffs";
 
 type PartidoOverrides = {
   resultado?: string;
@@ -18,7 +19,9 @@ type PartidoOverrides = {
 
 type OverridesRecord = Record<string, PartidoOverrides>;
 
-async function fetchOverrides(): Promise<OverridesRecord> {
+// Resultados, árbitros y estados guardados desde el admin, por id de partido
+// (de cualquier split). `cache` hace que se pidan una sola vez por petición.
+export const fetchOverrides = cache(async (): Promise<OverridesRecord> => {
   if (!process.env.SUPABASE_URL) {
     return {};
   }
@@ -93,6 +96,28 @@ async function fetchOverrides(): Promise<OverridesRecord> {
   }
 
   return record;
+});
+
+/** Aplica a un partido lo guardado desde el admin */
+export function aplicarOverrides(partido: Partido, o?: PartidoOverrides): Partido {
+  if (!o) return partido;
+
+  const merged: Partido = { ...partido };
+  // Árbitro desde Supabase tiene prioridad sobre el dato estático
+  if (o.arbitra) merged.arbitra = o.arbitra;
+  // Estado override (ej: Aplazado desde admin), solo si NO hay resultado
+  if (o.estadoOverride && !o.resultado) {
+    merged.estado = o.estadoOverride;
+    merged.motivo = o.motivoOverride;
+  }
+  // Resultado (Finalizado) tiene máxima prioridad
+  if (o.resultado) {
+    merged.estado = "Finalizado";
+    merged.resultado = o.resultado;
+    merged.mvp = o.mvp;
+    merged.resumen = o.resumen;
+  }
+  return merged;
 }
 
 export async function getJornadasConResultados(): Promise<Jornada[]> {
@@ -100,27 +125,7 @@ export async function getJornadasConResultados(): Promise<Jornada[]> {
 
   return jornadasStaticas.map((j) => ({
     ...j,
-    partidos: j.partidos.map((p) => {
-      const o = overrides[p.id];
-      if (!o) return p;
-
-      const merged: Partido = { ...p };
-      // Árbitro desde Supabase tiene prioridad sobre el dato estático
-      if (o.arbitra) merged.arbitra = o.arbitra;
-      // Estado override (ej: Aplazado desde admin), solo si NO hay resultado
-      if (o.estadoOverride && !o.resultado) {
-        merged.estado = o.estadoOverride;
-        merged.motivo = o.motivoOverride;
-      }
-      // Resultado (Finalizado) tiene máxima prioridad
-      if (o.resultado) {
-        merged.estado = "Finalizado";
-        merged.resultado = o.resultado;
-        merged.mvp = o.mvp;
-        merged.resumen = o.resumen;
-      }
-      return merged;
-    }),
+    partidos: j.partidos.map((p) => aplicarOverrides(p, overrides[p.id])),
   }));
 }
 

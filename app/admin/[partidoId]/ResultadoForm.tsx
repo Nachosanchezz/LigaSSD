@@ -290,7 +290,7 @@ export default function ResultadoForm({
             type="text"
             value={resultado}
             onChange={(e) => setResultado(e.target.value)}
-            placeholder="Ej: 3-2"
+            placeholder="Ej: 3-2 · con penaltis: 4-4 (5-3 pen.)"
             className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-lg font-black text-[#091f36] text-center tracking-widest focus:outline-none focus:border-[#0b4a6f] focus:bg-white transition"
           />
         </div>

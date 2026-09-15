@@ -89,6 +89,7 @@ function Modal({ noticia, onClose }: { noticia: Noticia; onClose: () => void }) 
 
           {noticia.equipoSlug && (
             <div className="pt-2 border-t border-slate-100 pb-2">
+              {/* Los equipos del Split 2 redirigen solos a /split2/equipos */}
               <Link
                 href={`/equipos/${noticia.equipoSlug}`}
                 onClick={onClose}

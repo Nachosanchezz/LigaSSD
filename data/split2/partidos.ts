@@ -1,40 +1,6 @@
-export type EstadoPartido =
-  | "Pendiente de programar"
-  | "Programado"
-  | "Aplazado"
-  | "Finalizado";
+import type { Jornada } from "../tipos";
 
-export type EventoGol = {
-  jugador: string;
-  asistente?: string;
-  minuto?: number;
-};
-
-export type ResumenPartido = {
-  local: EventoGol[];
-  visitante: EventoGol[];
-};
-
-export type Partido = {
-  id: string;
-  local: string;
-  visitante: string;
-  dia?: string;
-  hora?: string;
-  campo?: string;
-  arbitra?: string;
-  estado: EstadoPartido;
-  motivo?: string;
-  resultado?: string;
-  resumen?: ResumenPartido;
-  mvp?: string;
-};
-
-export type Jornada = {
-  numero: number;
-  descansa: string;
-  partidos: Partido[];
-};
+export type { EstadoPartido, EventoGol, Jornada, Partido, ResumenPartido } from "../tipos";
 
 export const jornadas: Jornada[] = [
   {

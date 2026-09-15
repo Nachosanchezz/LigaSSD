@@ -1,51 +1,30 @@
 import Link from "next/link";
-import Image from "next/image";
-import { getJornadasConResultados } from "@/lib/queries";
-import { equipos, logosEquipos } from "@/data/equipos";
-import { noticias } from "@/data/noticias";
+import Escudo from "@/components/Escudo";
 import NoticiasCarrusel from "@/components/NoticiasCarrusel";
+import { noticias } from "@/data/noticias";
+import { equiposSplit3 } from "@/data/split3/equipos";
+import { ladoGanador, leerMarcador } from "@/lib/resultado";
+import { escudoSplit3, getSplit3, partidosFaseFinal } from "@/lib/split3";
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
-function calcularTop3(jornadas: Awaited<ReturnType<typeof getJornadasConResultados>>) {
-  const tabla: Record<string, { equipo: string; pts: number; dg: number; gf: number }> = {};
-  for (const eq of equipos) {
-    tabla[eq.nombre] = { equipo: eq.nombre, pts: 0, dg: 0, gf: 0 };
-  }
-  for (const jornada of jornadas) {
-    for (const partido of jornada.partidos) {
-      if (partido.estado !== "Finalizado" || !partido.resultado) continue;
-      const [gl, gv] = partido.resultado.split("-").map(Number);
-      if (isNaN(gl) || isNaN(gv)) continue;
-      const local = tabla[partido.local];
-      const visitante = tabla[partido.visitante];
-      if (!local || !visitante) continue;
-      local.gf += gl; local.dg += gl - gv;
-      visitante.gf += gv; visitante.dg += gv - gl;
-      if (gl > gv) { local.pts += 3; }
-      else if (gv > gl) { visitante.pts += 3; }
-      else { local.pts += 1; visitante.pts += 1; }
-    }
-  }
-  return Object.values(tabla)
-    .sort((a, b) => b.pts - a.pts || b.dg - a.dg || b.gf - a.gf || a.equipo.localeCompare(b.equipo))
-    .slice(0, 3);
-}
-
 export default async function HomePage() {
-  const jornadas = await getJornadasConResultados();
+  const split = await getSplit3();
 
-  const top3 = calcularTop3(jornadas);
+  const top3 = split.clasificacion.slice(0, 3);
 
-  const ultimosResultados = jornadas
-    .flatMap((j) => j.partidos.map((p) => ({ ...p, jornada: j.numero })))
+  const partidos = [
+    ...split.jornadas.flatMap((j) => j.partidos),
+    ...partidosFaseFinal(split).filter((p) => p.definido),
+  ];
+
+  const ultimosResultados = partidos
     .filter((p) => p.estado === "Finalizado")
     .slice(-3)
     .reverse();
 
-  const proximosPartidos = jornadas
-    .flatMap((j) => j.partidos.map((p) => ({ ...p, jornada: j.numero })))
+  const proximosPartidos = partidos
     .filter((p) => p.estado === "Programado")
     .slice(0, 3);
 
@@ -67,7 +46,7 @@ export default async function HomePage() {
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-yellow-400 opacity-75"></span>
               <span className="relative inline-flex h-2 w-2 sm:h-2.5 sm:w-2.5 rounded-full bg-yellow-500"></span>
             </span>
-            Temporada Actual en Juego
+            Split 3 · Temporada en juego
           </div>
           <h1 className="text-4xl sm:text-5xl md:text-7xl font-black uppercase tracking-tight text-white leading-none drop-shadow-xl">
             La Pasión del <br className="hidden sm:block" />
@@ -101,11 +80,14 @@ export default async function HomePage() {
                 <Link href="/clasificacion" className="text-[10px] font-bold uppercase tracking-wider text-yellow-400 hover:text-yellow-300 transition-colors">Ver todo →</Link>
               </div>
               <div className="divide-y divide-slate-50">
-                {top3.map((fila, i) => (
+                {top3.every((fila) => fila.pj === 0) && (
+                  <p className="px-5 py-4 text-sm text-slate-400">La liguilla aún no ha empezado.</p>
+                )}
+                {top3.some((fila) => fila.pj > 0) && top3.map((fila, i) => (
                   <div key={fila.equipo} className="flex items-center gap-3 px-5 py-3.5 hover:bg-slate-50 transition-colors">
                     <span className={`text-lg font-black w-6 text-center ${rankColors[i]}`}>{rankLabels[i]}</span>
                     <div className="h-8 w-8 rounded-full bg-slate-50 border border-slate-100 flex items-center justify-center p-1 shrink-0">
-                      <Image src={logosEquipos[fila.equipo]} alt={fila.equipo} width={28} height={28} className="h-full w-full object-contain" />
+                      <Escudo nombre={fila.equipo} {...escudoSplit3(fila.equipo)} size={28} />
                     </div>
                     <span className="flex-1 font-bold text-slate-800 text-sm leading-tight">{fila.equipo}</span>
                     <div className="flex items-center justify-center h-8 w-8 rounded-lg bg-gradient-to-br from-[#091f36] to-[#0b4a6f] text-sm font-black text-white shadow">{fila.pts}</div>
@@ -125,17 +107,20 @@ export default async function HomePage() {
                   <p className="px-5 py-4 text-sm text-slate-400">Aún no hay resultados.</p>
                 )}
                 {ultimosResultados.map((p) => {
-                  const [gl, gv] = p.resultado!.split("-").map(Number);
+                  const marcador = leerMarcador(p.resultado);
+                  const ganador = marcador ? ladoGanador(marcador) : null;
                   return (
                     <Link key={p.id} href={`/partidos/${p.id}`} className="flex items-center gap-2 px-4 py-3 hover:bg-slate-50 transition-colors">
                       <div className="flex items-center gap-1.5 flex-1 justify-end min-w-0">
-                        <span className={`text-xs font-bold truncate text-right ${gl > gv ? "text-slate-800" : "text-slate-400"}`}>{p.local}</span>
-                        <div className="h-5 w-5 shrink-0"><Image src={logosEquipos[p.local]} alt={p.local} width={20} height={20} className={`h-full w-full object-contain ${gl < gv ? "opacity-40" : ""}`} /></div>
+                        <span className={`text-xs font-bold truncate text-right ${ganador === "visitante" ? "text-slate-400" : "text-slate-800"}`}>{p.local}</span>
+                        <div className={`h-5 w-5 shrink-0 ${ganador === "visitante" ? "opacity-40" : ""}`}><Escudo nombre={p.local} {...escudoSplit3(p.local)} size={20} /></div>
                       </div>
-                      <div className="shrink-0 rounded-lg bg-[#091f36] px-2.5 py-1 text-sm font-black text-white tabular-nums tracking-wider">{p.resultado}</div>
+                      <div className="shrink-0 rounded-lg bg-[#091f36] px-2.5 py-1 text-sm font-black text-white tabular-nums tracking-wider">
+                        {marcador ? `${marcador.local}-${marcador.visitante}` : p.resultado}
+                      </div>
                       <div className="flex items-center gap-1.5 flex-1 justify-start min-w-0">
-                        <div className="h-5 w-5 shrink-0"><Image src={logosEquipos[p.visitante]} alt={p.visitante} width={20} height={20} className={`h-full w-full object-contain ${gv < gl ? "opacity-40" : ""}`} /></div>
-                        <span className={`text-xs font-bold truncate ${gv > gl ? "text-slate-800" : "text-slate-400"}`}>{p.visitante}</span>
+                        <div className={`h-5 w-5 shrink-0 ${ganador === "local" ? "opacity-40" : ""}`}><Escudo nombre={p.visitante} {...escudoSplit3(p.visitante)} size={20} /></div>
+                        <span className={`text-xs font-bold truncate ${ganador === "local" ? "text-slate-400" : "text-slate-800"}`}>{p.visitante}</span>
                       </div>
                     </Link>
                   );
@@ -150,14 +135,17 @@ export default async function HomePage() {
                 <Link href="/jornadas" className="text-[10px] font-bold uppercase tracking-wider text-yellow-400 hover:text-yellow-300 transition-colors">Ver todo →</Link>
               </div>
               <div className="divide-y divide-slate-50">
+                {proximosPartidos.length === 0 && (
+                  <p className="px-5 py-4 text-sm text-slate-400">Calendario por confirmar.</p>
+                )}
                 {proximosPartidos.map((p) => (
                   <div key={p.id} className="px-4 py-3">
                     <div className="flex items-center gap-2">
-                      <div className="h-5 w-5 shrink-0"><Image src={logosEquipos[p.local]} alt={p.local} width={20} height={20} className="h-full w-full object-contain" /></div>
+                      <div className="h-5 w-5 shrink-0"><Escudo nombre={p.local} {...escudoSplit3(p.local)} size={20} /></div>
                       <span className="text-xs font-bold text-slate-700 truncate flex-1">{p.local}</span>
                       <span className="text-[10px] font-black text-slate-300 uppercase">vs</span>
                       <span className="text-xs font-bold text-slate-700 truncate flex-1 text-right">{p.visitante}</span>
-                      <div className="h-5 w-5 shrink-0"><Image src={logosEquipos[p.visitante]} alt={p.visitante} width={20} height={20} className="h-full w-full object-contain" /></div>
+                      <div className="h-5 w-5 shrink-0"><Escudo nombre={p.visitante} {...escudoSplit3(p.visitante)} size={20} /></div>
                     </div>
                     {p.dia && <p className="mt-1 text-[10px] font-medium text-slate-400 text-center">{p.dia}{p.hora ? ` · ${p.hora}` : ""}</p>}
                   </div>
@@ -184,7 +172,7 @@ export default async function HomePage() {
                 <p>La <strong className="text-slate-900">Liga SSD</strong> nace de algo muy sencillo: dos amigos con ganas de desconectar durante un rato de los estudios, el trabajo y el ritmo diario.</p>
                 <div className="flex gap-3 sm:gap-4">
                   <div className="flex-1 rounded-2xl border-2 border-slate-100 bg-white p-4 sm:p-6 shadow-sm text-center lg:text-left">
-                    <div className="text-3xl sm:text-4xl font-black text-[#0b4a6f]">7</div>
+                    <div className="text-3xl sm:text-4xl font-black text-[#0b4a6f]">{equiposSplit3.length}</div>
                     <div className="mt-1 text-xs sm:text-sm font-bold uppercase tracking-wide text-slate-500">Franquicias</div>
                   </div>
                   <div className="flex-1 rounded-2xl border-2 border-slate-100 bg-white p-4 sm:p-6 shadow-sm text-center lg:text-left">
@@ -204,7 +192,7 @@ export default async function HomePage() {
                   <p>Venimos a pasarlo bien… <strong>pero si se puede ganar, mejor todavía.</strong></p>
                 </div>
                 <div className="mt-6 sm:mt-8 rounded-xl bg-white/10 p-5 sm:p-6 border border-white/20 backdrop-blur-sm">
-                  <p className="font-medium italic text-white/90 text-center text-sm sm:text-base">"Más que una simple competición, esta liga es un espacio donde el fútbol sirve para desconectar y competir de forma sana."</p>
+                  <p className="font-medium italic text-white/90 text-center text-sm sm:text-base">&ldquo;Más que una simple competición, esta liga es un espacio donde el fútbol sirve para desconectar y competir de forma sana.&rdquo;</p>
                 </div>
               </div>
             </div>
