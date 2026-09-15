@@ -28,8 +28,8 @@ export type EquipoSplit3 = {
 export const equiposSplit3: EquipoSplit3[] = [
   {
     id: "borja",
-    nombre: "BORJA",
-    slug: "borja",
+    nombre: "LOS TERCIOS",
+    slug: "los-tercios",
     color: "#0b4a6f",
     presupuesto: 200,
     plantilla: [
@@ -62,8 +62,9 @@ export const equiposSplit3: EquipoSplit3[] = [
   },
   {
     id: "juan",
-    nombre: "JUAN",
-    slug: "juan",
+    nombre: "BODØ DREAM",
+    slug: "bodo-dream",
+    logo: "/equipos/bodo-dream.png",
     color: "#15803d",
     presupuesto: 200,
     plantilla: [
@@ -79,8 +80,9 @@ export const equiposSplit3: EquipoSplit3[] = [
   },
   {
     id: "lui",
-    nombre: "LUI",
-    slug: "lui",
+    nombre: "TORRE BELDES",
+    slug: "torre-beldes",
+    logo: "/equipos/torre-beldes.png",
     color: "#7c3aed",
     presupuesto: 230,
     plantilla: [
@@ -96,8 +98,9 @@ export const equiposSplit3: EquipoSplit3[] = [
   },
   {
     id: "nacho",
-    nombre: "NACHO",
-    slug: "nacho",
+    nombre: "FILÓSOFOS",
+    slug: "filosofos",
+    logo: "/equipos/filosofos.png",
     color: "#c2410c",
     presupuesto: 200,
     plantilla: [
