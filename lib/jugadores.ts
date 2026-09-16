@@ -1,4 +1,6 @@
 import { equipos, type Jugador } from "@/data/split2/equipos";
+import { equiposSplit3 } from "@/data/split3/equipos";
+import { getPersona } from "@/data/personas";
 import { nombreCompletoJugador } from "./helpers";
 
 export function normalizarTexto(texto: string) {
@@ -57,4 +59,20 @@ export function crearMapaJugadores(): Record<string, InfoJugador> {
   }
 
   return mapa;
+}
+
+/**
+ * Apodos de la plantilla de un equipo, sea del split que sea. Los usa el admin
+ * para sugerirlos al escribir el acta y avisar de los nombres que no cuadran.
+ */
+export function apodosDeEquipo(nombre: string): string[] {
+  const split3 = equiposSplit3.find((equipo) => equipo.nombre === nombre);
+  if (split3) {
+    return split3.plantilla.flatMap((fichaje) => {
+      const persona = getPersona(fichaje.persona);
+      return persona ? [persona.apodo ?? nombreCompletoJugador(persona)] : [];
+    });
+  }
+  const split2 = equipos.find((equipo) => equipo.nombre === nombre);
+  return split2?.integrantes.map((jugador) => jugador.apodo ?? nombreCompletoJugador(jugador)) ?? [];
 }

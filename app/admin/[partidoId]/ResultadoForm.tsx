@@ -12,10 +12,22 @@ type GolEntry = {
 
 const golVacio = (): GolEntry => ({ jugador: "", asistente: "", minuto: "" });
 
+const normalizar = (texto: string) =>
+  texto.normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim().toLowerCase();
+
+/** Anotaciones del acta que no son un jugador: gol en propia, cedido, etc. */
+function esAnotacion(valor: string): boolean {
+  const limpio = normalizar(valor);
+  return ["sin asistencia", "gol cedido", "cedido", "pp"].includes(limpio) || limpio.endsWith("(pp)");
+}
+
 type Props = {
   partidoId: string;
   local: string;
   visitante: string;
+  /** Apodos de cada plantilla, para sugerirlos y avisar de los que no cuadran */
+  jugadoresLocal: string[];
+  jugadoresVisitante: string[];
   arbitraActual?: string;
   estadoActual?: string;
   motivoActual?: string;
@@ -33,6 +45,8 @@ export default function ResultadoForm({
   partidoId,
   local,
   visitante,
+  jugadoresLocal,
+  jugadoresVisitante,
   arbitraActual,
   estadoActual,
   motivoActual,
@@ -72,6 +86,22 @@ export default function ResultadoForm({
   );
   const [error, setError] = useState("");
   const [showDelete, setShowDelete] = useState(false);
+  // Nombres escritos que no son de ninguna de las dos plantillas
+  const [desconocidos, setDesconocidos] = useState<string[]>([]);
+
+  const conocidos = new Set([...jugadoresLocal, ...jugadoresVisitante].map(normalizar));
+
+  function nombresRaros(): string[] {
+    const escritos = [
+      ...golesLocal.flatMap((g) => [g.jugador, g.asistente]),
+      ...golesVisitante.flatMap((g) => [g.jugador, g.asistente]),
+      mvp,
+    ];
+    const raros = escritos
+      .map((valor) => valor.trim())
+      .filter((valor) => valor && !esAnotacion(valor) && !conocidos.has(normalizar(valor)));
+    return [...new Set(raros)];
+  }
 
   function handleSaveArbitra() {
     setArbitraError("");
@@ -137,6 +167,16 @@ export default function ResultadoForm({
 
   function handleSave() {
     setError("");
+
+    // Un nombre mal escrito no da error, simplemente deja el gol sin dueño:
+    // por eso conviene avisar antes de guardarlo
+    const raros = nombresRaros();
+    if (raros.length > 0 && desconocidos.length === 0) {
+      setDesconocidos(raros);
+      return;
+    }
+    setDesconocidos([]);
+
     startTransition(async () => {
       const res = await guardarResultado({
         partidoId,
@@ -302,6 +342,7 @@ export default function ResultadoForm({
             type="text"
             value={mvp}
             onChange={(e) => setMvp(e.target.value)}
+            list="jugadores-todos"
             placeholder="Apodo del jugador MVP"
             className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-800 focus:outline-none focus:border-[#0b4a6f] focus:bg-white transition"
           />
@@ -311,6 +352,7 @@ export default function ResultadoForm({
       {/* Goles Local */}
       <GolesSection
         titulo={`Goles ${local}`}
+        lista="jugadores-local"
         goles={golesLocal}
         onAdd={() => setGolesLocal([...golesLocal, golVacio()])}
         onUpdate={(i, campo, val) =>
@@ -322,6 +364,7 @@ export default function ResultadoForm({
       {/* Goles Visitante */}
       <GolesSection
         titulo={`Goles ${visitante}`}
+        lista="jugadores-visitante"
         goles={golesVisitante}
         onAdd={() => setGolesVisitante([...golesVisitante, golVacio()])}
         onUpdate={(i, campo, val) =>
@@ -329,6 +372,39 @@ export default function ResultadoForm({
         }
         onRemove={(i) => removeGol(golesVisitante, setGolesVisitante, i)}
       />
+
+      {/* Sugerencias para los nombres */}
+      <datalist id="jugadores-local">
+        {jugadoresLocal.map((jugador) => (
+          <option key={jugador} value={jugador} />
+        ))}
+      </datalist>
+      <datalist id="jugadores-visitante">
+        {jugadoresVisitante.map((jugador) => (
+          <option key={jugador} value={jugador} />
+        ))}
+      </datalist>
+      <datalist id="jugadores-todos">
+        {[...jugadoresLocal, ...jugadoresVisitante].map((jugador) => (
+          <option key={jugador} value={jugador} />
+        ))}
+      </datalist>
+
+      {/* Nombres que no cuadran con ninguna plantilla */}
+      {desconocidos.length > 0 && (
+        <div className="rounded-2xl border-2 border-amber-300 bg-amber-50 p-4 space-y-2">
+          <p className="text-sm font-black uppercase tracking-wide text-amber-800">
+            Revisa estos nombres
+          </p>
+          <p className="text-sm text-amber-800">
+            No son de ninguna de las dos plantillas: <strong>{desconocidos.join(", ")}</strong>. Tal y como
+            están, esos goles no se le contarán a nadie en las estadísticas.
+          </p>
+          <p className="text-xs text-amber-700">
+            Corrígelos, o vuelve a pulsar Guardar si de verdad van así.
+          </p>
+        </div>
+      )}
 
       {/* Error */}
       {error && (
@@ -343,7 +419,7 @@ export default function ResultadoForm({
         disabled={isPending || !resultado}
         className="w-full rounded-2xl bg-[#0b4a6f] text-white font-black py-4 text-base uppercase tracking-wide hover:bg-[#091f36] active:scale-95 transition disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-[#0b4a6f]/20"
       >
-        {isPending ? "Guardando…" : "Guardar Resultado"}
+        {isPending ? "Guardando…" : desconocidos.length > 0 ? "Guardar de todas formas" : "Guardar Resultado"}
       </button>
 
       {/* Borrar resultado */}
@@ -386,12 +462,15 @@ export default function ResultadoForm({
 
 function GolesSection({
   titulo,
+  lista,
   goles,
   onAdd,
   onUpdate,
   onRemove,
 }: {
   titulo: string;
+  /** Id del datalist con la plantilla de ese equipo */
+  lista: string;
   goles: GolEntry[];
   onAdd: () => void;
   onUpdate: (i: number, campo: keyof GolEntry, val: string) => void;
@@ -428,6 +507,7 @@ function GolesSection({
                   type="text"
                   value={gol.jugador}
                   onChange={(e) => onUpdate(i, "jugador", e.target.value)}
+                  list={lista}
                   placeholder="Goleador (apodo)"
                   className="flex-1 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-800 focus:outline-none focus:border-[#0b4a6f] transition"
                 />
@@ -443,6 +523,7 @@ function GolesSection({
                   type="text"
                   value={gol.asistente}
                   onChange={(e) => onUpdate(i, "asistente", e.target.value)}
+                  list={lista}
                   placeholder="Asistente (opcional)"
                   className="flex-1 rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs text-slate-600 focus:outline-none focus:border-[#0b4a6f] transition"
                 />

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { isAuthenticated } from "../actions";
+import { apodosDeEquipo } from "@/lib/jugadores";
 import { getJornadasConResultados } from "@/lib/queries";
 import { getSplit3, partidosFaseFinal } from "@/lib/split3";
 import ResultadoForm from "./ResultadoForm";
@@ -90,6 +91,8 @@ export default async function AdminPartidoPage({ params }: Props) {
           partidoId={partidoId}
           local={partido.local}
           visitante={partido.visitante}
+          jugadoresLocal={apodosDeEquipo(partido.local)}
+          jugadoresVisitante={apodosDeEquipo(partido.visitante)}
           arbitraActual={partido.arbitra}
           estadoActual={partido.estado}
           motivoActual={partido.motivo}
