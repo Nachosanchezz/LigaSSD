@@ -11,6 +11,72 @@ export type Noticia = {
 
 export const noticias: Noticia[] = [
   {
+    id: "los-jinetos-la-jineta-cazo-de-noche",
+    equipoSlug: "los-jinetos",
+    titular: "La jineta cazó de noche: Los Jinetos se llevaron el músculo de Bodø y el cerebro de Old School",
+    subtitular: "Carlos desvalija media liga, se queda sin un millón y monta alrededor del mejor jugador del campeonato una plantilla que ya empieza a dar bastante miedo",
+    cuerpo: `Hay equipos que fichan.
+
+Hay equipos que negocian.
+
+Y luego están Los Jinetos, que directamente entraron de noche.
+
+La jineta, el animal del escudo, es sigilosa, nocturna y caza sin hacer demasiado ruido. Carlos debió de leerse la Wikipedia antes de la subasta, porque cuando el resto de presidentes quiso darse cuenta, media liga estaba mirando su plantilla y preguntándose dónde estaban sus jugadores.
+
+Bodø Dream perdió dos piezas importantes: Nacho Ram y Hurta.
+
+Old School vio marcharse a Rafa, el MVP que apareció en el momento más importante del segundo split.
+
+Atalaya perdió a Jimmy, el gato de las minas y probablemente el único hombre que evitaba que aquella urbanización fuera declarada en ruinas. Y también a Fer, una de sus referencias de gol.
+
+Açai Boys perdió a Fiter.
+
+Y todos fueron a parar al mismo sitio.
+
+Esto ya no es scouting. Esto es entrar en seis vestuarios con una bolsa negra y salir antes de que salte la alarma.
+
+Carlos fue mirando las mejores piezas disponibles y actuó con una filosofía bastante sencilla: "Eso me gusta. Me lo llevo."
+
+Bodø Dream tenía músculo. Fuera. Old School tenía MVP. Fuera. Atalaya tenía portero y gol. Fuera. Açai todavía tenía algo aprovechable. También fuera.
+
+Cuando terminó la subasta, a Los Jinetos no le quedaba ni un millón. Cero. Pero tampoco parecía necesitarlo, porque si gastar hasta el último euro fuera delito, el tercer split empezaría con media liga declarando en comisaría: Torre Beldes ya había descubierto que ahorrar es de cobardes, Filósofos apostó 74 millones a una caja misteriosa llamada Samu y Juan pagó 79 por su hijo deportivo.
+
+Lo preocupante, en todo caso, no es la plantilla. Es quién la dirige.
+
+Porque Carlos no es precisamente un presidente que necesite que sus compañeros le salven la temporada. Estamos hablando, según el consenso general de la prensa más objetiva y nada exagerada de esta liga, del mejor jugador del campeonato con bastante diferencia.
+
+Normalmente, cuando construyes una plantilla alrededor de una estrella, intentas darle apoyo. Carlos ha interpretado "apoyo" como llevarse medio once ideal de los demás. Un enfoque valiente. Quizá innecesario. Pero valiente.
+
+Los Jinetos no llega al tercer split diciendo "vamos a competir". Llega diciendo "aparta".
+
+Y claro, ya han empezado los periódicos. Que si van a arrasar. Que si esto está hecho. Que si habría que darles algunos puntos antes de empezar para ahorrar tiempo. Que si la jineta no va a cazar, va a extinguir especies.
+
+El problema de llegar con semejante cartel es que ahora cualquier cosa que no sea ganar va a ser divertidísima para el resto. Si ganan, todo el mundo dirá que era lo normal. Si pierden, se abrirá una investigación internacional. Y si empatan contra el último de la tabla, probablemente haya que cerrar las redes sociales durante veinticuatro horas.
+
+Esa es la maldición de las grandes plantillas: cuanto más impresionas en septiembre, más material das para diciembre.
+
+Pero sobre el papel, el equipo asusta. Rafa llega después de demostrar en playoffs que podía ser mucho más que una pieza suelta de Old School. Jimmy abandona definitivamente la tarea humanitaria de sostener Atalaya para ponerse bajo palos en un proyecto donde, por una vez, quizá no tenga que parar veinte tiros por partido. Fer añade gol. Nacho Ram y Hurta llegan desde Bodø Dream, otro proyecto que ya sabía bastante de acumular talento. Y Fiter deja el açai.
+
+Todos orbitando alrededor de Carlos.
+
+La operación tiene una belleza especial, porque en lugar de construir una identidad propia, Los Jinetos ha formado su plantilla mediante saqueo selectivo de los mejores recuerdos ajenos. Un poco de Bodø. Un poco de Old School. Un poco de Atalaya. Un poco de Açai. Lo mezclas todo, le añades al mejor jugador de la liga y a correr.
+
+Literalmente.
+
+Ahora su mayor enemigo puede ser precisamente la expectativa, porque el mercado los ha convertido en favoritos antes de que ruede el balón. Si la temporada sale bien, será lo esperado. Si sale mal, la hemeroteca va a ser un parque de atracciones.
+
+De momento, Los Jinetos empieza el tercer split con seis vestuarios revisando sus bolsillos y Carlos mirando su nueva plantilla como quien acaba de volver de una noche especialmente productiva.
+
+No dejó dinero. No dejó piezas buenas fuera. Y tampoco dejó demasiada tranquilidad.
+
+El resto de la liga todavía está intentando entender qué pasó. Pero la explicación es bastante sencilla.
+
+Era de noche. Nadie vigilaba. Y la jineta tenía hambre.`,
+    imagen: "/noticias/noticiacarlos.png",
+    fecha: "16 sep 2026",
+    etiqueta: "RUMOR",
+  },
+  {
     id: "torre-beldes-campeones-final",
     equipoSlug: "torre-beldes",
     titular: "Torre Beldes toca el cielo: 5-4 a Old School y el pueblo ya tiene su split",
