@@ -11,6 +11,80 @@ export type Noticia = {
 
 export const noticias: Noticia[] = [
   {
+    id: "los-tercios-dos-maximos-goleadores",
+    equipoSlug: "los-tercios",
+    titular: "Los Tercios juntan a los dos máximos goleadores de la historia y la liga mira hacia otro lado",
+    subtitular: "Borja se ficha a Nico, suma a Rodri Urru y convierte el escudo imperial en una declaración de intenciones: si no puedes ser Filósofos, cómprate media historia",
+    cuerpo: `Hay presidentes que construyen equipos.
+
+Hay presidentes que buscan equilibrio.
+
+Y luego está Borja.
+
+Borja ha decidido que, para el tercer split, lo mejor era no complicarse con conceptos abstractos como "proyecto", "identidad" o "scouting". Ha ido directamente a por los goles. Y no a por unos pocos: a por casi todos.
+
+Porque Los Tercios ha juntado en el mismo vestuario a Nico, máximo goleador histórico de la liga con 43 goles, y a Borjita, segundo con 41.
+
+Uno y dos. Primer y segundo puesto del palmarés. En el mismo equipo.
+
+Una cosa discretísima. Una plantilla perfectamente normal. Nada que ver aquí.
+
+Y por si parecía insuficiente, Borja también se ha llevado a Rodri Urru por 53 millones: otro nombre importante y, para darle más salsa al asunto, uno de los jugadores históricos de Filósofos.
+
+Ahí empieza la sospecha emocional. Porque esto ya no parece una construcción de plantilla. Parece una venganza estética contra Filósofos.
+
+Filósofos ganó, tuvo nombres, construyó relato y dio jugadores a la historia de la liga. Y Borja, aparentemente, lo ha mirado desde lejos durante dos splits pensando: "pues yo también quiero."
+
+Así que ha hecho lo más sencillo. Se los ha llevado. Sobre todo a Rodri.
+
+La operación tiene ese punto maravilloso del equipo nuevo rico que no quiere inventar nada, solo importar prestigio. Si el fútbol de Filósofos funcionaba, se compra. Si sus jugadores eran buenos, se fichan. Si tenían aura, se absorbe.
+
+Colonización deportiva. Muy acorde, por cierto, con el nombre y el escudo.
+
+Porque estamos hablando de Los Tercios. Escudo imperial. Águila. Estética de "venimos a conquistar". Y una plantilla ofensiva que ya no parece un equipo de fútbol sala, sino un decreto de expansión territorial.
+
+El mensaje es bastante claro: esto no es un ataque, es una anexión.
+
+Nico trae 43 goles históricos. Borjita, 41. Entre los dos suman 84 goles en la liga. Ochenta y cuatro. Hay equipos enteros que necesitarían varias temporadas, una prórroga y ayuda administrativa para acercarse a esa cifra.
+
+Los Tercios los ha puesto juntos y ha dicho: "a ver qué pasa".
+
+Qué puede salir mal. Bueno, muchas cosas. Juntar dos goleadores no garantiza que todo funcione: hay egos, roles, balón, jerarquías, química y esa pequeña costumbre del fútbol de castigar a cualquiera que llegue demasiado convencido de que ya ha ganado antes de empezar.
+
+Pero también hay otra realidad. Como conecten, la liga va a tener un problema. Porque si Nico y Borjita se entienden, y Rodri Urru añade lo suyo, el ataque de Los Tercios puede convertirse en una de esas cosas que después se explican con palabras tipo "abusivo", "innecesario" o "esto quién lo permitió".
+
+Y ahí está la ironía. Torre Beldes recibe 30 millones extra. Bodø Dream paga 79 por Mario. Filósofos apuesta 74 por un desconocido. Y Los Tercios, mientras todos miran esas historias, ha hecho algo mucho más sencillo: juntar al número 1 y al número 2 del ranking histórico de goleadores.
+
+Sin demasiado ruido. Con águila. Con escudo imperial. Y con cara de "todo legal".
+
+Borja, además, sale reforzado en su doble papel. Presidente, sí, pero también jugador histórico y segundo máximo goleador de la liga. Porque eso también tiene gracia: no ha fichado a una estrella para acompañar a su equipo, se ha fichado a sí mismo un socio. O mejor dicho, ha fichado al único jugador que, históricamente, ha marcado más goles que él.
+
+Eso no es planificación. Eso es resolver una crisis de ego con presupuesto.
+
+"¿Quién tiene más goles que yo?" Nico. "Pues fichado."
+
+Simple. Elegante. Imperial.
+
+Y luego está Rodri Urru, el fichaje que termina de darle a la operación ese aroma de expolio filosófico: no solo construyes una delantera con dos goleadores históricos, además te llevas una pieza asociada a uno de los proyectos más exitosos de la liga.
+
+Hay quien lo llamaría mercado. Otros, apropiación cultural. Los Tercios lo llamará seguramente planificación deportiva.
+
+Y quizá tenga razón, porque si algo ha dejado claro esta subasta es que el tercer split no va de humildad. Eso murió hace tiempo. Ahora va de presupuestos, apuestas, ego y equipos intentando construir el relato antes de que ruede el balón.
+
+En ese terreno, Los Tercios ha entrado con botas militares.
+
+No sabemos si serán campeones. No sabemos si Nico y Borjita se repartirán los goles o se los discutirán. No sabemos si Rodri será la pieza que conecte todo o si el escudo imperial acabará siendo más grande que el rendimiento.
+
+Pero una cosa sí está clara. Borja ha visto la historia de Filósofos, la ha estudiado, la ha envidiado un poquito y ha tomado una decisión muy humana: si no puedes superar el imperio, róbale las tropas.
+
+Los Tercios ya tiene ataque.
+
+Ahora solo falta saber si esto es un equipo. O una invasión.`,
+    imagen: "/noticias/noticiatercios.png",
+    fecha: "16 sep 2026",
+    etiqueta: "EXCLUSIVA",
+  },
+  {
     id: "los-jinetos-la-jineta-cazo-de-noche",
     equipoSlug: "los-jinetos",
     titular: "La jineta cazó de noche: Los Jinetos se llevaron el músculo de Bodø y el cerebro de Old School",
