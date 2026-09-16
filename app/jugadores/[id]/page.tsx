@@ -2,11 +2,10 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import Escudo from "@/components/Escudo";
 import { getPersona, personas } from "@/data/personas";
-import { goleadoresSplit1 } from "@/data/split1";
 import { equipos as equiposSplit2 } from "@/data/split2/equipos";
 import { statsDeJugador, type StatsJugador } from "@/lib/estadisticas";
 import { nombreCompletoJugador } from "@/lib/helpers";
-import { clavesDeJugador, normalizarTexto } from "@/lib/jugadores";
+import { filaSplit1DePersona } from "@/lib/palmares";
 import { getJornadasConResultados, getPlayoffConResultados } from "@/lib/queries";
 import { equipoDePersona, getSplit3, partidosFaseFinal } from "@/lib/split3";
 
@@ -67,8 +66,7 @@ export default async function JugadorPage({ params }: Props) {
     historial.push({ split: "Split 2", equipo: equipoSplit2.nombre, ruta: `/split2/equipos/${equipoSplit2.slug}`, ...stats });
   }
   // El Split 1 solo guardaba goles y asistencias, por nombre
-  const claves = new Set(clavesDeJugador(persona));
-  const filaSplit1 = goleadoresSplit1.find((fila) => claves.has(normalizarTexto(fila.nombre)));
+  const filaSplit1 = filaSplit1DePersona(persona);
   if (filaSplit1) {
     historial.push({ split: "Split 1", equipo: filaSplit1.equipo, goles: filaSplit1.goles, asistencias: filaSplit1.asistencias });
   }

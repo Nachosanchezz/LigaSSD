@@ -47,10 +47,24 @@ function ordenar(mapa: Map<string, FilaHistorica>): FilaHistorica[] {
   );
 }
 
-// Del Split 1 solo hay una lista por nombre: se busca a quién corresponde
+/**
+ * Del Split 1 solo hay una lista por nombre: se busca a quién corresponde.
+ * Si ese nombre encaja con más de un jugador de ahora (en la liga hay dos
+ * "Guille"), se deja sin asignar antes que dárselo a quien no es.
+ */
 function personaDelSplit1(nombre: string): Persona | undefined {
   const clave = normalizarTexto(nombre);
-  return personas.find((persona) => clavesDeJugador(persona).includes(clave));
+  const candidatos = personas.filter((persona) => clavesDeJugador(persona).includes(clave));
+  if (candidatos.length === 1) return candidatos[0];
+  // Con varios candidatos, solo puede ser quien ya estaba: los que llegan
+  // nuevos en el Split 3 no pudieron jugar el Split 1
+  const veteranos = candidatos.filter((persona) => persona.split2);
+  return veteranos.length === 1 ? veteranos[0] : undefined;
+}
+
+/** Lo que hizo una persona en el Split 1, si se le puede atribuir con seguridad */
+export function filaSplit1DePersona(persona: Persona) {
+  return goleadoresSplit1.find((fila) => personaDelSplit1(fila.nombre)?.id === persona.id);
 }
 
 export type Palmares = {

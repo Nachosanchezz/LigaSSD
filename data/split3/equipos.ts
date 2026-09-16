@@ -76,7 +76,7 @@ export const equiposSplit3: EquipoSplit3[] = [
       { persona: "alvaro-aguilar", precio: 29 },
       { persona: "jorge-sanchez-portero", precio: 19 },
       { persona: "adrian-sainz", precio: 17 },
-      { persona: "petit", precio: 14 },
+      { persona: "lucas-rodriguez", precio: 14 },
       { persona: "manu", precio: 9 },
     ],
   },

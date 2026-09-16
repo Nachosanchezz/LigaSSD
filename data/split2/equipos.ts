@@ -116,6 +116,7 @@ export const equipos: Equipo[] = [
         nombre: "Lucas",
         primerApellido: "Rodríguez",
         apodo: "Pt7",
+        alias: ["Petit"],
         edad: 24,
         posicion: "Ala",
         piernaBuena: "Derecha",

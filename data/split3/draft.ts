@@ -74,7 +74,7 @@ export const lotesDraft: LoteDraft[] = [
     pujas: [{ hora: "20:26:49", equipo: "borja", importe: 10 }, { hora: "20:26:51", equipo: "nacho", importe: 20 }, { hora: "20:26:52", equipo: "borja", importe: 30 }, { hora: "20:26:53", equipo: "lui", importe: 35 }, { hora: "20:26:53", equipo: "nacho", importe: 40 }, { hora: "20:26:55", equipo: "carlos", importe: 41 }, { hora: "20:26:56", equipo: "borja", importe: 46 }, { hora: "20:26:57", equipo: "lui", importe: 47 }, { hora: "20:26:58", equipo: "borja", importe: 48 }, { hora: "20:27:11", equipo: "nacho", importe: 49 }, { hora: "20:27:18", equipo: "borja", importe: 50 }, { hora: "20:27:31", equipo: "nacho", importe: 51 }, { hora: "20:27:42", equipo: "juan", importe: 52 }, { hora: "20:27:42", equipo: "borja", importe: 53 }],
   },
   {
-    orden: 10, sorteo: 10, nombre: "Petit", persona: "petit",
+    orden: 10, sorteo: 10, nombre: "Petit", persona: "lucas-rodriguez",
     portero: false, repetido: false, hora: "20:29", duracion: "1:07", equipo: "juan", precio: 14,
     pujas: [{ hora: "20:29:06", equipo: "nacho", importe: 1 }, { hora: "20:29:12", equipo: "juan", importe: 2 }, { hora: "20:29:15", equipo: "nacho", importe: 3 }, { hora: "20:29:18", equipo: "juan", importe: 8 }, { hora: "20:29:22", equipo: "nacho", importe: 9 }, { hora: "20:29:27", equipo: "juan", importe: 10 }, { hora: "20:29:30", equipo: "nacho", importe: 11 }, { hora: "20:29:32", equipo: "juan", importe: 12 }, { hora: "20:29:46", equipo: "nacho", importe: 13 }, { hora: "20:29:53", equipo: "juan", importe: 14 }],
   },

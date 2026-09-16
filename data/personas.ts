@@ -29,16 +29,14 @@ const nuevos: Persona[] = [
     piernaBuena: "Izquierda",
   },
   { id: "adrian-sainz", nombre: "Adrián", primerApellido: "Sainz", apodo: "Sainz" },
-  // Fichados en la subasta del Split 3. Falta su nombre completo: por ahora
-  // llevan el apodo con el que salieron en el draft.
-  { id: "goyo", nombre: "Goyo" },
-  { id: "dante", nombre: "Dante" },
-  { id: "petit", nombre: "Petit" },
-  { id: "manu", nombre: "Manu" },
-  { id: "samu", nombre: "Samu" },
-  { id: "juli", nombre: "Juli" },
-  { id: "dani-lozano", nombre: "Dani", primerApellido: "Lozano", apodo: "Dani Lozano", alias: ["Dani"] },
-  { id: "guillermo-portero", nombre: "Guillermo", posicion: "Portero" },
+  { id: "goyo", nombre: "Gregorio", primerApellido: "Amador", apodo: "Goyo" },
+  { id: "dante", nombre: "Dante", apodo: "Dante" },
+  { id: "manu", nombre: "Manuel", apodo: "Manu" },
+  { id: "samu", nombre: "Samuel", primerApellido: "Garrido", apodo: "Samu" },
+  { id: "juli", nombre: "Julián", apodo: "Juli" },
+  { id: "dani-lozano", nombre: "Daniel", primerApellido: "Lozano", apodo: "Dani", alias: ["Dani Lozano"] },
+  // Otro Guillermo, distinto del "Guille" que jugó el Split 1 y el Split 2
+  { id: "guillermo-portero", nombre: "Guillermo", apodo: "Guille", posicion: "Portero" },
 ];
 
 export const personas: Persona[] = [...veteranos, ...nuevos];
