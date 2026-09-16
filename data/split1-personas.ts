@@ -62,15 +62,15 @@ export const personasSplit1: Record<string, string> = {
   "JULI": "juli",
   "MARIO": "mario-fuentes",
   "POW": "adrian-antropow",
-  "ÁLVARO": "alvaro-cartagena",
+  "ÁLVARO": "alvaro-martin",
 
   // CLUB BRUJO
   "ALEX DÍAZ": "alejandro-diaz",
   "BARCA": "pablo-rodriguez",
   "DELAS": "alejandro-de-las-heras",
   "FITER": "miguel-fiter",
-  // "GON" del Club Brujo es otro Gon, distinto del "GON AYLLÓN" de Atalaya:
-  // sin ficha hasta saber su nombre, para no sumarle sus goles a quien no es
+  // Ojo: este "GON" es Gonzalo Gómez de la Vega, no el "GON AYLLÓN" de Atalaya
+  "GON": "gonzalo-gomez",
   "JAIME": "jaime-de-sala",
   "NACHO RAM": "nacho-ramirez",
   "RUI (P)": "rui-moscat",

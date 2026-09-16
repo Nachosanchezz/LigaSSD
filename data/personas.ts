@@ -59,8 +59,9 @@ const historicos: Persona[] = [
   { id: "luis-minguillon", nombre: "Luis", primerApellido: "Minguillón", apodo: "Mingui" },
   { id: "jaime-valenciano", nombre: "Jaime", primerApellido: "Valenciano" },
   { id: "rui-moscat", nombre: "Rui", primerApellido: "Moscat", apodo: "Rui", posicion: "Portero" },
-  // Jugó en el Real Cartagena del Split 1; falta su apellido
-  { id: "alvaro-cartagena", nombre: "Álvaro", apodo: "Álvaro" },
+  { id: "alvaro-martin", nombre: "Álvaro", primerApellido: "Martín", apodo: "Álvaro" },
+  // Otro Gon, distinto de Gon Ayllón: jugó en el Club Brujo del Split 1
+  { id: "gonzalo-gomez", nombre: "Gonzalo", primerApellido: "Gómez de la Vega", apodo: "Gon" },
 ];
 
 export const personas: Persona[] = [...veteranos, ...nuevos, ...historicos];
