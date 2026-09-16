@@ -27,6 +27,7 @@ Fixtures, teams and players are **hardcoded in TypeScript**. Results are entered
 - `data/split3/partidos.ts` — liguilla fixture (double round-robin, 10 jornadas) generated with the circle method. Match ids: `s3-j{N}-{localId}-{visitanteId}`. Dates go in `PROGRAMACION`.
 - `data/split3/fases.ts` — play-in (triangular A = 1º/3º/6º, B = 2º/4º/5º), semis (1ºA–2ºB, 1ºB–2ºA) and final. Ids `s3-ta-N`, `s3-tb-N`, `s3-sf1`, `s3-sf2`, `s3-final`.
 - `data/split2/` — archived Split 2 (`equipos.ts`, `partidos.ts`, `playoffs.ts`). `data/split1.ts` — archived Split 1 (summary data only).
+- `data/split1-personas.ts` — **explicit** map from each Split 1 name to a persona id. Split 1 was stored as bare nicknames and many changed since ("NACHO" is now "Chete"), so nothing is matched by similarity there: a name missing from this table is simply not counted. `data/personas.ts` has a `historicos` group for players who left the league, so their history survives.
 - `lib/split3.ts` — `getSplit3()` builds the whole competition (standings, triangulars, semis, final, champion) resolving each phase from the previous one.
 - `lib/clasificacion.ts` — standings for any split. Split 3 uses `enfrentamientoDirecto` (pts → head-to-head once all matches between the tied teams are played → dg → gf); triangulars fall back to liguilla position.
 - `lib/resultado.ts` — parses results: `"3-2"`, or `"4-4 (5-3 pen.)"` for knockout draws (extra time then penalties).

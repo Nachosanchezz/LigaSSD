@@ -5,7 +5,7 @@ import { getPersona, personas } from "@/data/personas";
 import { equipos as equiposSplit2 } from "@/data/split2/equipos";
 import { statsDeJugador, type StatsJugador } from "@/lib/estadisticas";
 import { nombreCompletoJugador } from "@/lib/helpers";
-import { filaSplit1DePersona } from "@/lib/palmares";
+import { equipoSplit1DePersona, filaSplit1DePersona } from "@/lib/palmares";
 import { getJornadasConResultados, getPlayoffConResultados } from "@/lib/queries";
 import { equipoDePersona, getSplit3, partidosFaseFinal } from "@/lib/split3";
 
@@ -65,10 +65,17 @@ export default async function JugadorPage({ params }: Props) {
     ]);
     historial.push({ split: "Split 2", equipo: equipoSplit2.nombre, ruta: `/split2/equipos/${equipoSplit2.slug}`, ...stats });
   }
-  // El Split 1 solo guardaba goles y asistencias, por nombre
+  // Del Split 1 solo se guardaron goles y asistencias; quien no marcó sale igual,
+  // con su equipo, para que se vea que jugó
   const filaSplit1 = filaSplit1DePersona(persona);
-  if (filaSplit1) {
-    historial.push({ split: "Split 1", equipo: filaSplit1.equipo, goles: filaSplit1.goles, asistencias: filaSplit1.asistencias });
+  const equipoSplit1 = equipoSplit1DePersona(persona);
+  if (equipoSplit1) {
+    historial.push({
+      split: "Split 1",
+      equipo: equipoSplit1,
+      goles: filaSplit1?.goles ?? 0,
+      asistencias: filaSplit1?.asistencias ?? 0,
+    });
   }
 
   const posicionColor = persona.posicion?.toLowerCase().includes("portero")

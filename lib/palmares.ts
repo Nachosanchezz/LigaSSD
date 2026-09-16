@@ -1,10 +1,10 @@
-import { getPersona, personaDelSplit2, personas, type Persona } from "@/data/personas";
-import { clasificacionSplit1, goleadoresSplit1, statsSplit1 } from "@/data/split1";
+import { getPersona, personaDelSplit2, type Persona } from "@/data/personas";
+import { clasificacionSplit1, equiposSplit1, goleadoresSplit1, statsSplit1 } from "@/data/split1";
+import { personasSplit1 } from "@/data/split1-personas";
 import { equipos as equiposSplit2 } from "@/data/split2/equipos";
 import { equiposSplit3 } from "@/data/split3/equipos";
 import { calcularClasificacion } from "@/lib/clasificacion";
 import { contarEstadistica } from "@/lib/estadisticas";
-import { clavesDeJugador, normalizarTexto } from "@/lib/jugadores";
 import { getJornadasConResultados, getPlayoffConResultados } from "@/lib/queries";
 import { crearMapaSplit3, getSplit3, partidosFaseFinal } from "@/lib/split3";
 
@@ -48,23 +48,26 @@ function ordenar(mapa: Map<string, FilaHistorica>): FilaHistorica[] {
 }
 
 /**
- * Del Split 1 solo hay una lista por nombre: se busca a quién corresponde.
- * Si ese nombre encaja con más de un jugador de ahora (en la liga hay dos
- * "Guille"), se deja sin asignar antes que dárselo a quien no es.
+ * A quién corresponde un nombre del Split 1. Va por la tabla de
+ * data/split1-personas.ts: nada de casar por parecido, que aquella temporada
+ * se guardó solo con nombres sueltos y muchos han cambiado de apodo.
  */
 function personaDelSplit1(nombre: string): Persona | undefined {
-  const clave = normalizarTexto(nombre);
-  const candidatos = personas.filter((persona) => clavesDeJugador(persona).includes(clave));
-  if (candidatos.length === 1) return candidatos[0];
-  // Con varios candidatos, solo puede ser quien ya estaba: los que llegan
-  // nuevos en el Split 3 no pudieron jugar el Split 1
-  const veteranos = candidatos.filter((persona) => persona.split2);
-  return veteranos.length === 1 ? veteranos[0] : undefined;
+  const id = personasSplit1[nombre];
+  return id ? getPersona(id) : undefined;
 }
 
-/** Lo que hizo una persona en el Split 1, si se le puede atribuir con seguridad */
+/** Goles y asistencias de una persona en el Split 1, si marcó */
 export function filaSplit1DePersona(persona: Persona) {
-  return goleadoresSplit1.find((fila) => personaDelSplit1(fila.nombre)?.id === persona.id);
+  return goleadoresSplit1.find((fila) => personasSplit1[fila.nombre] === persona.id);
+}
+
+/** Equipo con el que jugó el Split 1, aunque no marcara ningún gol */
+export function equipoSplit1DePersona(persona: Persona): string | undefined {
+  const equipo = equiposSplit1.find((candidato) =>
+    candidato.jugadores.some((jugador) => personasSplit1[jugador] === persona.id)
+  );
+  return equipo?.nombre ?? filaSplit1DePersona(persona)?.equipo;
 }
 
 export type Palmares = {
