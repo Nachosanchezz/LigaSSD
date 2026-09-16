@@ -28,11 +28,11 @@ const nuevos: Persona[] = [
     posicion: "Cierre",
     piernaBuena: "Izquierda",
   },
+  { id: "adrian-sainz", nombre: "Adrián", primerApellido: "Sainz", apodo: "Sainz" },
   // Fichados en la subasta del Split 3. Falta su nombre completo: por ahora
   // llevan el apodo con el que salieron en el draft.
   { id: "goyo", nombre: "Goyo" },
   { id: "dante", nombre: "Dante" },
-  { id: "amigo-cifu", nombre: "Amigo Cifu" },
   { id: "petit", nombre: "Petit" },
   { id: "manu", nombre: "Manu" },
   { id: "samu", nombre: "Samu" },

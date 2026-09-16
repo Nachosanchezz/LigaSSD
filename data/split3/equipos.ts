@@ -75,7 +75,7 @@ export const equiposSplit3: EquipoSplit3[] = [
       { persona: "alberto-fernandez", precio: 29 },
       { persona: "alvaro-aguilar", precio: 29 },
       { persona: "jorge-sanchez-portero", precio: 19 },
-      { persona: "amigo-cifu", precio: 17 },
+      { persona: "adrian-sainz", precio: 17 },
       { persona: "petit", precio: 14 },
       { persona: "manu", precio: 9 },
     ],
@@ -120,9 +120,10 @@ export const equiposSplit3: EquipoSplit3[] = [
   // Llega formado, sin pasar por la subasta
   {
     id: "melendi",
-    nombre: "MELENDI",
-    slug: "melendi",
-    color: "#0f766e",
+    nombre: "TITANS",
+    slug: "titans",
+    logo: "/equipos/titans.png",
+    color: "#1e3a8a",
     plantilla: [
       { persona: "jaime-melendi", presidente: true },
       { persona: "salvador-heras" },
