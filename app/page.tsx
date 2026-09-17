@@ -2,7 +2,7 @@ import Link from "next/link";
 import Escudo from "@/components/Escudo";
 import NoticiasCarrusel from "@/components/NoticiasCarrusel";
 import ProximoPartido from "@/components/ProximoPartido";
-import { noticias } from "@/data/noticias";
+import { noticiasDeSplit } from "@/data/noticias";
 import { bote, jugadoresQuePagan } from "@/data/split3/bote";
 import { equiposSplit3 } from "@/data/split3/equipos";
 import { ladoGanador, leerMarcador } from "@/lib/resultado";
@@ -212,7 +212,7 @@ export default async function HomePage() {
         </Link>
       </section>
 
-      <NoticiasCarrusel noticias={noticias} />
+      <NoticiasCarrusel noticias={noticiasDeSplit(3)} />
 
       {/* About */}
       <section className="relative z-20 px-4 sm:px-6 py-12 sm:py-16 bg-white border-t border-slate-100">

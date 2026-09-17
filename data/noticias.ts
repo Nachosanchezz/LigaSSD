@@ -1,5 +1,7 @@
 export type Noticia = {
   id: string;
+  /** Split al que pertenece: cada uno enseña las suyas */
+  split: 2 | 3;
   equipoSlug?: string;
   titular: string;
   subtitular?: string;
@@ -14,6 +16,7 @@ export type Noticia = {
 export const noticias: Noticia[] = [
   {
     id: "titans-sin-portero",
+    split: 3,
     equipoSlug: "titans",
     titular: "Titans: se montaron el equipo por libre, esquivaron la subasta… y se dejaron al portero",
     subtitular: "Açai Boys cambia de piel, suma piezas de Spiti2 y arma una plantilla seria… salvo por un pequeño detalle llamado portería",
@@ -89,6 +92,7 @@ Alguien que se ponga debajo del larguero.`,
   },
   {
     id: "los-tercios-dos-maximos-goleadores",
+    split: 3,
     equipoSlug: "los-tercios",
     titular: "Los Tercios juntan a los dos máximos goleadores de la historia y la liga mira hacia otro lado",
     subtitular: "Borja se ficha a Nico, suma a Rodri Urru y convierte el escudo imperial en una declaración de intenciones: si no puedes ser Filósofos, cómprate media historia",
@@ -164,6 +168,7 @@ Ahora solo falta saber si esto es un equipo. O una invasión.`,
   },
   {
     id: "los-jinetos-la-jineta-cazo-de-noche",
+    split: 3,
     equipoSlug: "los-jinetos",
     titular: "La jineta cazó de noche: Los Jinetos se llevaron el músculo de Bodø y el cerebro de Old School",
     subtitular: "Carlos desvalija media liga, se queda sin un millón y monta alrededor del mejor jugador del campeonato una plantilla que ya empieza a dar bastante miedo",
@@ -230,6 +235,7 @@ Era de noche. Nadie vigilaba. Y la jineta tenía hambre.`,
   },
   {
     id: "torre-beldes-campeones-final",
+    split: 2,
     equipoSlug: "torre-beldes",
     titular: "Torre Beldes toca el cielo: 5-4 a Old School y el pueblo ya tiene su split",
     subtitular: "El equipo de Louis gana una final apretadísima, sin Miguel, callando bocas y convirtiendo el “este año sí” en algo peligrosamente real",
@@ -334,6 +340,7 @@ Ahora puede decir algo bastante más insoportable:
   },
   {
     id: "old-school-bodo-dream-playoff",
+    split: 2,
     equipoSlug: "old-school",
     titular: "Old School deja de ser Mr. Potato: 10-8 a Bodo Dream y el puzzle ya está en la final",
     subtitular: "El equipo hecho a piezas encaja en el mejor momento, tumba al campeón de la liga regular y convierte a Rafa en MVP sorpresa",
@@ -392,6 +399,7 @@ Y que el puzzle termina encajando justo cuando más duele.`,
   },
   {
     id: "torre-beldes-filosofos-playoff",
+    split: 2,
     equipoSlug: "torre-beldes",
     titular: "Torre Beldes rompe la maldición: 8-2 a Filósofos y primera carcajada histórica del pueblo",
     subtitular: "El equipo de Louis pasa a la final, firma su primera victoria contra su bestia negra y deja a Filósofos buscando explicaciones donde solo había un marcador",
@@ -490,6 +498,7 @@ Y con un 8-2, la historia se reescribe sola.`,
   },
   {
     id: "torre-beldes-filosofos-1",
+    split: 2,
     equipoSlug: "torre-beldes",
     titular: "Torre Beldes adelanta a Filósofos: el pueblo no tendrá títulos, pero sí memoria",
     subtitular: "Filósofos empata con Bodo Dream, pierde la batalla del ego y deja vivo el milagro municipal",
@@ -540,6 +549,7 @@ Y no hay tratado filosófico que arregle eso.`,
   },
   {
     id: "torre-beldes-pelea-1",
+    split: 2,
     equipoSlug: "torre-beldes",
     titular: "Torre Beldes explota por dentro: Sotto y Lucho llegan a las manos por una teoría nuclear que nadie pidió",
     subtitular: "La directiva estudia sanciones mientras el presidente Louis intenta poner orden con más buena intención que contundencia",
@@ -590,6 +600,7 @@ Y eso, en Torre Beldes, es probablemente lo más peligroso de todo.`,
   },
   {
     id: "torre-beldes-1",
+    split: 2,
     equipoSlug: "torre-beldes",
     titular: "Torre Beldes: mucho MVP, mucho ruido… y al final filosofía aplicada",
     subtitular: "El equipo del pueblo llega con chaqueta nueva, cuatro victorias y la lección de siempre",
@@ -620,6 +631,7 @@ Un filósofo.`,
   },
   {
     id: "bodo-dream-1",
+    split: 2,
     equipoSlug: "bodo-dream",
     titular: "Bodo Dream: Juan se monta el FIFA Ultimate Team y encima pretende que parezca casualidad",
     subtitular: "El administrador de la liga descubre que organizar la competición tiene sus ventajas",
@@ -654,6 +666,7 @@ Ganarle a Bodo Dream no sería solo una victoria. Sería un acto de justicia soc
   },
   {
     id: "acai-boys-1",
+    split: 2,
     equipoSlug: "acai-boys",
     titular: "Açai Boys: mucho bowl, mucho bíceps… y muy pocos puntos",
     subtitular: "El equipo más healthy de la liga sigue sin encontrar la vitamina de la victoria",
@@ -678,6 +691,7 @@ Quizá les falte gol. Quizá les falte portero. Quizá les sobre açai.`,
   },
   {
     id: "atalaya-1",
+    split: 2,
     equipoSlug: "atalaya",
     titular: "Atalaya: mismos vecinos, mismo presidente y el fútbol en junta extraordinaria",
     subtitular: "Dos splits, cero victorias y un portero que sostiene el edificio él solo",
@@ -712,6 +726,7 @@ Nueva temporada. Mismo presidente. Misma mierda. Y una comunidad entera esperand
   },
   {
     id: "spiti2-1",
+    split: 2,
     equipoSlug: "spiti2",
     titular: "Spiti2: plantilla compensada, pulmones dudosos y compromiso en revisión",
     subtitular: "Un 12-4, un presidente-portero en modo parte médico y victorias con asistencia externa",
@@ -738,6 +753,7 @@ Porque en esta liga se puede perder. Lo que no se puede es encajar doce y luego 
   },
   {
     id: "old-school-1",
+    split: 2,
     equipoSlug: "old-school",
     titular: "Old School: el jeque montó un Mister Potato y le llamó vieja escuela",
     subtitular: "Piezas de distintas cajas, química en construcción y un split que no refleja lo que prometen",
@@ -764,6 +780,7 @@ Y el jeque tendrá que demostrar que esto era un proyecto deportivo. No una manu
   },
   {
     id: "filosofos-1",
+    split: 2,
     equipoSlug: "filosofos",
     titular: "Filósofos: qué casualidad, uno de los administradores peleando la liga",
     subtitular: "El campeón del primer split vuelve a estar arriba y nadie puede demostrar nada, pero todos sospechan",
@@ -795,3 +812,8 @@ Pero Filósofos ya tiene el bolígrafo en la mano.`,
     etiqueta: "EXCLUSIVA",
   },
 ];
+
+/** Las noticias de un split, de la más reciente a la más antigua */
+export function noticiasDeSplit(split: 2 | 3): Noticia[] {
+  return noticias.filter((noticia) => noticia.split === split);
+}

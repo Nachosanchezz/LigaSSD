@@ -1,6 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
+import NoticiasCarrusel from "@/components/NoticiasCarrusel";
 import PageHeader from "@/components/PageHeader";
+import { noticiasDeSplit } from "@/data/noticias";
 import { equipos, logosEquipos } from "@/data/split2/equipos";
 import { calcularClasificacion } from "@/lib/clasificacion";
 import { contarEstadistica } from "@/lib/estadisticas";
@@ -166,6 +168,14 @@ export default async function Split2Page() {
           </div>
         </div>
 
+      </div>
+
+      <div className="mt-8 sm:mt-12">
+        <NoticiasCarrusel
+          noticias={noticiasDeSplit(2)}
+          titulo="Hemeroteca del Split 2"
+          kicker="Liga SSD · Marzo – junio 2026"
+        />
       </div>
     </div>
   );

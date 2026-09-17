@@ -150,7 +150,15 @@ function TarjetaNoticia({ noticia, onClick }: { noticia: Noticia; onClick: () =>
   );
 }
 
-export default function NoticiasCarrusel({ noticias }: { noticias: Noticia[] }) {
+export default function NoticiasCarrusel({
+  noticias,
+  titulo = "La Prensa del Vestuario",
+  kicker = "Liga SSD · Torrelodones",
+}: {
+  noticias: Noticia[];
+  titulo?: string;
+  kicker?: string;
+}) {
   const ref = useRef<HTMLDivElement>(null);
   const [noticiaAbierta, setNoticiaAbierta] = useState<Noticia | null>(null);
 
@@ -174,10 +182,10 @@ export default function NoticiasCarrusel({ noticias }: { noticias: Noticia[] }) 
           <div className="flex items-end justify-between gap-4 border-b-4 border-[#091f36] pb-3">
             <div>
               <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-slate-400">
-                Liga SSD · Torrelodones
+                {kicker}
               </p>
               <h2 className="text-2xl sm:text-4xl font-black uppercase tracking-tight text-[#091f36] leading-none mt-0.5">
-                La Prensa del Vestuario
+                {titulo}
               </h2>
             </div>
             {/* Flechas solo en desktop */}
