@@ -56,14 +56,14 @@ function Modal({ noticia, onClose }: { noticia: Noticia; onClose: () => void }) 
           </button>
         </div>
 
-        {/* Imagen */}
+        {/* Imagen: en la noticia abierta se ve entera, sin recortar */}
         {noticia.imagen && (
-          <div className="relative w-full aspect-video bg-slate-100 shrink-0">
+          <div className="relative w-full aspect-video bg-[#091f36] shrink-0">
             <Image
               src={noticia.imagen}
               alt={noticia.titular}
               fill
-              className={`object-cover ${encuadreDe(noticia)}`}
+              className="object-contain"
               unoptimized
             />
           </div>

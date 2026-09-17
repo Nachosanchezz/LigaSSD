@@ -13,6 +13,81 @@ export type Noticia = {
 
 export const noticias: Noticia[] = [
   {
+    id: "titans-sin-portero",
+    equipoSlug: "titans",
+    titular: "Titans: se montaron el equipo por libre, esquivaron la subasta… y se dejaron al portero",
+    subtitular: "Açai Boys cambia de piel, suma piezas de Spiti2 y arma una plantilla seria… salvo por un pequeño detalle llamado portería",
+    cuerpo: `Hay equipos que salen de una subasta.
+
+Hay equipos que gastan 79 millones en un jugador.
+
+Hay equipos que vacían media liga de noche.
+
+Y luego está Titans.
+
+Titans decidió que todo eso de pujar, levantar la mano, mirar presupuestos y pelearse por jugadores era demasiado convencional. Ellos fueron por libre: se montaron el equipo aparte, sin subasta, sin guerras de pujas y sin tener que pagar 74 millones por una caja misteriosa ni 79 por un hijo deportivo.
+
+Una decisión elegante. Práctica. Eficiente.
+
+Y aparentemente tan eficiente que, al terminar de montar la plantilla, se olvidaron de comprobar si alguien era portero.
+
+Pequeño detalle. Nada grave. Solo la única posición del fútbol sala en la que está permitido usar las manos.
+
+Porque Titans llega al tercer split con una base bastante seria. Gran parte del antiguo Açai Boys —Pueyo, Charly, Rober y Pato— vuelve a reunirse, esta vez bajo un nombre bastante más amenazante y bastante menos relacionado con desayunos de nueve euros. A eso le añades varias piezas procedentes de Spiti2 y, sobre el papel, sale un equipo competitivo: buenos jugadores, gente que sabe jugar y nivel suficiente para dar guerra.
+
+Una plantilla que, si la miras del cuello para abajo, tiene muy buena pinta.
+
+El problema aparece cuando miras hacia la portería.
+
+Porque los cinco porteros declarados del draft acabaron repartidos entre los otros cinco equipos. Todos. Ni uno para Titans. Seis equipos, cinco porteros, y Titans decidió comprobar en directo qué ocurre cuando las matemáticas te señalan con el dedo.
+
+Lo mejor de todo es el antecedente. Porque si alguien tenía experiencia con porteros misteriosos era precisamente Açai Boys, que en el split anterior protagonizó una de las grandes historias de la liga cuando fichó a un guardameta que nunca apareció, no contestaba y terminó convertido en una leyenda paranormal del vestuario.
+
+El famoso portero fantasma.
+
+Pues bien: han cambiado el nombre, han cambiado parte de la plantilla, han dejado atrás el bowl de frutas… y la maldición sigue ahí. Açai Boys se ha convertido en Titans, pero la portería sigue tratándose como un concepto filosófico. Existe. Sabemos que debería estar ahí. Pero nadie puede señalar exactamente quién va a ocuparla.
+
+Y eso tiene muchísimo mérito, porque en este tercer split se ha hablado de presupuestos, planificación, scouting, robos nocturnos, fichajes récord y estrategias de mercado. Titans, mientras tanto, parece haber trabajado con una lista bastante más sencilla:
+
+Pueyo: sí. Charly: sí. Rober: sí. Pato: sí. Más jugadores: sí. Portero: luego vemos.
+
+Y llegó el final. Y luego vemos.
+
+El asunto es todavía más divertido porque el equipo, realmente, es bueno. No estamos ante una plantilla montada para sobrevivir: Titans tiene jugadores para competir, para tener balón y para hacer daño arriba. Puede convertirse perfectamente en uno de esos equipos incómodos que te complican el partido desde el primer minuto.
+
+Pero claro. Todo eso está fenomenal hasta que el rival tira.
+
+Ahí empieza la parte experimental del proyecto. A lo mejor alguno descubre una vocación tardía. A lo mejor aparece un voluntario. A lo mejor Pato se levanta una mañana y decide que siempre soñó con ponerse guantes. A lo mejor el portero fantasma de Açai regresa para cerrar el círculo narrativo.
+
+Todo está abierto. Lo que no está abierta, por ahora, es una ficha que ponga claramente: PORTERO.
+
+Y quizá ahí esté la gran estrategia. Porque mientras el resto de equipos se prepara para enfrentarse a ellos, nadie sabe quién estará bajo palos. Eso genera incertidumbre. Eso genera dudas. Eso genera caos.
+
+¿Es mala planificación? ¿O es innovación táctica?
+
+Titans elegirá seguramente la segunda opción. Pueden vender que apuestan por un fútbol moderno, fluido, sin posiciones fijas. Una especie de portero líquido: todos pueden serlo, nadie lo es. Muy revolucionario. Muy del siglo XXI. Hasta que empiecen a caer balones cerca del segundo palo.
+
+Lo cierto es que la transformación tiene bastante sentido. El Açai Boys anterior tenía momentos competitivos, jugadores interesantes y una cantidad absurda de mala suerte. Ahora se reorganizan, suman piezas, cambian de identidad y buscan empezar de cero. Y el nombre ayuda: Titans suena a grandeza, a fuerza, a algo que baja de una montaña a conquistar la liga. Mucho mejor que Açai Boys.
+
+Eso sí, los titanes mitológicos solían tener poderes sobrehumanos. Estos, por ahora, necesitan uno bastante concreto: que alguno pare.
+
+La buena noticia para ellos es que las temporadas no se ganan en septiembre. Hay tiempo para ajustar, para improvisar y para encontrar solución. Y si la plantilla responde como parece que puede responder, lo del portero acabará siendo una anécdota graciosa de pretemporada.
+
+Pero si empiezan a entrar goles… bueno. La hemeroteca ya está preparada. Porque sería precioso que el antiguo Açai Boys cambiara de nombre, se montara un equipo competitivo por libre y aun así terminara perseguido por exactamente el mismo fantasma.
+
+Literalmente.
+
+Titans llega al tercer split con buenos jugadores, una identidad nueva y bastante fútbol en las botas.
+
+Solo falta una cosa. La más pequeña. La más insignificante. La más fácil de olvidar.
+
+Alguien que se ponga debajo del larguero.`,
+    imagen: "/noticias/noticiatitanes.png",
+    encuadre: "arriba",
+    fecha: "17 sep 2026",
+    etiqueta: "RUMOR",
+  },
+  {
     id: "los-tercios-dos-maximos-goleadores",
     equipoSlug: "los-tercios",
     titular: "Los Tercios juntan a los dos máximos goleadores de la historia y la liga mira hacia otro lado",
