@@ -15,6 +15,74 @@ export type Noticia = {
 
 export const noticias: Noticia[] = [
   {
+    id: "filosofos-74-millones-samu",
+    split: 3,
+    equipoSlug: "filosofos",
+    titular: "74 millones por un tal Samu: Filósofos vuelve a comprar una caja misteriosa y reza para que dentro haya otro MVP",
+    subtitular: "Chete pujó más que nadie, gastó los 200 millones exactos y vuelve a apostar por un desconocido para repetir el milagro de Miguel Morán y, de paso, devolverle el golpe a Torre Beldes",
+    cuerpo: `Hay equipos que fichan certezas.
+
+Otros fichan nombres conocidos, de esos por los que puedes justificar una barbaridad de dinero sin demasiadas preguntas.
+
+Y luego está Filósofos, que prefiere comprar misterio.
+
+El tercer split todavía no ha empezado y el equipo ya ha protagonizado una de las apuestas más extrañas de la subasta: 74 millones por Samu, un jugador que no ha disputado ni un minuto en la liga y al que, básicamente, nadie conoce.
+
+Setenta y cuatro millones. Por un señor que, para buena parte de los presidentes, podría ser futbolista, arquitecto o técnico de calderas.
+
+Pero Chete sabe algo. O cree saberlo. Que a estas alturas viene siendo casi lo mismo.
+
+Porque esto ya lo hemos visto antes. En el primer split, Filósofos apareció con Miguel Morán, otro que llegó sin cartel, sin ruido y sin que media liga supiera quién era. Poco después, Miguel terminó siendo MVP, Filósofos ganó la liga y el resto tuvo que tragarse las bromas previas junto con el orgullo.
+
+Desde entonces, en Filósofos se convencieron de una teoría peligrosísima: si nadie conoce a tu fichaje, probablemente sea buenísimo.
+
+No está demostrado científicamente. Pero ellos ya lo aplican como modelo de negocio.
+
+Y así llegamos a Samu.
+
+Durante la subasta, Chete no fue precisamente un hombre tranquilo. Pujó 100 veces, más que nadie, dentro de un total de 348. Mientras otros presidentes intentaban elegir sus batallas, él parecía estar jugando a un minijuego donde el objetivo era pulsar el botón de "subir oferta" hasta que dejara de funcionar.
+
+Y al final dejó de funcionar, porque se gastó los 200 millones exactos. Ni uno más, ni uno menos. No queda colchón, no queda margen, no queda ni para un bocadillo de emergencia. Filósofos ha cerrado el mercado como quien termina una partida de Monopoly con todas las propiedades hipotecadas, pero convencido de que ha visto el futuro.
+
+Y en el centro de todo está Samu. 74 millones de fe. 74 millones de intuición. 74 millones de "ya veréis".
+
+Es difícil saber si Chete ha encontrado al próximo Miguel Morán o si simplemente ha pagado precio de superestrella por alguien cuyo currículum en la competición cabe, de momento, en una hoja en blanco.
+
+Pero esa es precisamente la gracia. Filósofos no quiere certezas: quiere tener razón antes que los demás. Otra vez.
+
+Porque detrás de la operación hay algo más importante que el dinero: Torre Beldes.
+
+La herida sigue abierta. El 8-2 en semifinales sigue existiendo. El título del segundo split también. Y a Filósofos no le hace demasiada gracia que el equipo del pueblo haya pasado de ser su víctima histórica a levantar copas, estrenar dragones y caminar por la liga como si hubieran inventado ganar.
+
+Así que Chete parece haber decidido volver al origen. Nada de competir en ruido, ni coronas, ni 230 millones, ni discurso municipal. La receta es mucho más filosófica: encontrar a otro desconocido, convertirlo en estrella y luego decir que todos éramos demasiado simples para verlo venir.
+
+Si Samu sale bien, la historia se escribe sola. Filósofos habrá encontrado otro Miguel Morán, Chete podrá pasarse meses recordando que apostó por él cuando nadie sabía quién era, Torre Beldes tendrá que soportar otro capítulo de superioridad intelectual y aparecerá alguien explicando que "el talento se detecta antes de que lo reconozca el mercado".
+
+Insoportable. Pero posible.
+
+Ahora bien: si sale mal, también será precioso. Porque 74 millones por un desconocido no te dejan demasiado sitio para desaparecer discretamente. Si Samu resulta ser un jugador normal, cada control tendrá auditoría, cada fallo vendrá acompañado de alguien recordando el precio y cada jornada sin destacar irá acercando la operación a la categoría de patrimonio histórico del meme.
+
+Ese es el riesgo. Miguel Morán convirtió la fe de Filósofos en una genialidad. Samu puede convertirla en superstición. Y entre una cosa y otra hay 74 millones.
+
+Lo curioso es que, viendo la historia reciente, tampoco conviene reírse demasiado pronto. Filósofos ya hizo exactamente esto una vez y le salió obscenamente bien: el desconocido se convirtió en MVP, el equipo terminó campeón y todos los que habían dudado tuvieron que reinterpretar sus mensajes antiguos.
+
+Por eso ahora nadie sabe muy bien qué hacer. ¿Reírse? ¿Preocuparse? ¿Buscar vídeos de Samu? ¿Preguntar quién demonios es?
+
+Filósofos vuelve a entrar en una temporada con una caja cerrada entre las manos y una sonrisa sospechosa. Chete asegura, al menos con sus 74 millones, que dentro hay algo bueno.
+
+El resto de la liga espera. Torre Beldes observa. Y Samu, sin haber debutado todavía, ya tiene una misión bastante sencilla: ser el próximo Miguel Morán.
+
+Nada de presión.
+
+Si funciona, Chete será un visionario. Si no, habrá pujado 100 veces para construir el meme más caro de la temporada.
+
+Y hasta que empiece el split, ambas opciones valen exactamente lo mismo: 74 millones.`,
+    imagen: "/noticias/noticiafilosofos.png",
+    encuadre: "arriba",
+    fecha: "17 sep 2026",
+    etiqueta: "RUMOR",
+  },
+  {
     id: "titans-sin-portero",
     split: 3,
     equipoSlug: "titans",
