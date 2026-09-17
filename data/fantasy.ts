@@ -45,20 +45,39 @@ export const PORTERIA = {
 } as const;
 
 /**
- * La bolsa: después de cada jornada cerrada, cada jugador sube 1 M€ por cada
- * participante que lo alineó por encima de la media y baja 1 M€ por cada uno
- * por debajo. Así los precios que puse a ojo se corrigen solos, sin que nadie
- * tenga que arbitrar.
+ * La bolsa. Todos arrancan valiendo lo mismo —el presupuesto repartido entre
+ * los cinco huecos— y a partir de ahí manda la demanda: al cerrar cada
+ * jornada, el precio se mueve según qué parte del grupo alineó a ese jugador
+ * comparado con lo que le tocaría de media.
+ *
+ * Se mide en porcentaje de participantes y no en número de fichajes para que
+ * el mercado se mueva igual seamos diez o cuarenta.
  *
  * Los porteros se comparan solo entre porteros: como hay cinco y todo el mundo
  * está obligado a llevar uno, en la media general saldrían siempre disparados.
  */
 export const VALORES = {
-  porFichaje: 1,
+  /**
+   * Distancia, en M€, entre el que no ficha nadie y el que ficha todo el
+   * grupo. Con 50 el mercado va de unos 20 a unos 70, y así al más caro se le
+   * pueden poner otros cuatro al lado sin pasarse de los 150.
+   */
+  recorrido: 50,
   minimo: 1,
-  /** Nadie puede costar más que el presupuesto entero */
-  maximo: 150,
+  /** Tope, para que al más caro se le pueda seguir acompañando de otros cuatro */
+  maximo: 120,
 } as const;
+
+/**
+ * Lo que vale cada jugador antes de que nadie fiche a nadie.
+ *
+ * Va por debajo del presupuesto entre cinco (150/5 = 30) a propósito: con 25
+ * sobran 25 M€ en la primera jornada, y ese colchón es lo que permite fichar
+ * después a alguien que haya subido. Si todos valieran justo 30, cualquier
+ * subida dejaría a ese jugador fuera del presupuesto de todo el mundo y el
+ * precio rebotaría arriba y abajo sin llegar a asentarse.
+ */
+export const PRECIO_DE_SALIDA = 25;
 
 /**
  * Valor de los 13 que no pasaron por la subasta: los cinco presidentes y los

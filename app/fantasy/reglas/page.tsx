@@ -1,6 +1,6 @@
 import Link from "next/link";
 import PageHeader from "@/components/PageHeader";
-import { PORTERIA, PUNTOS, REGLAS, VALORES } from "@/data/fantasy";
+import { PORTERIA, PRECIO_DE_SALIDA, PUNTOS, REGLAS } from "@/data/fantasy";
 
 export const metadata = { title: "Reglas del Fantasy · Liga SSD" };
 
@@ -38,8 +38,8 @@ export default function ReglasFantasyPage() {
         <Bloque titulo="Tu cinco">
           <p>
             Cada jornada alineas a <strong>{REGLAS.tamanoEquipo} jugadores</strong> de la liga con un presupuesto
-            de <strong>{REGLAS.presupuesto} M€</strong>. Los precios salieron de la subasta del 15 de septiembre
-            —los presidentes y los de Titans llevan un valor tasado— y a partir de ahí los mueve la demanda.
+            de <strong>{REGLAS.presupuesto} M€</strong>. En la primera jornada todos cuestan lo mismo; a partir
+            de ahí, el precio de cada uno lo marca la gente que lo ficha.
           </p>
           <p>
             Uno de los cinco tiene que ser <strong>portero</strong>, y solo uno: los otros cuatro son de pista. En
@@ -58,9 +58,19 @@ export default function ReglasFantasyPage() {
 
         <Bloque titulo="Los precios se mueven">
           <p>
-            Los precios salieron de la subasta, pero no se quedan quietos: <strong>los mueve la demanda</strong>.
-            Al cerrar cada jornada, un jugador sube <strong>{VALORES.porFichaje} M€ por cada participante que lo
-            alineó por encima de la media</strong> y baja otro tanto por cada uno por debajo.
+            En la jornada 1 <strong>todos valen lo mismo, {PRECIO_DE_SALIDA} M€</strong>: el presupuesto
+            repartido entre los cinco huecos. Nadie parte de caro ni de barato, y lo que costaron en la subasta
+            da igual.
+          </p>
+          <p>
+            A partir de ahí <strong>el precio lo pone la gente</strong>: lo que cuesta un jugador depende de qué
+            parte del grupo lo alineó <strong>la jornada anterior</strong>. Si no lo ficha nadie se queda en
+            unos <strong>20 M€</strong>; si lo ficha el grupo entero se pone en unos <strong>70</strong>.
+          </p>
+          <p>
+            No se va acumulando: cada jornada se recalcula desde cero con la demanda de la anterior. Así nadie
+            se dispara hasta salirse del presupuesto, y el que deja de gustar vuelve a bajar en vez de quedarse
+            encallado arriba.
           </p>
           <p>
             Si a alguien lo ficha medio grupo porque está regalado, sube hasta que deje de estarlo. Si nadie
@@ -72,8 +82,9 @@ export default function ReglasFantasyPage() {
             obligados a llevar uno, en la media general subirían siempre.
           </p>
           <p>
-            El precio nuevo entra en vigor <strong>en la jornada siguiente</strong>, nunca a mitad, y en el
-            mercado verás con una flecha lo que se movió cada uno. Nadie baja de {VALORES.minimo} M€.
+            El precio entra en vigor <strong>en la jornada siguiente</strong>, nunca a mitad: los cinco de cada
+            uno se destapan al cerrar el mercado, así que hasta entonces no hay demanda que valga. En el mercado
+            verás con una flecha lo que se movió cada uno.
           </p>
         </Bloque>
 

@@ -1,4 +1,4 @@
-import { PORTERIA, PUNTOS, REGLAS, TASACIONES, VALORES } from "@/data/fantasy";
+import { PORTERIA, PRECIO_DE_SALIDA, PUNTOS, REGLAS, TASACIONES, VALORES } from "@/data/fantasy";
 import { getPersona } from "@/data/personas";
 import { equiposSplit3 } from "@/data/split3/equipos";
 import type { Partido } from "@/data/tipos";
@@ -20,8 +20,8 @@ export type JugadorMercado = {
   logo?: string;
   color: string;
   valor: number;
-  /** No pasó por la subasta: su valor es una tasación, no lo que se pagó */
-  tasado: boolean;
+  /** Lo que costó en la subasta. No es su precio en el fantasy: es solo el dato */
+  subasta: number;
   portero: boolean;
 };
 
@@ -36,7 +36,6 @@ export function mercado(): JugadorMercado[] {
     equipo.plantilla.flatMap((fichaje): JugadorMercado[] => {
       const persona = getPersona(fichaje.persona);
       if (!persona) return [];
-      const tasado = fichaje.precio === undefined;
       return [
         {
           id: persona.id,
@@ -48,14 +47,14 @@ export function mercado(): JugadorMercado[] {
           slug: equipo.slug,
           logo: equipo.logo,
           color: equipo.color,
-          valor: fichaje.precio ?? TASACIONES[persona.id] ?? 20,
-          tasado,
+          valor: PRECIO_DE_SALIDA,
+          subasta: fichaje.precio ?? TASACIONES[persona.id] ?? 20,
           portero: esPortero(persona.posicion),
         },
       ];
     })
   );
-  return jugadores.sort((a, b) => b.valor - a.valor || a.apodo.localeCompare(b.apodo));
+  return jugadores.sort((a, b) => b.subasta - a.subasta || a.apodo.localeCompare(b.apodo));
 }
 
 // -------------------------------------------------------------------- bolsa
@@ -69,31 +68,40 @@ export type ValorEnJornada = {
 };
 
 /**
- * Lo que cuesta cada jugador en una jornada, partiendo del precio de la
- * subasta y aplicando la demanda de cada jornada ya cerrada. No se guarda
- * nada: se recalcula con los cinco que la gente alineó.
+ * Lo que cuesta cada jugador en una jornada.
+ *
+ * Todos parten del mismo precio y a partir de ahí manda la demanda: el precio
+ * sale de **qué parte del grupo lo alineó en la última jornada cerrada**,
+ * comparada con la que le tocaría si todos ficharan al azar. No se acumula
+ * jornada tras jornada a propósito: si se sumara, un jugador muy fichado
+ * podría encarecerse hasta no caber en ningún cinco y, como ya nadie podría
+ * ficharlo, se quedaría encallado ahí arriba el resto del split.
+ *
+ * Así el mercado se mueve entre unos 20 y unos 70 M€: al más caro se le puede
+ * seguir acompañando de otros cuatro sin pasarse del presupuesto.
+ *
+ * No se guarda nada: se recalcula con los cinco que la gente alineó.
  */
 export function valoresEnJornada(
   jornada: number,
   cincosCerrados: CincoCerrado[],
   jugadores: JugadorMercado[]
 ): Map<string, ValorEnJornada> {
-  const valores = new Map(jugadores.map((jugador) => [jugador.id, jugador.valor]));
-  const cambios = new Map(jugadores.map((jugador) => [jugador.id, 0]));
   const cuantosPorteros = jugadores.filter((jugador) => jugador.portero).length;
   const cuantosDePista = jugadores.length - cuantosPorteros;
 
-  const anteriores = [...new Set(cincosCerrados.map((cinco) => cinco.jornada))]
-    .filter((numero) => numero < jornada)
-    .sort((a, b) => a - b);
+  /** Precios que dejó una jornada ya jugada; si no hubo nadie, los de salida */
+  const preciosTras = (numero: number): Map<string, number> => {
+    const deEsa = cincosCerrados.filter((cinco) => cinco.jornada === numero);
+    if (deEsa.length === 0) return new Map(jugadores.map((j) => [j.id, PRECIO_DE_SALIDA]));
 
-  for (const numero of anteriores) {
     const fichajes = new Map<string, number>();
-    for (const cinco of cincosCerrados.filter((candidato) => candidato.jornada === numero)) {
+    for (const cinco of deEsa) {
       for (const id of cinco.jugadores) fichajes.set(id, (fichajes.get(id) ?? 0) + 1);
     }
 
-    // Cada grupo con su media: los porteros no compiten contra los de pista
+    // Cada grupo con su media: los porteros no compiten contra los de pista,
+    // porque solo hay cinco y todo el mundo está obligado a llevar uno
     let totalPorteros = 0;
     let totalDePista = 0;
     for (const jugador of jugadores) {
@@ -101,24 +109,35 @@ export function valoresEnJornada(
       if (jugador.portero) totalPorteros += suyos;
       else totalDePista += suyos;
     }
-    const mediaPortero = cuantosPorteros > 0 ? totalPorteros / cuantosPorteros : 0;
-    const mediaDePista = cuantosDePista > 0 ? totalDePista / cuantosDePista : 0;
+    const mediaPortero = cuantosPorteros > 0 ? totalPorteros / (deEsa.length * cuantosPorteros) : 0;
+    const mediaDePista = cuantosDePista > 0 ? totalDePista / (deEsa.length * cuantosDePista) : 0;
 
-    for (const jugador of jugadores) {
-      const media = jugador.portero ? mediaPortero : mediaDePista;
-      const movimiento = Math.round(((fichajes.get(jugador.id) ?? 0) - media) * VALORES.porFichaje);
-      const antes = valores.get(jugador.id) ?? jugador.valor;
-      const ahora = Math.min(VALORES.maximo, Math.max(VALORES.minimo, antes + movimiento));
-      valores.set(jugador.id, ahora);
-      cambios.set(jugador.id, ahora - antes);
-    }
-  }
+    return new Map(
+      jugadores.map((jugador) => {
+        const media = jugador.portero ? mediaPortero : mediaDePista;
+        const parte = (fichajes.get(jugador.id) ?? 0) / deEsa.length;
+        const precio = Math.round(PRECIO_DE_SALIDA + (parte - media) * VALORES.recorrido);
+        return [jugador.id, Math.min(VALORES.maximo, Math.max(VALORES.minimo, precio))];
+      })
+    );
+  };
+
+  const cerradas = [...new Set(cincosCerrados.map((cinco) => cinco.jornada))]
+    .filter((numero) => numero < jornada)
+    .sort((a, b) => a - b);
+
+  const ultima = cerradas[cerradas.length - 1];
+  const penultima = cerradas[cerradas.length - 2];
+
+  const ahora = ultima === undefined ? null : preciosTras(ultima);
+  const antes = penultima === undefined ? null : preciosTras(penultima);
 
   return new Map(
-    jugadores.map((jugador) => [
-      jugador.id,
-      { valor: valores.get(jugador.id) ?? jugador.valor, cambio: cambios.get(jugador.id) ?? 0 },
-    ])
+    jugadores.map((jugador) => {
+      const valor = ahora?.get(jugador.id) ?? PRECIO_DE_SALIDA;
+      const previo = antes?.get(jugador.id) ?? PRECIO_DE_SALIDA;
+      return [jugador.id, { valor, cambio: ahora ? valor - previo : 0 }];
+    })
   );
 }
 

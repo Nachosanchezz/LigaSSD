@@ -306,9 +306,6 @@ export default function SelectorCinco({ jornada, abierta, jugadores, inicial }: 
                       }`}
                     >
                       {jugador.valor}
-                      {jugador.tasado && jugador.cambio === 0 && (
-                        <span className="font-normal text-yellow-500">*</span>
-                      )}
                     </span>
                     {jugador.cambio !== 0 && (
                       <span
@@ -329,10 +326,9 @@ export default function SelectorCinco({ jornada, abierta, jugadores, inicial }: 
           )}
         </ul>
         <p className="border-t border-slate-100 px-4 py-3 text-[11px] text-slate-400">
-          Los precios salieron de la subasta y se mueven solos: al cerrar cada jornada, cada jugador sube 1 M€
-          por cada participante que lo alineó por encima de la media y baja 1 M€ por cada uno por debajo. La
-          flecha es lo que se movió en la última. El <span className="font-bold text-yellow-500">*</span> marca
-          a los que no pasaron por la subasta y llevan un valor tasado.
+          Todos empezaron valiendo lo mismo y el precio lo pone la gente: cuanta más os alinea a alguien, más
+          cuesta la jornada siguiente. Si no lo ficha nadie baja a unos 20 M€; si lo ficha el grupo entero sube
+          hasta unos 70. La flecha es lo que se movió desde la jornada pasada.
         </p>
       </div>
     </div>
