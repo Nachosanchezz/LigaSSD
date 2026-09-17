@@ -15,6 +15,92 @@ export type Noticia = {
 
 export const noticias: Noticia[] = [
   {
+    id: "torre-beldes-dragon-230-millones",
+    split: 3,
+    equipoSlug: "torre-beldes",
+    titular: "El pueblo se compró un dragón: Torre Beldes cobra la ayuda, la gasta entera y ya no es humilde",
+    subtitular: "El vigente campeón recibe 30 millones extra para la subasta, revienta los 230 sin dejar ni para pipas y estrena escudo con dragón y corona. La humildad duró exactamente un split",
+    cuerpo: `Durante dos temporadas, Torre Beldes construyó una identidad muy concreta.
+
+El equipo del pueblo. Los humildes. Los de la plaza, el bar de confianza, el "este año sí", el orgullo municipal y esa narrativa de club pequeño que peleaba contra administradores, plantillas premium y poderes establecidos.
+
+Precioso. Duró hasta que les dieron dinero.
+
+Porque el tercer split todavía no ha empezado y Torre Beldes ya ha protagonizado la primera transformación ideológica de la temporada. Para esta edición los equipos se construyeron mediante subasta, con cada presidente administrando su presupuesto. Todos partían con condiciones similares.
+
+Todos menos Torre Beldes. El vigente campeón recibió 30 millones extra, elevando su presupuesto hasta los 230.
+
+Y Louis, aparentemente, interpretó aquello no como una ayuda para equilibrar la competición, sino como una orden directa del Banco Central de Torre Beldes: "gástalo todo".
+
+Y lo gastó. Todo. Los 230 millones.
+
+Ni fondo de emergencia. Ni ahorro. Ni prudencia. Ni "vamos a ver cómo evoluciona el mercado". Torre Beldes salió a la subasta como alguien que acaba de recibir una herencia inesperada y tiene prohibido llegar a casa con dinero en la cuenta.
+
+El equipo del pueblo descubrió el capitalismo. Y le encantó.
+
+Durante la subasta, mientras otros presidentes calculaban, negociaban y miraban cuánto les quedaba, Louis parecía estar jugando al Monopoly con billetes que caducaban a medianoche.
+
+—¿Cuánto queda?
+
+—Veinte millones.
+
+—Perfecto. ¿Quién sigue?
+
+La planificación económica del campeón fue sencilla: si todavía aparece un número positivo en la cuenta, es que queda trabajo por hacer.
+
+Y el problema no es únicamente que Torre Beldes recibiera 30 millones más. El problema es el cambio de personaje.
+
+Porque hace unos meses hablábamos del equipo del pueblo, de la humildad, de luchar contra los poderosos y de ganar el segundo split contra todo pronóstico. Ahora estrenan escudo con dragón y corona.
+
+Dragón. Y corona.
+
+Han tardado una temporada en pasar de "somos gente sencilla" a parecer una casa noble de Juego de Tronos que acaba de conquistar tres provincias. El anterior escudo transmitía club de colegas. El nuevo parece decir: "arrodillaos ante la Casa Beldes".
+
+No sabemos exactamente en qué momento Louis dejó de ser presidente de un equipo de fútbol sala amateur y empezó a ser Luis I, Protector del Pueblo, Señor de los 230 Millones y Padre de Dragones, pero el cambio ha sido rápido. Muy rápido. Quizá demasiado.
+
+Lo más divertido es que Torre Beldes puede intentar vender todo esto como evolución natural del proyecto. Que si crecimiento institucional. Que si nueva imagen. Que si consolidación de marca. Que si el dragón representa fuerza, unión y carácter.
+
+Claro. Y los 30 millones extra representan justicia social.
+
+La realidad es mucho más sencilla: ganaron un split y se volvieron locos.
+
+Esto ya no es David contra Goliat. David ha cobrado una prima, ha vendido la honda y se ha comprado un lanzallamas.
+
+Y encima la presión cambia completamente. Antes Torre Beldes podía jugar la carta de que nadie confiaba en ellos, hablar del pueblo, de callar bocas y de competir contra estructuras supuestamente superiores.
+
+Eso se acabó. No puedes presentarte con 230 millones gastados, título de campeón, dragón y corona, y seguir diciendo que eres el humilde.
+
+A partir de ahora, si pierdes, no eres el equipo pequeño que lo intentó. Eres el nuevo rico que se gastó todo el presupuesto para quedar segundo.
+
+Y eso es bastante más divertido.
+
+El resto de la liga ya toma nota. Filósofos, después de años siendo acusados de superioridad intelectual y sospecha administrativa, por fin pueden mirar a otro equipo y decir: "igual los flipados ya no somos nosotros". Bodø Dream puede respirar tranquilo, porque Juan ya no es el único presidente al que se le puede acusar de construir un proyecto con aroma a ingeniería financiera. Y en Titans, antes Açai Boys, probablemente sigan sin entender cómo alguien puede tener 230 millones mientras ellos continúan buscando portero.
+
+Pero el foco estará en Torre Beldes, porque el campeón ha decidido no esconderse. Si el segundo split acabó con un "os lo dijimos", el tercero empieza prácticamente con un "sí, tenemos dinero, ¿y qué?".
+
+La humildad, oficialmente, ha muerto. Murió rodeada de billetes, durante una subasta, mientras alguien diseñaba un dragón con corona.
+
+Ahora toca comprobar si todo ese gasto sirve para algo. Porque gastar 230 millones queda espectacular en septiembre, estrenar escudo también, poner un dragón queda imponente y una corona encima todavía más.
+
+Pero luego empieza la liga. Y ahí el presupuesto deja de jugar.
+
+Torre Beldes entra al tercer split con una situación completamente nueva: por primera vez ya no puede ir de víctima, de sorpresa ni de pueblo oprimido. Ahora es el campeón. Ahora tiene el dinero. Ahora tiene el escudo de emperador.
+
+Y ahora todos van a querer verlo caer.
+
+El equipo del pueblo sigue existiendo, por supuesto. Solo que el pueblo ahora tiene presupuesto estatal, criatura mitológica y monarquía propia.
+
+Bienvenidos al tercer split.
+
+Torre Beldes ya no quiere conquistar la liga.
+
+Quiere conquistar Poniente.`,
+    imagen: "/noticias/noticiabeldes.png",
+    encuadre: "abajo",
+    fecha: "17 sep 2026",
+    etiqueta: "BREAKING",
+  },
+  {
     id: "bodo-dream-79-millones-mario",
     split: 3,
     equipoSlug: "bodo-dream",
