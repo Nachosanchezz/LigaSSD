@@ -55,6 +55,9 @@ export default async function FantasyPage() {
                 Cada jornada alineas a <strong>{REGLAS.tamanoEquipo} jugadores</strong> con{" "}
                 <strong>{REGLAS.presupuesto} M€</strong>, a los precios de la subasta.
               </li>
+              <li>
+                Uno de los cinco tiene que ser <strong>portero</strong>; los otros cuatro, de pista.
+              </li>
               <li>Como mucho {REGLAS.maxPorEquipo} del mismo equipo.</li>
               <li>
                 Uno es el capitán y puntúa <strong>doble</strong>.

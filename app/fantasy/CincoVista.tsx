@@ -44,6 +44,9 @@ export default function CincoVista({
                 <Link href={`/jugadores/${jugador.id}`} className="truncate hover:text-[#0b4a6f]">
                   {jugador.apodo}
                 </Link>
+                {jugador.portero && (
+                  <span className="shrink-0 rounded bg-slate-200 px-1 text-[9px] font-black text-slate-600">POR</span>
+                )}
                 {esCapitan && (
                   <span className="shrink-0 rounded bg-yellow-400 px-1 text-[9px] font-black text-[#091f36]">C</span>
                 )}

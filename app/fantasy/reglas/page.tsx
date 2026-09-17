@@ -35,6 +35,10 @@ export default function ReglasFantasyPage() {
             septiembre; los presidentes y los de Titans, que no pasaron por ella, llevan un valor tasado.
           </p>
           <p>
+            Uno de los cinco tiene que ser <strong>portero</strong>, y solo uno: los otros cuatro son de pista. En
+            toda la liga hay cinco porteros, así que ahí la elección es corta.
+          </p>
+          <p>
             Como mucho puedes llevar a <strong>{REGLAS.maxPorEquipo} jugadores del mismo equipo</strong>, así que
             hay que repartirse por al menos tres equipos.
           </p>

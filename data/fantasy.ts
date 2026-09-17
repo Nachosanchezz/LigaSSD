@@ -1,17 +1,19 @@
 /**
  * Reglas del Fantasy del Split 3.
  *
- * Cada jornada eliges un cinco dentro de un presupuesto y uno de ellos es el
- * capitán. Todo lo que puntúa sale del acta del partido (goles, asistencias,
- * MVP y resultado), así que no hace falta inventar nada: se calcula solo en
- * cuanto se guarda el resultado desde /admin.
+ * Cada jornada eliges un cinco —un portero y cuatro de pista— dentro de un
+ * presupuesto, y uno de ellos es el capitán. Todo lo que puntúa sale del acta
+ * del partido (goles, asistencias, MVP y resultado), así que no hace falta
+ * inventar nada: se calcula solo en cuanto se guarda el resultado desde /admin.
  */
 
 export const REGLAS = {
   /** Jugadores que se alinean cada jornada */
   tamanoEquipo: 5,
-  /** M€ disponibles, los mismos que tuvo cada presidente en la subasta */
-  presupuesto: 200,
+  /** M€ disponibles */
+  presupuesto: 150,
+  /** Porteros que hay que alinear: ni más ni menos */
+  porteros: 1,
   /** Tope de jugadores del mismo equipo real, para que no se copien todos el mismo cinco */
   maxPorEquipo: 2,
   /** Los puntos del capitán se multiplican por esto */

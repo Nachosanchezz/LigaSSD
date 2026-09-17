@@ -22,7 +22,13 @@ export type JugadorMercado = {
   valor: number;
   /** No pasó por la subasta: su valor es una tasación, no lo que se pagó */
   tasado: boolean;
+  portero: boolean;
 };
+
+/** Solo cinco de los 48 lo son, y Titans no tiene ninguno */
+export function esPortero(posicion?: string): boolean {
+  return Boolean(posicion?.toLowerCase().includes("portero"));
+}
 
 /** Los 48 de la liga con su precio: el de la subasta o, si no jugó, el tasado */
 export function mercado(): JugadorMercado[] {
@@ -44,6 +50,7 @@ export function mercado(): JugadorMercado[] {
           color: equipo.color,
           valor: fichaje.precio ?? TASACIONES[persona.id] ?? 20,
           tasado,
+          portero: esPortero(persona.posicion),
         },
       ];
     })
@@ -65,6 +72,12 @@ export function motivoInvalido(ids: string[], capitan: string, precios: Map<stri
   }
   if (!ids.includes(capitan)) {
     return "El capitán tiene que ser uno de los cinco";
+  }
+  const porteros = fichas.filter((ficha) => ficha!.portero).length;
+  if (porteros !== REGLAS.porteros) {
+    return porteros === 0
+      ? "Te falta el portero: hay que alinear a uno"
+      : `Solo puede jugar ${REGLAS.porteros} portero, y llevas ${porteros}`;
   }
   const coste = fichas.reduce((suma, ficha) => suma + ficha!.valor, 0);
   if (coste > REGLAS.presupuesto) {

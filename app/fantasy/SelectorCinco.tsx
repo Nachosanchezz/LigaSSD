@@ -34,6 +34,7 @@ export default function SelectorCinco({ jornada, abierta, jugadores, inicial }: 
   const [capitan, setCapitan] = useState<string>(inicial?.capitan ?? "");
   const [busqueda, setBusqueda] = useState("");
   const [filtroEquipo, setFiltroEquipo] = useState("");
+  const [soloPorteros, setSoloPorteros] = useState(false);
   const [error, setError] = useState("");
   const [guardado, setGuardado] = useState(false);
 
@@ -47,6 +48,9 @@ export default function SelectorCinco({ jornada, abierta, jugadores, inicial }: 
   const gastado = fichas.reduce((suma, ficha) => suma + ficha.valor, 0);
   const restante = REGLAS.presupuesto - gastado;
   const completo = elegidos.length === REGLAS.tamanoEquipo;
+  const portero = fichas.find((ficha) => ficha.portero);
+  const deCampo = fichas.filter((ficha) => !ficha.portero);
+  const huecosDeCampo = REGLAS.tamanoEquipo - REGLAS.porteros;
 
   /** Por qué no se puede fichar a alguien ahora mismo; null si sí se puede */
   function bloqueo(jugador: JugadorSelector): string | null {
@@ -94,6 +98,7 @@ export default function SelectorCinco({ jornada, abierta, jugadores, inicial }: 
   }
 
   const visibles = jugadores.filter((jugador) => {
+    if (soloPorteros && !jugador.portero) return false;
     if (filtroEquipo && jugador.equipoId !== filtroEquipo) return false;
     if (!busqueda.trim()) return true;
     const texto = normalizar(`${jugador.apodo} ${jugador.nombre} ${jugador.equipo}`);
@@ -147,15 +152,22 @@ export default function SelectorCinco({ jornada, abierta, jugadores, inicial }: 
           </span>
         </div>
         <div className="space-y-2">
-          {Array.from({ length: REGLAS.tamanoEquipo }).map((_, indice) => {
-            const ficha = fichas[indice];
+          {[
+            { etiqueta: "Portero", ficha: portero },
+            ...Array.from({ length: huecosDeCampo }, (_, indice) => ({
+              etiqueta: "Jugador de pista",
+              ficha: deCampo[indice],
+            })),
+          ].map(({ etiqueta, ficha }, indice) => {
             if (!ficha) {
               return (
                 <div
                   key={`hueco-${indice}`}
-                  className="flex h-[52px] items-center justify-center rounded-xl border border-dashed border-slate-200 text-xs font-bold uppercase tracking-wide text-slate-300"
+                  className={`flex h-[52px] items-center justify-center rounded-xl border border-dashed text-xs font-bold uppercase tracking-wide ${
+                    indice === 0 ? "border-yellow-300 bg-yellow-50/50 text-yellow-600" : "border-slate-200 text-slate-300"
+                  }`}
                 >
-                  Hueco libre
+                  {etiqueta}
                 </div>
               );
             }
@@ -214,12 +226,22 @@ export default function SelectorCinco({ jornada, abierta, jugadores, inicial }: 
           />
           <div className="-mx-1 flex gap-1.5 overflow-x-auto px-1 pb-1">
             <button
-              onClick={() => setFiltroEquipo("")}
+              onClick={() => { setFiltroEquipo(""); setSoloPorteros(false); }}
               className={`shrink-0 rounded-full px-3 py-1.5 text-[11px] font-black uppercase tracking-wide transition ${
-                filtroEquipo === "" ? "bg-[#091f36] text-white" : "bg-slate-100 text-slate-500 hover:bg-slate-200"
+                filtroEquipo === "" && !soloPorteros
+                  ? "bg-[#091f36] text-white"
+                  : "bg-slate-100 text-slate-500 hover:bg-slate-200"
               }`}
             >
               Todos
+            </button>
+            <button
+              onClick={() => setSoloPorteros(!soloPorteros)}
+              className={`shrink-0 rounded-full px-3 py-1.5 text-[11px] font-black uppercase tracking-wide transition ${
+                soloPorteros ? "bg-yellow-400 text-[#091f36]" : "bg-slate-100 text-slate-500 hover:bg-slate-200"
+              }`}
+            >
+              Porteros
             </button>
             {equipos.map((equipo) => (
               <button
