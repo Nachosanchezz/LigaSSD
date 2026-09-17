@@ -21,6 +21,9 @@ type Props = {
   inicial?: { jugadores: string[]; capitan: string };
 };
 
+/** Con el cinco lleno sobra decirlo en cada fila: ya se ve arriba en el 5/5 */
+const CINCO_COMPLETO = "Ya tienes cinco";
+
 const normalizar = (texto: string) =>
   texto.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
 
@@ -48,7 +51,7 @@ export default function SelectorCinco({ jornada, abierta, jugadores, inicial }: 
   /** Por qué no se puede fichar a alguien ahora mismo; null si sí se puede */
   function bloqueo(jugador: JugadorSelector): string | null {
     if (elegidos.includes(jugador.id)) return null;
-    if (completo) return "Ya tienes cinco";
+    if (completo) return CINCO_COMPLETO;
     if (jugador.valor > restante) return "No te llega";
     const suyos = fichas.filter((ficha) => ficha.equipoId === jugador.equipoId).length;
     if (suyos >= REGLAS.maxPorEquipo) return `Ya llevas ${REGLAS.maxPorEquipo} de ${jugador.equipo}`;
@@ -267,7 +270,7 @@ export default function SelectorCinco({ jornada, abierta, jugadores, inicial }: 
                       {jugador.puntos > 0 && <span className="text-[#0b4a6f]"> · {jugador.puntos} pts</span>}
                     </p>
                   </div>
-                  {impedimento && !elegido && (
+                  {impedimento && impedimento !== CINCO_COMPLETO && !elegido && (
                     <span className="shrink-0 text-[10px] font-bold uppercase tracking-wide text-slate-400">
                       {impedimento}
                     </span>

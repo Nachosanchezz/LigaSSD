@@ -37,20 +37,21 @@ export const PUNTOS = {
  * la subasta (media de 29 M€, máximo de 79 M€).
  */
 export const TASACIONES: Record<string, number> = {
-  // Presidentes
+  // Presidentes, con lo que hicieron en el Split 2 como guía
   "carlos-hernando": 85, // el mejor de la liga, y sin Split 2 que lo matice
-  "nacho-sanchez": 50, // Chete: 11 goles y 12 asistencias en el Split 2
-  "borja-sanchez-harguindey": 48, // Borjita: 18 goles, 2 MVPs
+  "nacho-sanchez": 50, // Chete: 11 goles y 12 asistencias
+  "borja-sanchez-harguindey": 48, // Borjita: 18 goles y 2 MVPs
   "louis-de-maria": 35, // Lui: 10 asistencias y 2 MVPs
-  "juan-sanchez": 32, // Juninho: 4 goles, 7 asistencias
-  "jaime-melendi": 30, // Melen: 5 goles, 4 asistencias
+  "juan-sanchez": 32, // Juninho: 4 goles y 7 asistencias
 
-  // Titans, que no pasaron por la subasta
-  "carlos-charly": 26, // 5 goles, 5 asistencias y un MVP
-  "carlos-caco": 24, // 4 goles, 6 asistencias
-  "salvador-heras": 22, // Vasal JR: 4 goles, 3 asistencias
-  "nicolas-pueyo": 16,
-  "pablo-sarabia": 16, // Pato
-  "jaime-campanillas": 14, // Campa
-  "roberto-rober": 8,
+  // Titans llegó ya formado, así que aquí manda el orden de mejor a peor que
+  // dio su presidente. Melen es el suyo y entra en su sitio, el segundo.
+  "nicolas-pueyo": 32, // Pueyo
+  "jaime-melendi": 28, // Melen
+  "carlos-charly": 25, // Charly
+  "carlos-caco": 22, // Caco
+  "roberto-rober": 18, // Rober
+  "salvador-heras": 15, // Vasal JR
+  "jaime-campanillas": 11, // Campa
+  "pablo-sarabia": 8, // Pato
 };
