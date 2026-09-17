@@ -5,6 +5,14 @@ import Link from "next/link";
 import { useRef, useState, useEffect } from "react";
 import type { Noticia } from "@/data/noticias";
 
+const encuadreClases: Record<string, string> = {
+  arriba: "object-top",
+  centro: "object-center",
+  abajo: "object-bottom",
+};
+
+const encuadreDe = (noticia: Noticia) => encuadreClases[noticia.encuadre ?? "centro"];
+
 const etiquetaColors: Record<string, string> = {
   EXCLUSIVA: "bg-red-600 text-white",
   BREAKING: "bg-red-600 text-white",
@@ -55,7 +63,7 @@ function Modal({ noticia, onClose }: { noticia: Noticia; onClose: () => void }) 
               src={noticia.imagen}
               alt={noticia.titular}
               fill
-              className="object-cover"
+              className={`object-cover ${encuadreDe(noticia)}`}
               unoptimized
             />
           </div>
@@ -117,7 +125,7 @@ function TarjetaNoticia({ noticia, onClick }: { noticia: Noticia; onClick: () =>
             src={noticia.imagen}
             alt={noticia.titular}
             fill
-            className="object-cover sm:group-hover:scale-105 transition-transform duration-500"
+            className={`object-cover ${encuadreDe(noticia)} sm:group-hover:scale-105 transition-transform duration-500`}
             unoptimized
           />
         ) : (

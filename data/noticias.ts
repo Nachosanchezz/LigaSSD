@@ -5,6 +5,8 @@ export type Noticia = {
   subtitular?: string;
   cuerpo: string;
   imagen?: string;
+  /** Qué parte de la foto se conserva al recortarla en la tarjeta (por defecto, el centro) */
+  encuadre?: "arriba" | "centro" | "abajo";
   fecha: string;
   etiqueta?: string;
 };
@@ -81,6 +83,7 @@ Los Tercios ya tiene ataque.
 
 Ahora solo falta saber si esto es un equipo. O una invasión.`,
     imagen: "/noticias/noticiatercios.png",
+    encuadre: "arriba",
     fecha: "16 sep 2026",
     etiqueta: "EXCLUSIVA",
   },
