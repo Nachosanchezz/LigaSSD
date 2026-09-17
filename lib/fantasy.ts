@@ -1,4 +1,4 @@
-import { PUNTOS, REGLAS, TASACIONES } from "@/data/fantasy";
+import { PORTERIA, PUNTOS, REGLAS, TASACIONES } from "@/data/fantasy";
 import { getPersona } from "@/data/personas";
 import { equiposSplit3 } from "@/data/split3/equipos";
 import type { Partido } from "@/data/tipos";
@@ -100,6 +100,10 @@ export type PuntosJugador = {
   asistencias: number;
   enPropia: number;
   mvp: boolean;
+  amarillas: number;
+  rojas: number;
+  /** Portero que encajó pocos goles */
+  porteriaSegura: boolean;
   resultado: "victoria" | "empate" | "derrota" | null;
   puntos: number;
 };
@@ -115,9 +119,23 @@ const vacio = (): PuntosJugador => ({
   asistencias: 0,
   enPropia: 0,
   mvp: false,
+  amarillas: 0,
+  rojas: 0,
+  porteriaSegura: false,
   resultado: null,
   puntos: 0,
 });
+
+/** Ids de los porteros del Split 3, para el premio por encajar poco */
+function idsDePorteros(): Set<string> {
+  const porteros = new Set<string>();
+  for (const equipo of equiposSplit3) {
+    for (const fichaje of equipo.plantilla) {
+      if (esPortero(getPersona(fichaje.persona)?.posicion)) porteros.add(fichaje.persona);
+    }
+  }
+  return porteros;
+}
 
 /** "Sotto (PP)" → "Sotto"; null si no es un gol en propia puerta */
 function autorDelGolEnPropia(texto?: string): string | null {
@@ -141,6 +159,9 @@ function sumarPuntos(jugador: PuntosJugador): number {
     jugador.asistencias * PUNTOS.asistencia +
     (jugador.mvp ? PUNTOS.mvp : 0) +
     jugador.enPropia * PUNTOS.golEnPropia +
+    jugador.amarillas * PUNTOS.tarjetaAmarilla +
+    jugador.rojas * PUNTOS.tarjetaRoja +
+    (jugador.porteriaSegura ? PORTERIA.puntos : 0) +
     porResultado
   );
 }
@@ -166,6 +187,7 @@ export function puntosDePartidos(
   const jugadores: Record<string, PuntosJugador> = {};
   const sinAsistencia: string[] = [];
   const plantillas = plantillasPorEquipo();
+  const porteros = idsDePorteros();
 
   const ficha = (id: string) => (jugadores[id] ??= vacio());
   const idDe = (texto?: string) => {
@@ -218,6 +240,17 @@ export function puntosDePartidos(
       }
     }
 
+    // Las tarjetas restan, y de paso confirman que ese jugador estuvo
+    for (const lado of LADOS) {
+      for (const tarjeta of partido.tarjetas?.[lado] ?? []) {
+        const id = idDe(tarjeta.jugador);
+        if (!id) continue;
+        if (tarjeta.tipo === "roja") ficha(id).rojas += 1;
+        else ficha(id).amarillas += 1;
+        jugaron[lado].add(id);
+      }
+    }
+
     const mvp = idDe(partido.mvp);
     if (mvp) {
       ficha(mvp).mvp = true;
@@ -225,12 +258,16 @@ export function puntosDePartidos(
       if (suLado) jugaron[suLado].add(mvp);
     }
 
-    // Resultado, solo para quien jugó
+    // Resultado y premio al portero, solo para quien jugó
     for (const lado of LADOS) {
       const suyos = marcador[lado];
-      const otros = marcador[lado === "local" ? "visitante" : "local"];
-      const resultado = suyos > otros ? "victoria" : suyos === otros ? "empate" : "derrota";
-      for (const id of jugaron[lado]) ficha(id).resultado = resultado;
+      const encajados = marcador[lado === "local" ? "visitante" : "local"];
+      const resultado = suyos > encajados ? "victoria" : suyos === encajados ? "empate" : "derrota";
+      const porteriaSegura = encajados <= PORTERIA.maxGolesEncajados;
+      for (const id of jugaron[lado]) {
+        ficha(id).resultado = resultado;
+        if (porteriaSegura && porteros.has(id)) ficha(id).porteriaSegura = true;
+      }
     }
   }
 

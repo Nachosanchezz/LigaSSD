@@ -1,6 +1,6 @@
 import Link from "next/link";
 import PageHeader from "@/components/PageHeader";
-import { PUNTOS, REGLAS } from "@/data/fantasy";
+import { PORTERIA, PUNTOS, REGLAS } from "@/data/fantasy";
 
 export const metadata = { title: "Reglas del Fantasy · Liga SSD" };
 
@@ -10,6 +10,13 @@ const PUNTUACION = [
   { que: "MVP del partido", puntos: PUNTOS.mvp, nota: "Uno por partido" },
   { que: "Gana su equipo", puntos: PUNTOS.victoria, nota: "Solo si jugó" },
   { que: "Empata su equipo", puntos: PUNTOS.empate, nota: "Solo si jugó" },
+  {
+    que: "Portero que encaja 3 o menos",
+    puntos: PORTERIA.puntos,
+    nota: `Solo porteros, y solo si jugó`,
+  },
+  { que: "Tarjeta amarilla", puntos: PUNTOS.tarjetaAmarilla, nota: "Cada una" },
+  { que: "Tarjeta roja", puntos: PUNTOS.tarjetaRoja, nota: "Duele" },
   { que: "Gol en propia puerta", puntos: PUNTOS.golEnPropia, nota: "Le pasa a cualquiera" },
 ];
 
@@ -36,7 +43,8 @@ export default function ReglasFantasyPage() {
           </p>
           <p>
             Uno de los cinco tiene que ser <strong>portero</strong>, y solo uno: los otros cuatro son de pista. En
-            toda la liga hay cinco porteros, así que ahí la elección es corta.
+            toda la liga hay cinco porteros, así que ahí la elección es corta, pero el portero que encaje poco
+            suma tanto como un gol.
           </p>
           <p>
             Como mucho puedes llevar a <strong>{REGLAS.maxPorEquipo} jugadores del mismo equipo</strong>, así que
@@ -80,8 +88,13 @@ export default function ReglasFantasyPage() {
             </table>
           </div>
           <p className="pt-1">
-            Todo sale del acta del partido, tal y como se sube desde el admin: goles, asistencias, MVP y
-            resultado. En cuanto se guarda un resultado, los puntos aparecen solos.
+            Todo sale del acta del partido, tal y como se sube desde el admin: goles, asistencias, MVP,
+            tarjetas y resultado. En cuanto se guarda un resultado, los puntos aparecen solos.
+          </p>
+          <p>
+            Lo del portero tiene truco: en esta liga se marcan once goles por partido, así que la portería a
+            cero no llegaría nunca. Por eso el premio es por encajar{" "}
+            <strong>{PORTERIA.maxGolesEncajados} o menos</strong>, que ya es un partidazo.
           </p>
         </Bloque>
 

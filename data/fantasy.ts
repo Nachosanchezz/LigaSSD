@@ -30,6 +30,18 @@ export const PUNTOS = {
   empate: 1,
   derrota: 0,
   golEnPropia: -2,
+  tarjetaAmarilla: -1,
+  tarjetaRoja: -3,
+} as const;
+
+/**
+ * Premio al portero que aguanta. En el Split 2 se marcaron 11 goles por
+ * partido, así que la portería a cero no llegaría nunca: el listón está en
+ * encajar 3 o menos, que ahí sí es un partidazo.
+ */
+export const PORTERIA = {
+  maxGolesEncajados: 3,
+  puntos: 4,
 } as const;
 
 /**

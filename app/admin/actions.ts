@@ -40,6 +40,12 @@ type GolData = {
   minuto?: number;
 };
 
+type TarjetaData = {
+  jugador: string;
+  tipo: "amarilla" | "roja";
+  minuto?: number;
+};
+
 type GuardarResultadoInput = {
   partidoId: string;
   resultado: string;
@@ -49,6 +55,8 @@ type GuardarResultadoInput = {
   /** Apodos de quienes jugaron, para las estadísticas y el fantasy */
   jugaronLocal?: string[];
   jugaronVisitante?: string[];
+  tarjetasLocal?: TarjetaData[];
+  tarjetasVisitante?: TarjetaData[];
 };
 
 export async function guardarResultado(
@@ -58,7 +66,17 @@ export async function guardarResultado(
     return { error: "No autorizado" };
   }
 
-  const { partidoId, resultado, mvp, golesLocal, golesVisitante, jugaronLocal, jugaronVisitante } = data;
+  const {
+    partidoId,
+    resultado,
+    mvp,
+    golesLocal,
+    golesVisitante,
+    jugaronLocal,
+    jugaronVisitante,
+    tarjetasLocal,
+    tarjetasVisitante,
+  } = data;
 
   // Una eliminatoria empatada tras la prórroga lleva los penaltis: "4-4 (5-3 pen.)"
   if (!resultado.match(/^\d+-\d+( \(\d+-\d+ pen\.\))?$/)) {
@@ -107,6 +125,34 @@ export async function guardarResultado(
   if (golesRows.length > 0) {
     const { error: e3 } = await supabase.from("goles").insert(golesRows);
     if (e3) return { error: `Error guardando goles: ${e3.message}` };
+  }
+
+  // Tarjetas: se reescriben enteras, igual que los goles
+  const { error: eT } = await supabase.from("tarjetas").delete().eq("partido_id", partidoId);
+  if (eT) return { error: `Error borrando tarjetas: ${eT.message}` };
+
+  const tarjetaRows = [
+    ...(tarjetasLocal ?? []).map((tarjeta, i) => ({
+      partido_id: partidoId,
+      equipo_tipo: "local" as const,
+      jugador: tarjeta.jugador,
+      tipo: tarjeta.tipo,
+      minuto: tarjeta.minuto ?? null,
+      orden: i,
+    })),
+    ...(tarjetasVisitante ?? []).map((tarjeta, i) => ({
+      partido_id: partidoId,
+      equipo_tipo: "visitante" as const,
+      jugador: tarjeta.jugador,
+      tipo: tarjeta.tipo,
+      minuto: tarjeta.minuto ?? null,
+      orden: i,
+    })),
+  ].filter((fila) => fila.jugador.trim());
+
+  if (tarjetaRows.length > 0) {
+    const { error: eT2 } = await supabase.from("tarjetas").insert(tarjetaRows);
+    if (eT2) return { error: `Error guardando tarjetas: ${eT2.message}` };
   }
 
   // Quién jugó: se reescribe entera, igual que los goles

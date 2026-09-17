@@ -17,6 +17,17 @@ export type ResumenPartido = {
   visitante: EventoGol[];
 };
 
+export type EventoTarjeta = {
+  jugador: string;
+  tipo: "amarilla" | "roja";
+  minuto?: number;
+};
+
+export type TarjetasPartido = {
+  local: EventoTarjeta[];
+  visitante: EventoTarjeta[];
+};
+
 export type Partido = {
   id: string;
   local: string;
@@ -31,6 +42,7 @@ export type Partido = {
   motivo?: string;
   resultado?: string;
   resumen?: ResumenPartido;
+  tarjetas?: TarjetasPartido;
   mvp?: string;
 };
 

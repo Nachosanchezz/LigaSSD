@@ -11,6 +11,9 @@ function detalle(puntos?: PuntosJugador): string {
   if (puntos.asistencias) trozos.push(puntos.asistencias === 1 ? "1 asist." : `${puntos.asistencias} asist.`);
   if (puntos.mvp) trozos.push("MVP");
   if (puntos.enPropia) trozos.push(puntos.enPropia === 1 ? "1 en propia" : `${puntos.enPropia} en propia`);
+  if (puntos.amarillas) trozos.push(puntos.amarillas === 1 ? "amarilla" : `${puntos.amarillas} amarillas`);
+  if (puntos.rojas) trozos.push("roja");
+  if (puntos.porteriaSegura) trozos.push("encajó poco");
   if (puntos.resultado === "victoria") trozos.push("ganó");
   else if (puntos.resultado === "empate") trozos.push("empató");
   else if (puntos.resultado === "derrota") trozos.push("perdió");

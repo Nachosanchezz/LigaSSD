@@ -64,6 +64,7 @@ export default async function FantasyPage() {
               </li>
               <li>
                 Gol {PUNTOS.gol}, asistencia {PUNTOS.asistencia}, MVP {PUNTOS.mvp}, ganar {PUNTOS.victoria}.
+                Las tarjetas restan.
               </li>
               <li>El mercado cierra al empezar el primer partido de cada jornada.</li>
             </ul>

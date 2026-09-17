@@ -12,6 +12,14 @@ type GolEntry = {
 
 const golVacio = (): GolEntry => ({ jugador: "", asistente: "", minuto: "" });
 
+type TarjetaEntry = {
+  jugador: string;
+  tipo: "amarilla" | "roja";
+  minuto: string;
+};
+
+const tarjetaVacia = (): TarjetaEntry => ({ jugador: "", tipo: "amarilla", minuto: "" });
+
 const normalizar = (texto: string) =>
   texto.normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim().toLowerCase();
 
@@ -31,6 +39,10 @@ type Props = {
   /** Quiénes constaban ya como que jugaron; si no hay nada apuntado, se marcan todos */
   jugaronLocalActual?: string[];
   jugaronVisitanteActual?: string[];
+  tarjetasActuales?: {
+    local: { jugador: string; tipo: "amarilla" | "roja"; minuto?: number }[];
+    visitante: { jugador: string; tipo: "amarilla" | "roja"; minuto?: number }[];
+  };
   arbitraActual?: string;
   estadoActual?: string;
   motivoActual?: string;
@@ -52,6 +64,7 @@ export default function ResultadoForm({
   jugadoresVisitante,
   jugaronLocalActual,
   jugaronVisitanteActual,
+  tarjetasActuales,
   arbitraActual,
   estadoActual,
   motivoActual,
@@ -96,6 +109,14 @@ export default function ResultadoForm({
   const [jugaronVisitante, setJugaronVisitante] = useState<string[]>(
     jugaronVisitanteActual?.length ? jugaronVisitanteActual : jugadoresVisitante
   );
+  const comoEntrada = (lado: "local" | "visitante"): TarjetaEntry[] =>
+    (tarjetasActuales?.[lado] ?? []).map((tarjeta) => ({
+      jugador: tarjeta.jugador,
+      tipo: tarjeta.tipo,
+      minuto: tarjeta.minuto?.toString() ?? "",
+    }));
+  const [tarjetasLocal, setTarjetasLocal] = useState<TarjetaEntry[]>(comoEntrada("local"));
+  const [tarjetasVisitante, setTarjetasVisitante] = useState<TarjetaEntry[]>(comoEntrada("visitante"));
   const [error, setError] = useState("");
   const [showDelete, setShowDelete] = useState(false);
   // Nombres escritos que no son de ninguna de las dos plantillas
@@ -107,6 +128,8 @@ export default function ResultadoForm({
     const escritos = [
       ...golesLocal.flatMap((g) => [g.jugador, g.asistente]),
       ...golesVisitante.flatMap((g) => [g.jugador, g.asistente]),
+      ...tarjetasLocal.map((t) => t.jugador),
+      ...tarjetasVisitante.map((t) => t.jugador),
       mvp,
     ];
     const raros = escritos
@@ -210,6 +233,20 @@ export default function ResultadoForm({
           })),
         jugaronLocal,
         jugaronVisitante,
+        tarjetasLocal: tarjetasLocal
+          .filter((tarjeta) => tarjeta.jugador.trim())
+          .map((tarjeta) => ({
+            jugador: tarjeta.jugador.trim(),
+            tipo: tarjeta.tipo,
+            minuto: tarjeta.minuto ? Number(tarjeta.minuto) : undefined,
+          })),
+        tarjetasVisitante: tarjetasVisitante
+          .filter((tarjeta) => tarjeta.jugador.trim())
+          .map((tarjeta) => ({
+            jugador: tarjeta.jugador.trim(),
+            tipo: tarjeta.tipo,
+            minuto: tarjeta.minuto ? Number(tarjeta.minuto) : undefined,
+          })),
       });
       if (res.error) {
         setError(res.error);
@@ -385,6 +422,20 @@ export default function ResultadoForm({
           updateGol(golesVisitante, setGolesVisitante, i, campo, val)
         }
         onRemove={(i) => removeGol(golesVisitante, setGolesVisitante, i)}
+      />
+
+      {/* Tarjetas */}
+      <TarjetasSection
+        titulo={`Tarjetas ${local}`}
+        lista="jugadores-local"
+        tarjetas={tarjetasLocal}
+        onCambiar={setTarjetasLocal}
+      />
+      <TarjetasSection
+        titulo={`Tarjetas ${visitante}`}
+        lista="jugadores-visitante"
+        tarjetas={tarjetasVisitante}
+        onCambiar={setTarjetasVisitante}
       />
 
       {/* Quién jugó */}
@@ -648,6 +699,89 @@ function AsistenciaSection({
           Ninguno
         </button>
       </div>
+    </div>
+  );
+}
+
+/** Las tarjetas del acta. Restan en el fantasy y salen en la ficha del partido. */
+function TarjetasSection({
+  titulo,
+  lista,
+  tarjetas,
+  onCambiar,
+}: {
+  titulo: string;
+  lista: string;
+  tarjetas: TarjetaEntry[];
+  onCambiar: (tarjetas: TarjetaEntry[]) => void;
+}) {
+  const actualizar = (indice: number, campo: keyof TarjetaEntry, valor: string) =>
+    onCambiar(tarjetas.map((tarjeta, i) => (i === indice ? { ...tarjeta, [campo]: valor } : tarjeta)));
+
+  return (
+    <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="text-xs font-black uppercase tracking-widest text-slate-500">{titulo}</h3>
+        <button
+          onClick={() => onCambiar([...tarjetas, tarjetaVacia()])}
+          className="flex items-center gap-1 text-xs font-bold text-[#0b4a6f] bg-blue-50 border border-blue-100 px-3 py-1.5 rounded-lg hover:bg-blue-100 active:scale-95 transition"
+        >
+          <span className="text-base leading-none">+</span> Tarjeta
+        </button>
+      </div>
+
+      {tarjetas.length === 0 ? (
+        <p className="text-sm text-slate-400 text-center py-2">Sin tarjetas</p>
+      ) : (
+        <div className="space-y-3">
+          {tarjetas.map((tarjeta, i) => (
+            <div key={i} className="rounded-xl bg-slate-50 border border-slate-100 p-3 space-y-2">
+              <div className="flex items-center gap-2">
+                <span
+                  className={`h-5 w-3.5 shrink-0 rounded-sm ${
+                    tarjeta.tipo === "roja" ? "bg-red-500" : "bg-yellow-400"
+                  }`}
+                  aria-hidden
+                />
+                <input
+                  type="text"
+                  value={tarjeta.jugador}
+                  onChange={(e) => actualizar(i, "jugador", e.target.value)}
+                  list={lista}
+                  placeholder="Jugador (apodo)"
+                  className="flex-1 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-800 focus:outline-none focus:border-[#0b4a6f] transition"
+                />
+                <button
+                  onClick={() => onCambiar(tarjetas.filter((_, indice) => indice !== i))}
+                  className="text-slate-400 hover:text-red-500 transition text-lg leading-none px-1"
+                  aria-label="Quitar tarjeta"
+                >
+                  ×
+                </button>
+              </div>
+              <div className="flex gap-2 ml-6">
+                <select
+                  value={tarjeta.tipo}
+                  onChange={(e) => actualizar(i, "tipo", e.target.value)}
+                  className="flex-1 rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-bold text-slate-600 focus:outline-none focus:border-[#0b4a6f] transition"
+                >
+                  <option value="amarilla">Amarilla</option>
+                  <option value="roja">Roja</option>
+                </select>
+                <input
+                  type="number"
+                  value={tarjeta.minuto}
+                  onChange={(e) => actualizar(i, "minuto", e.target.value)}
+                  placeholder="Min."
+                  min={1}
+                  max={99}
+                  className="w-16 rounded-lg border border-slate-200 bg-white px-2 py-2 text-xs text-slate-600 text-center focus:outline-none focus:border-[#0b4a6f] transition"
+                />
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

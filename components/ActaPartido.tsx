@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { MapPin, Trophy, User } from "lucide-react";
 import Escudo, { type DatosEscudo } from "@/components/Escudo";
-import type { EventoGol, Partido } from "@/data/tipos";
+import type { EventoGol, EventoTarjeta, Partido } from "@/data/tipos";
 import { ladoGanador, leerMarcador } from "@/lib/resultado";
 
 type Props = {
@@ -19,6 +19,8 @@ export default function ActaPartido({ partido, volver, escudo, etiqueta }: Props
   const ganador = marcador ? ladoGanador(marcador) : null;
   const localGana = ganador === "local";
   const visitanteGana = ganador === "visitante";
+  const hayTarjetas =
+    (partido.tarjetas?.local.length ?? 0) + (partido.tarjetas?.visitante.length ?? 0) > 0;
 
   return (
     <div className="min-h-screen bg-slate-50/50 pb-10 sm:pb-20">
@@ -96,6 +98,19 @@ export default function ActaPartido({ partido, volver, escudo, etiqueta }: Props
             <GolesEquipo equipo={partido.local} goles={partido.resumen?.local ?? []} />
             <GolesEquipo equipo={partido.visitante} goles={partido.resumen?.visitante ?? []} />
           </div>
+
+          {/* Tarjetas */}
+          {hayTarjetas && (
+            <div className="mt-6 sm:mt-8 border-t border-slate-100 pt-6 sm:pt-8">
+              <h2 className="mb-4 flex items-center gap-3 text-sm font-black uppercase tracking-wide text-slate-500">
+                Tarjetas
+              </h2>
+              <div className="flex flex-wrap gap-2">
+                <TarjetasEquipo equipo={partido.local} tarjetas={partido.tarjetas?.local ?? []} />
+                <TarjetasEquipo equipo={partido.visitante} tarjetas={partido.tarjetas?.visitante ?? []} />
+              </div>
+            </div>
+          )}
         </div>
       </section>
     </div>
@@ -148,5 +163,26 @@ function GolesEquipo({ equipo, goles }: { equipo: string; goles: EventoGol[] }) 
         ))}
       </div>
     </div>
+  );
+}
+
+function TarjetasEquipo({ equipo, tarjetas }: { equipo: string; tarjetas: EventoTarjeta[] }) {
+  return (
+    <>
+      {tarjetas.map((tarjeta, index) => (
+        <span
+          key={index}
+          className="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs sm:text-sm"
+          title={equipo}
+        >
+          <span
+            className={`h-4 w-3 shrink-0 rounded-sm ${tarjeta.tipo === "roja" ? "bg-red-500" : "bg-yellow-400"}`}
+            aria-label={tarjeta.tipo}
+          />
+          <span className="font-bold text-slate-800">{tarjeta.jugador}</span>
+          {tarjeta.minuto && <span className="text-slate-400">{tarjeta.minuto}&apos;</span>}
+        </span>
+      ))}
+    </>
   );
 }

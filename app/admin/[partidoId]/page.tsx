@@ -99,6 +99,7 @@ export default async function AdminPartidoPage({ params }: Props) {
           jugadoresVisitante={apodosDeEquipo(partido.visitante)}
           jugaronLocalActual={jugaron?.local}
           jugaronVisitanteActual={jugaron?.visitante}
+          tarjetasActuales={partido.tarjetas}
           arbitraActual={partido.arbitra}
           estadoActual={partido.estado}
           motivoActual={partido.motivo}

@@ -1,7 +1,7 @@
 import { cache } from "react";
 import { createClient } from "./supabase";
 import { jornadas as jornadasStaticas } from "@/data/split2/partidos";
-import type { Jornada, Partido, EstadoPartido } from "@/data/tipos";
+import type { EventoTarjeta, Jornada, Partido, EstadoPartido } from "@/data/tipos";
 import { cuartosPlayoff, semifinalesPlayoff, finalPlayoff } from "@/data/split2/playoffs";
 import type { PartidoPlayoff } from "@/data/split2/playoffs";
 
@@ -12,6 +12,7 @@ type PartidoOverrides = {
     local: { jugador: string; asistente?: string; minuto?: number }[];
     visitante: { jugador: string; asistente?: string; minuto?: number }[];
   };
+  tarjetas?: { local: EventoTarjeta[]; visitante: EventoTarjeta[] };
   arbitra?: string;
   estadoOverride?: EstadoPartido;
   motivoOverride?: string;
@@ -33,16 +34,24 @@ export const fetchOverrides = cache(async (): Promise<OverridesRecord> => {
     { data: goles, error: e2 },
     { data: arbitros, error: e3 },
     { data: estados, error: e4 },
+    { data: tarjetas, error: eTarjetas },
   ] = await Promise.all([
     supabase.from("resultados").select("*"),
     supabase.from("goles").select("*").order("orden"),
     supabase.from("arbitros").select("*"),
     supabase.from("estados_partido").select("*"),
+    supabase.from("tarjetas").select("*").order("orden"),
   ]);
 
   if (e1 || e2 || e3 || e4) {
     console.error("Supabase error:", e1 ?? e2 ?? e3 ?? e4);
     return {};
+  }
+
+  // Las tarjetas son un extra: si su tabla falla, el acta se queda sin ellas,
+  // pero los resultados de toda la web siguen saliendo
+  if (eTarjetas) {
+    console.error("Supabase error (tarjetas):", eTarjetas);
   }
 
   const record: OverridesRecord = {};
@@ -66,10 +75,20 @@ export const fetchOverrides = cache(async (): Promise<OverridesRecord> => {
         minuto: g.minuto ?? undefined,
       }));
 
+    const tarjetasDe = (lado: "local" | "visitante"): EventoTarjeta[] =>
+      (tarjetas ?? [])
+        .filter((tarjeta) => tarjeta.partido_id === r.partido_id && tarjeta.equipo_tipo === lado)
+        .map((tarjeta) => ({
+          jugador: tarjeta.jugador,
+          tipo: tarjeta.tipo as EventoTarjeta["tipo"],
+          minuto: tarjeta.minuto ?? undefined,
+        }));
+
     record[r.partido_id] = {
       resultado: r.resultado,
       mvp: r.mvp ?? undefined,
       resumen: { local: golesLocal, visitante: golesVisitante },
+      tarjetas: { local: tarjetasDe("local"), visitante: tarjetasDe("visitante") },
     };
   }
 
@@ -116,6 +135,7 @@ export function aplicarOverrides(partido: Partido, o?: PartidoOverrides): Partid
     merged.resultado = o.resultado;
     merged.mvp = o.mvp;
     merged.resumen = o.resumen;
+    merged.tarjetas = o.tarjetas;
   }
   return merged;
 }
