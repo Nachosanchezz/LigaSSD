@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Fantasy Liga SSD</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,400;0,600;0,800&family=Barlow+Condensed:ital,wght@1,700;1,900&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  @page { size: A4; margin: 12mm 13mm; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Barlow", system-ui, sans-serif;
+    font-size: 10.5pt;
+    line-height: 1.45;
+    color: #1e293b;
+  }
+  h1, h2, h3 { font-family: "Barlow Condensed", "Arial Narrow", sans-serif; font-style: italic; margin: 0; }
+  .mono { font-family: "IBM Plex Mono", monospace; }
+
+  /* Cabecera */
+  header {
+    background: #091f36;
+    color: #fff;
+    padding: 14px 18px;
+    border-bottom: 4px solid #facc15;
+    margin-bottom: 14px;
+  }
+  header .kicker { font-family: "IBM Plex Mono", monospace; font-size: 7.5pt; letter-spacing: .3em; color: #facc15; text-transform: uppercase; }
+  header h1 { font-size: 30pt; font-weight: 900; text-transform: uppercase; line-height: .95; letter-spacing: -.5px; margin-top: 3px; }
+  header p { margin: 4px 0 0; font-size: 9pt; color: #bfdbfe; }
+
+  h2 {
+    font-size: 15pt; font-weight: 900; text-transform: uppercase; color: #091f36;
+    border-bottom: 2px solid #091f36; padding-bottom: 3px; margin: 14px 0 8px;
+  }
+  h2 .num { color: #facc15; -webkit-text-stroke: .4px #091f36; margin-right: 6px; }
+  p { margin: 0 0 7px; }
+  ul { margin: 0 0 7px; padding-left: 16px; }
+  li { margin-bottom: 3px; }
+  strong { font-weight: 800; color: #091f36; }
+
+  .aviso {
+    background: #fef9c3; border-left: 4px solid #facc15;
+    padding: 8px 11px; margin: 9px 0; font-weight: 600;
+  }
+  .cols { display: flex; gap: 14px; }
+  .cols > * { flex: 1; }
+
+  table { width: 100%; border-collapse: collapse; margin: 4px 0 8px; }
+  td { padding: 4px 8px; border-bottom: 1px solid #e2e8f0; }
+  td.pts { text-align: right; font-weight: 800; width: 52px; font-family: "IBM Plex Mono", monospace; }
+  .suma { color: #0b4a6f; }
+  .resta { color: #dc2626; }
+  tr.destacada td { background: #f8fafc; }
+
+  .ejemplo {
+    background: #091f36; color: #fff; padding: 11px 14px; margin: 8px 0;
+  }
+  .ejemplo .cuenta { font-family: "IBM Plex Mono", monospace; font-size: 9.5pt; color: #bfdbfe; margin-top: 4px; }
+  .ejemplo b { color: #facc15; }
+
+  .pagina-dos { break-before: page; }
+  h2 { break-after: avoid; }
+  li, tr { break-inside: avoid; }
+
+  .porteros td:first-child { font-weight: 800; color: #091f36; width: 90px; }
+  .porteros td.precio { text-align: right; font-family: "IBM Plex Mono", monospace; font-weight: 500; width: 70px; }
+
+  footer {
+    margin-top: 14px; border-top: 2px solid #091f36; padding-top: 7px;
+    font-size: 8.5pt; color: #64748b; display: flex; justify-content: space-between;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="kicker">Liga SSD · Torrelodones</div>
+  <h1>Fantasy del Split&nbsp;3</h1>
+  <p>Monta tu cinco cada jornada con jugadores de la liga y suma según lo que hagan en la pista de verdad. Diez jornadas, un ganador.</p>
+</header>
+
+<h2><span class="num">1</span>Cómo entrar</h2>
+<p>
+  En la web de la liga, pestaña <strong>FANTASY</strong>. Eliges tu nombre de la lista y te pones un
+  <strong>PIN de 4 números</strong>: el primero que escribas se queda como el tuyo para siempre.
+  Solo pueden jugar los 48 de la liga.
+</p>
+
+<h2><span class="num">2</span>Tu cinco</h2>
+<div class="cols">
+  <ul>
+    <li><strong>5 jugadores</strong> con <strong>150 M€</strong></li>
+    <li><strong>1 portero</strong> obligatorio y 4 de pista</li>
+    <li>Como mucho <strong>2 del mismo equipo</strong></li>
+  </ul>
+  <ul>
+    <li>Uno es el <strong>capitán</strong> y puntúa <strong>doble</strong></li>
+    <li>Puedes fichar a quien quieras, incluido a ti mismo</li>
+    <li>Precios: los de la subasta del 15 de septiembre</li>
+  </ul>
+</div>
+<p>
+  Los presidentes y los de Titans no pasaron por la subasta, así que llevan un valor tasado. En toda la liga
+  hay <strong>cinco porteros</strong>, y Titans no tiene ninguno.
+</p>
+
+<h2><span class="num">3</span>El plazo</h2>
+<p>
+  Cada jornada <strong>cierra al empezar su primer partido</strong>. Hasta ese momento cambias tu cinco las
+  veces que quieras; después ya no se toca. Cada jornada eliges de cero: no hay fichajes, ni ventas, ni dinero
+  que se arrastre. La jornada que no alineas a nadie, te llevas cero.
+</p>
+<div class="aviso">La jornada 1 cierra el martes 22 de septiembre a las 20:00.</div>
+
+<h2><span class="num">4</span>Cómo se puntúa</h2>
+<table>
+  <tr><td>Gol</td><td class="pts suma">+4</td></tr>
+  <tr><td>Asistencia</td><td class="pts suma">+3</td></tr>
+  <tr><td>MVP del partido</td><td class="pts suma">+5</td></tr>
+  <tr><td>Su equipo gana</td><td class="pts suma">+3</td></tr>
+  <tr><td>Su equipo empata</td><td class="pts suma">+1</td></tr>
+  <tr class="destacada"><td>Portero que juega y encaja 3 goles o menos</td><td class="pts suma">+4</td></tr>
+  <tr><td>Tarjeta amarilla</td><td class="pts resta">−1</td></tr>
+  <tr><td>Tarjeta roja</td><td class="pts resta">−3</td></tr>
+  <tr><td>Gol en propia puerta</td><td class="pts resta">−2</td></tr>
+</table>
+<p>El <strong>capitán multiplica por 2</strong> su total de la jornada. Lo bueno y lo malo.</p>
+
+<div class="ejemplo">
+  <strong style="color:#fff">Ejemplo:</strong> Nico marca 2, es MVP, ve una amarilla y Los Tercios ganan.
+  <div class="cuenta">2 goles +8 &nbsp;·&nbsp; MVP +5 &nbsp;·&nbsp; amarilla −1 &nbsp;·&nbsp; victoria +3 &nbsp;=&nbsp; <b>15 puntos</b> &nbsp;(<b>30</b> si lo llevas de capitán)</div>
+</div>
+
+<h2 class="pagina-dos"><span class="num">5</span>La letra pequeña</h2>
+<ul>
+  <li>
+    Los puntos por <strong>ganar o empatar solo los cobra quien jugó</strong>. Después de cada partido se
+    apunta quién estuvo: fichar a alguien que se queda en casa es tirar la plaza.
+  </li>
+  <li>
+    El <strong>gol en propia</strong> se lo lleva el que se lo mete, no el rival.
+  </li>
+  <li>
+    Lo del portero no es portería a cero: en esta liga se marcan <strong>once goles por partido</strong>, así
+    que el listón está en encajar 3 o menos. En un 3-2 lo cobran los dos porteros.
+  </li>
+  <li>
+    Todo sale del <strong>acta</strong> que se sube después de cada partido. En cuanto está el resultado, los
+    puntos aparecen solos.
+  </li>
+  <li>
+    Los cinco de los demás <strong>se destapan cuando empieza la jornada</strong>, no antes.
+  </li>
+</ul>
+
+<h2><span class="num">6</span>Los cinco porteros de la liga</h2>
+<p>
+  Uno de ellos tiene que estar en tu cinco, sí o sí. Titans no tiene portero, así que de ahí no puedes sacarlo.
+</p>
+<table class="porteros">
+  <tr><td>Pow</td><td>Los Tercios</td><td class="precio">22 M€</td></tr>
+  <tr><td>Pedro</td><td>Filósofos</td><td class="precio">21 M€</td></tr>
+  <tr><td>Jordi</td><td>Bodø Dream</td><td class="precio">19 M€</td></tr>
+  <tr><td>Jimmy</td><td>Los Jinetos</td><td class="precio">15 M€</td></tr>
+  <tr><td>Guille</td><td>Torre Beldes</td><td class="precio">10 M€</td></tr>
+</table>
+<p>
+  El más barato deja más dinero para arriba, pero el premio por encajar poco lo cobra el que aguanta: mira
+  también contra quién juega su equipo esa jornada.
+</p>
+
+<h2><span class="num">7</span>Dónde mirar</h2>
+<p>
+  En la pestaña <strong>FANTASY</strong> de la web tienes tu cinco, la clasificación general y el detalle de
+  cada jornada: cuántos puntos hizo cada jugador y con qué cinco los sacó cada uno. Las reglas están siempre
+  al día ahí mismo, por si algo cambia.
+</p>
+
+<footer>
+  <span>Liga SSD · Fantasy del Split 3</span>
+  <span class="mono">Clasificación y reglas al día en la web</span>
+</footer>
+
+</body>
+</html>

@@ -117,13 +117,19 @@ export default function ReglasFantasyPage() {
           </p>
         </Bloque>
 
-        <div className="pt-2 text-center">
+        <div className="flex flex-col items-center gap-3 pt-2 sm:flex-row sm:justify-center">
           <Link
             href="/fantasy"
             className="inline-block rounded-xl bg-[#0b4a6f] px-6 py-3 text-sm font-black uppercase tracking-wide text-white transition hover:bg-[#091f36]"
           >
             Volver al fantasy
           </Link>
+          <a
+            href="/fantasy-liga-ssd.pdf"
+            className="inline-block rounded-xl border border-slate-200 bg-white px-6 py-3 text-sm font-black uppercase tracking-wide text-[#0b4a6f] transition hover:border-[#0b4a6f]/30"
+          >
+            Reglas en PDF
+          </a>
         </div>
       </div>
     </div>

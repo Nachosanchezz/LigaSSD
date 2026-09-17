@@ -69,19 +69,32 @@ export default async function JornadaFantasyPage({ params }: Props) {
         {/* Resultados */}
         <div className="rounded-2xl border border-slate-100 bg-white p-4 shadow-md">
           <div className="space-y-2">
-            {jornada.partidos.map((partido) => (
-              <Link
-                key={partido.id}
-                href={`/partidos/${partido.id}`}
-                className="flex items-center gap-2 rounded-xl px-2 py-1.5 text-sm transition hover:bg-slate-50"
-              >
-                <span className="flex-1 truncate text-right font-bold uppercase text-slate-700">{partido.local}</span>
-                <span className="shrink-0 rounded bg-[#091f36] px-2 py-0.5 font-black tabular-nums text-yellow-400">
-                  {partido.resultado ?? "vs"}
-                </span>
-                <span className="flex-1 truncate font-bold uppercase text-slate-700">{partido.visitante}</span>
-              </Link>
-            ))}
+            {jornada.partidos.map((partido) => {
+              // El acta solo existe si el partido se ha jugado
+              const jugado = partido.estado === "Finalizado";
+              const marcador = (
+                <>
+                  <span className="flex-1 truncate text-right font-bold uppercase text-slate-700">{partido.local}</span>
+                  <span className="shrink-0 rounded bg-[#091f36] px-2 py-0.5 font-black tabular-nums text-yellow-400">
+                    {partido.resultado ?? "vs"}
+                  </span>
+                  <span className="flex-1 truncate font-bold uppercase text-slate-700">{partido.visitante}</span>
+                </>
+              );
+              return jugado ? (
+                <Link
+                  key={partido.id}
+                  href={`/partidos/${partido.id}`}
+                  className="flex items-center gap-2 rounded-xl px-2 py-1.5 text-sm transition hover:bg-slate-50"
+                >
+                  {marcador}
+                </Link>
+              ) : (
+                <div key={partido.id} className="flex items-center gap-2 px-2 py-1.5 text-sm">
+                  {marcador}
+                </div>
+              );
+            })}
           </div>
         </div>
 
