@@ -10,8 +10,8 @@
 export const REGLAS = {
   /** Jugadores que se alinean cada jornada */
   tamanoEquipo: 5,
-  /** M€ disponibles, con los mismos precios de la subasta */
-  presupuesto: 120,
+  /** M€ disponibles, los mismos que tuvo cada presidente en la subasta */
+  presupuesto: 200,
   /** Tope de jugadores del mismo equipo real, para que no se copien todos el mismo cinco */
   maxPorEquipo: 2,
   /** Los puntos del capitán se multiplican por esto */

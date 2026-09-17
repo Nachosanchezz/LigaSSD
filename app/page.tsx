@@ -2,6 +2,7 @@ import Link from "next/link";
 import Escudo from "@/components/Escudo";
 import NoticiasCarrusel from "@/components/NoticiasCarrusel";
 import ProximoPartido from "@/components/ProximoPartido";
+import { REGLAS } from "@/data/fantasy";
 import { noticiasDeSplit } from "@/data/noticias";
 import { bote, jugadoresQuePagan } from "@/data/split3/bote";
 import { equiposSplit3 } from "@/data/split3/equipos";
@@ -208,7 +209,7 @@ export default async function HomePage() {
               Fantasy de la Liga SSD
             </span>
             <span className="mt-1 block text-xs text-blue-200">
-              Elige tu cinco cada jornada con 120 M€ y compite contra el resto de la liga
+              Elige tu cinco cada jornada con {REGLAS.presupuesto} M€ y compite contra el resto de la liga
             </span>
           </span>
           <span className="shrink-0 rounded-lg bg-yellow-400 px-5 py-2.5 text-xs font-black uppercase tracking-wide text-[#091f36] transition group-hover:bg-yellow-300">
