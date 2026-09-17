@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { isAuthenticated } from "../actions";
+import { fetchAsistencias } from "@/lib/fantasy-datos";
 import { apodosDeEquipo } from "@/lib/jugadores";
 import { getJornadasConResultados } from "@/lib/queries";
 import { getSplit3, partidosFaseFinal } from "@/lib/split3";
@@ -41,6 +42,9 @@ export default async function AdminPartidoPage({ params }: Props) {
   const encontrado = await buscarPartido(partidoId);
   if (!encontrado) notFound();
   const { partido, etiqueta } = encontrado;
+
+  const asistencias = await fetchAsistencias();
+  const jugaron = asistencias[partidoId];
 
   const resultadoActual =
     partido.estado === "Finalizado"
@@ -93,6 +97,8 @@ export default async function AdminPartidoPage({ params }: Props) {
           visitante={partido.visitante}
           jugadoresLocal={apodosDeEquipo(partido.local)}
           jugadoresVisitante={apodosDeEquipo(partido.visitante)}
+          jugaronLocalActual={jugaron?.local}
+          jugaronVisitanteActual={jugaron?.visitante}
           arbitraActual={partido.arbitra}
           estadoActual={partido.estado}
           motivoActual={partido.motivo}

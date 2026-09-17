@@ -194,6 +194,29 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* Fantasy */}
+      <section className="relative z-20 bg-slate-50 px-4 pb-4 pt-2 sm:px-6">
+        <Link
+          href="/fantasy"
+          className="group mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 overflow-hidden rounded-2xl bg-gradient-to-br from-[#091f36] to-[#0b4a6f] px-6 py-5 text-center shadow-lg transition hover:shadow-xl sm:flex-row sm:text-left"
+        >
+          <span>
+            <span className="block font-mono text-[10px] uppercase tracking-[0.25em] text-yellow-400">
+              Nuevo · Split 3
+            </span>
+            <span className="block text-xl font-black uppercase tracking-tight text-white sm:text-2xl">
+              Fantasy de la Liga SSD
+            </span>
+            <span className="mt-1 block text-xs text-blue-200">
+              Elige tu cinco cada jornada con 120 M€ y compite contra el resto de la liga
+            </span>
+          </span>
+          <span className="shrink-0 rounded-lg bg-yellow-400 px-5 py-2.5 text-xs font-black uppercase tracking-wide text-[#091f36] transition group-hover:bg-yellow-300">
+            Jugar →
+          </span>
+        </Link>
+      </section>
+
       {/* Palmarés */}
       <section className="relative z-20 bg-slate-50 px-4 pb-10 sm:px-6">
         <Link

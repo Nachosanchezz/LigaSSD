@@ -14,6 +14,7 @@ export default function Navbar() {
     path === "/" ? pathname === "/" : pathname === path || pathname.startsWith(`${path}/`);
 
   const links = [
+    { name: "Fantasy", path: "/fantasy", destacado: true },
     { name: "Clasificación", path: "/clasificacion" },
     { name: "Jornadas", path: "/jornadas" },
     { name: "Playoffs", path: "/playoffs" },
@@ -59,7 +60,11 @@ export default function Navbar() {
                 href={link.path}
                 aria-current={activo ? "page" : undefined}
                 className={`relative shrink-0 whitespace-nowrap px-2.5 py-2 text-sm font-semibold tracking-wide transition-colors group uppercase ${
-                  activo ? "text-white" : "text-gray-300 hover:text-white"
+                  activo
+                    ? "text-white"
+                    : link.destacado
+                      ? "text-yellow-400 hover:text-yellow-300"
+                      : "text-gray-300 hover:text-white"
                 }`}
               >
                 {link.name}
@@ -107,7 +112,9 @@ export default function Navbar() {
                 className={`block rounded-lg px-4 py-3 text-base font-semibold uppercase tracking-wide transition-colors ${
                   esActivo(link.path)
                     ? "bg-yellow-400 text-[#091f36]"
-                    : "text-gray-200 hover:bg-white/10 hover:text-white"
+                    : link.destacado
+                      ? "text-yellow-400 hover:bg-white/10"
+                      : "text-gray-200 hover:bg-white/10 hover:text-white"
                 }`}
               >
                 {link.name}

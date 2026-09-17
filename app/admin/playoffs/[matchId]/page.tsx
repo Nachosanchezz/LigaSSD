@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { isAuthenticated } from "../../actions";
+import { fetchAsistencias } from "@/lib/fantasy-datos";
 import { apodosDeEquipo } from "@/lib/jugadores";
 import { getPlayoffConResultados } from "@/lib/queries";
 import ResultadoForm from "../../[partidoId]/ResultadoForm";
@@ -32,6 +33,8 @@ export default async function AdminPlayoffMatchPage({ params }: Props) {
   const match = all.find((m) => m.id === matchId);
 
   if (!match) notFound();
+
+  const jugaron = (await fetchAsistencias())[matchId];
 
   const teamsKnown =
     !match.local.startsWith("Gan.") && !match.visitante.startsWith("Gan.");
@@ -102,6 +105,8 @@ export default async function AdminPlayoffMatchPage({ params }: Props) {
             visitante={match.visitante}
             jugadoresLocal={apodosDeEquipo(match.local)}
             jugadoresVisitante={apodosDeEquipo(match.visitante)}
+            jugaronLocalActual={jugaron?.local}
+            jugaronVisitanteActual={jugaron?.visitante}
             estadoActual={match.estado}
             resultadoActual={resultadoActual}
           />

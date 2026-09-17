@@ -46,6 +46,9 @@ type GuardarResultadoInput = {
   mvp?: string;
   golesLocal: GolData[];
   golesVisitante: GolData[];
+  /** Apodos de quienes jugaron, para las estadísticas y el fantasy */
+  jugaronLocal?: string[];
+  jugaronVisitante?: string[];
 };
 
 export async function guardarResultado(
@@ -55,7 +58,7 @@ export async function guardarResultado(
     return { error: "No autorizado" };
   }
 
-  const { partidoId, resultado, mvp, golesLocal, golesVisitante } = data;
+  const { partidoId, resultado, mvp, golesLocal, golesVisitante, jugaronLocal, jugaronVisitante } = data;
 
   // Una eliminatoria empatada tras la prórroga lleva los penaltis: "4-4 (5-3 pen.)"
   if (!resultado.match(/^\d+-\d+( \(\d+-\d+ pen\.\))?$/)) {
@@ -104,6 +107,20 @@ export async function guardarResultado(
   if (golesRows.length > 0) {
     const { error: e3 } = await supabase.from("goles").insert(golesRows);
     if (e3) return { error: `Error guardando goles: ${e3.message}` };
+  }
+
+  // Quién jugó: se reescribe entera, igual que los goles
+  const { error: e4 } = await supabase.from("alineaciones").delete().eq("partido_id", partidoId);
+  if (e4) return { error: `Error borrando la alineación: ${e4.message}` };
+
+  const alineacionRows = [
+    ...(jugaronLocal ?? []).map((jugador) => ({ partido_id: partidoId, equipo_tipo: "local" as const, jugador })),
+    ...(jugaronVisitante ?? []).map((jugador) => ({ partido_id: partidoId, equipo_tipo: "visitante" as const, jugador })),
+  ].filter((fila) => fila.jugador.trim());
+
+  if (alineacionRows.length > 0) {
+    const { error: e5 } = await supabase.from("alineaciones").insert(alineacionRows);
+    if (e5) return { error: `Error guardando la alineación: ${e5.message}` };
   }
 
   revalidatePath("/", "layout");

@@ -28,6 +28,9 @@ type Props = {
   /** Apodos de cada plantilla, para sugerirlos y avisar de los que no cuadran */
   jugadoresLocal: string[];
   jugadoresVisitante: string[];
+  /** Quiénes constaban ya como que jugaron; si no hay nada apuntado, se marcan todos */
+  jugaronLocalActual?: string[];
+  jugaronVisitanteActual?: string[];
   arbitraActual?: string;
   estadoActual?: string;
   motivoActual?: string;
@@ -47,6 +50,8 @@ export default function ResultadoForm({
   visitante,
   jugadoresLocal,
   jugadoresVisitante,
+  jugaronLocalActual,
+  jugaronVisitanteActual,
   arbitraActual,
   estadoActual,
   motivoActual,
@@ -83,6 +88,13 @@ export default function ResultadoForm({
       asistente: g.asistente ?? "",
       minuto: g.minuto?.toString() ?? "",
     })) ?? []
+  );
+  // Quién jugó. Por defecto, todos: es más rápido desmarcar a los que faltaron
+  const [jugaronLocal, setJugaronLocal] = useState<string[]>(
+    jugaronLocalActual?.length ? jugaronLocalActual : jugadoresLocal
+  );
+  const [jugaronVisitante, setJugaronVisitante] = useState<string[]>(
+    jugaronVisitanteActual?.length ? jugaronVisitanteActual : jugadoresVisitante
   );
   const [error, setError] = useState("");
   const [showDelete, setShowDelete] = useState(false);
@@ -196,6 +208,8 @@ export default function ResultadoForm({
             asistente: g.asistente.trim() || undefined,
             minuto: g.minuto ? Number(g.minuto) : undefined,
           })),
+        jugaronLocal,
+        jugaronVisitante,
       });
       if (res.error) {
         setError(res.error);
@@ -373,6 +387,20 @@ export default function ResultadoForm({
         onRemove={(i) => removeGol(golesVisitante, setGolesVisitante, i)}
       />
 
+      {/* Quién jugó */}
+      <AsistenciaSection
+        titulo={`Jugaron · ${local}`}
+        plantilla={jugadoresLocal}
+        jugaron={jugaronLocal}
+        onCambiar={setJugaronLocal}
+      />
+      <AsistenciaSection
+        titulo={`Jugaron · ${visitante}`}
+        plantilla={jugadoresVisitante}
+        jugaron={jugaronVisitante}
+        onCambiar={setJugaronVisitante}
+      />
+
       {/* Sugerencias para los nombres */}
       <datalist id="jugadores-local">
         {jugadoresLocal.map((jugador) => (
@@ -541,6 +569,85 @@ function GolesSection({
           ))}
         </div>
       )}
+    </div>
+  );
+}
+
+/**
+ * Los que jugaron el partido. Salen todos marcados porque lo normal es que
+ * juegue la plantilla entera: se desmarca a quien faltó. De aquí salen los
+ * partidos jugados de cada uno y los puntos por victoria del fantasy, que no
+ * se le pueden dar a quien no estuvo.
+ */
+function AsistenciaSection({
+  titulo,
+  plantilla,
+  jugaron,
+  onCambiar,
+}: {
+  titulo: string;
+  plantilla: string[];
+  jugaron: string[];
+  onCambiar: (jugadores: string[]) => void;
+}) {
+  const alternar = (jugador: string) =>
+    onCambiar(jugaron.includes(jugador) ? jugaron.filter((otro) => otro !== jugador) : [...jugaron, jugador]);
+
+  return (
+    <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
+      <div className="flex items-center justify-between mb-1">
+        <h3 className="text-xs font-black uppercase tracking-widest text-slate-500">{titulo}</h3>
+        <span className="text-xs font-black text-[#0b4a6f] tabular-nums">
+          {jugaron.length}/{plantilla.length}
+        </span>
+      </div>
+      <p className="text-[11px] text-slate-400 mb-3">Desmarca a los que no jugaron</p>
+
+      <div className="grid grid-cols-2 gap-2">
+        {plantilla.map((jugador) => {
+          const activo = jugaron.includes(jugador);
+          return (
+            <button
+              key={jugador}
+              type="button"
+              onClick={() => alternar(jugador)}
+              aria-pressed={activo}
+              className={`flex items-center gap-2 rounded-xl border px-3 py-2.5 text-sm font-bold text-left transition active:scale-95 ${
+                activo
+                  ? "border-[#0b4a6f] bg-[#0b4a6f] text-white"
+                  : "border-slate-200 bg-slate-50 text-slate-400 line-through"
+              }`}
+            >
+              <span
+                className={`flex h-4 w-4 shrink-0 items-center justify-center rounded border text-[10px] leading-none ${
+                  activo ? "border-white/40 bg-white/20 text-white" : "border-slate-300 bg-white text-transparent"
+                }`}
+                aria-hidden
+              >
+                ✓
+              </span>
+              <span className="truncate">{jugador}</span>
+            </button>
+          );
+        })}
+      </div>
+
+      <div className="mt-3 flex gap-2">
+        <button
+          type="button"
+          onClick={() => onCambiar(plantilla)}
+          className="flex-1 rounded-lg border border-slate-200 bg-white py-2 text-xs font-bold text-slate-500 hover:bg-slate-50 transition"
+        >
+          Todos
+        </button>
+        <button
+          type="button"
+          onClick={() => onCambiar([])}
+          className="flex-1 rounded-lg border border-slate-200 bg-white py-2 text-xs font-bold text-slate-500 hover:bg-slate-50 transition"
+        >
+          Ninguno
+        </button>
+      </div>
     </div>
   );
 }

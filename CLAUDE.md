@@ -32,6 +32,17 @@ Fixtures, teams and players are **hardcoded in TypeScript**. Results are entered
 - `lib/clasificacion.ts` — standings for any split. Split 3 uses `enfrentamientoDirecto` (pts → head-to-head once all matches between the tied teams are played → dg → gf); triangulars fall back to liguilla position.
 - `lib/resultado.ts` — parses results: `"3-2"`, or `"4-4 (5-3 pen.)"` for knockout draws (extra time then penalties).
 - `lib/estadisticas.ts` / `lib/jugadores.ts` — goal/assist/MVP counting by matching acta names to players (full name, apodo, `alias`).
+- `lib/fecha.ts` — the calendar stores local times without a timezone (`"2026-09-22T20:00"`); `instanteDeLaLiga` reads them as Europe/Madrid, which matters because the split crosses the October DST change.
+
+### Fantasy (`/fantasy`)
+
+Lives in the same repo, for league members only. Each jornada you pick five players within a budget; one is captain and scores double. Rules and valuations are in `data/fantasy.ts`, the engine in `lib/fantasy.ts` (pure, so it can also run in the client) and all the IO in `lib/fantasy-datos.ts`.
+
+- Prices are the auction ones from `data/split3/equipos.ts`. The 13 who never went to auction (5 presidents + Titans) get a `TASACIONES` value in `data/fantasy.ts`.
+- Points are derived from the actas at render time — nothing is precomputed or stored.
+- Access: pick your name from the 48 and choose a 4-digit PIN (`lib/fantasy-sesion.ts`, HMAC, cookie signed with the PIN hash so changing the PIN kills old sessions).
+- Supabase tables in `supabase/fantasy.sql`: `alineaciones` (who played each match, filled from `/admin` with the acta), `fantasy_usuarios` and `fantasy_equipos`. The fantasy tables have RLS on and **no** anon policy: they are only read and written server-side with the service role key.
+- Points for a win or a draw only go to players listed in `alineaciones`. If a match has no attendance recorded, only the players named in the acta score.
 
 ### Pages
 
