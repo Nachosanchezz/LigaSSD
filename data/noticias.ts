@@ -15,6 +15,80 @@ export type Noticia = {
 
 export const noticias: Noticia[] = [
   {
+    id: "bodo-dream-79-millones-mario",
+    split: 3,
+    equipoSlug: "bodo-dream",
+    titular: "Juan vuelve a montarse el FIFA Ultimate Team, pero esta vez con factura: 79 millones por Mario",
+    subtitular: "Bodø Dream repite estrategia, convierte a “su hijo” en el fichaje más caro de la historia y demuestra que el amor de padre también cotiza en bolsa",
+    cuerpo: `Hay gente que aprende de una temporada a otra.
+
+Juan no. Juan perfecciona.
+
+En el segundo split, Bodø Dream ya llegó a la liga con esa pinta sospechosamente cómoda de equipo creado en el FIFA con demasiado tiempo libre: plantilla potente, jugador mastodóntico, portero en modo Casillas y un presidente que, casualmente, también era uno de los administradores de la competición.
+
+La acusación entonces era sencilla: Juan se había montado el Ultimate Team.
+
+Pues bien. Para el tercer split se cambió el sistema. Ahora había subasta. Dinero. Pujas. Presupuesto. Transparencia. Mercado libre.
+
+Se acabaron las sospechas. Ahora tenemos facturas.
+
+Y concretamente una de 79 millones.
+
+Eso es lo que Bodø Dream ha pagado por Mario, convirtiéndolo en el jugador más caro de la historia de la liga. Setenta y nueve. Millones. Por Mario.
+
+Que, además, para completar la historia, lleva toda la vida siendo conocido en este universo futbolístico como "el hijo de Juan". No sabemos si existe vínculo sanguíneo. Pero financiero, desde luego, sí.
+
+Juan llevaba tiempo ejerciendo de padre deportivo de Mario, protegiéndolo, apostando por él y tratándolo como si algún día tuviera que heredar el imperio Bodø Dream. Lo que nadie esperaba era que la custodia acabara resolviéndose mediante una puja de 79 millones.
+
+Porque esto ya no es un fichaje. Es una manutención.
+
+Mientras otros presidentes intentaban gestionar su presupuesto con cierta prudencia, Juan vio aparecer a Mario en la subasta y dejó de pensar como presidente. Empezó a pensar como padre.
+
+Uno pujaba. Juan subía. Otro insistía. Juan subía. El precio empezaba a resultar absurdo. Juan seguía.
+
+En algún momento alguien debió preguntarse cuánto estaba dispuesto a pagar. La respuesta era sencilla: sí.
+
+Y así, entre puja y puja, Mario terminó siendo el fichaje más caro que ha visto esta liga. Una cifra que obliga a replantearse si Juan está construyendo un equipo de fútbol o pagando la entrada de Mario en una universidad privada.
+
+Lo mejor es que la operación encaja perfectamente con la filosofía histórica del club. Bodø Dream nunca ha sido de medias tintas: el propio nombre ya lo dice. Dream. Sueño. Equipo de ensueño. Mientras otros forman plantillas, Juan colecciona cromos.
+
+En el split anterior tenía un equipo tan potente que parecía diseñado pulsando "optimizar plantilla". Ahora, con una subasta pública de por medio, nadie puede acusarle de haber hecho nada raro.
+
+Y ese es precisamente el problema: esta vez todo es legal.
+
+Juan no necesita esconder nada. Ha pagado 79 millones delante de todo el mundo y se ha llevado al jugador que quería. Antes podías sospechar de ingeniería administrativa. Ahora solo puedes mirar el recibo.
+
+Y claro, eso mete una presión preciosa sobre Mario. Porque ser bueno está muy bien, pero ser el jugador más caro de la liga ya es otra cosa. Por 79 millones ya no puedes llegar al partido, correr un poco, dar dos pases buenos y decir "hoy no entró". Por 79 millones queremos producción. Goles. Asistencias. Milagros. Si hace falta, que recoja los petos después.
+
+A partir de ahora, cada balón que pierda tendrá valor de mercado, cada ocasión fallada será una pequeña crisis bursátil y cada partido discreto vendrá acompañado inevitablemente por alguien haciendo la cuenta: "79 millones, por cierto."
+
+Y Mario tendrá que convivir con ello. Porque el cariño de un padre es incondicional, pero el de una afición después de una puja de 79 millones seguramente tenga cláusulas.
+
+Juan, mientras tanto, puede estar tranquilo. Ha vuelto a hacer exactamente lo que se esperaba de él: construir un Bodø Dream con nombres importantes y garantizar que, cuando empiece el tercer split, nadie pueda decir que el administrador ha venido simplemente a participar.
+
+Ha venido a comprar.
+
+El año pasado la broma era que se había creado un equipo demasiado bueno. Este año ha decidido eliminar cualquier duda metodológica: se lo ha comprado.
+
+Y todavía queda por ver cómo funciona la plantilla, porque el mercado puede darte nombres, pero luego hay que jugar. Bodø Dream ya sabe lo que es dominar una liga regular y descubrir después que los playoffs no respetan presupuestos ni reputaciones. Old School se encargó de recordárselo con aquel 10-8 que convirtió el "Dream" en despertador.
+
+Pero Juan ha respondido como responden los grandes magnates cuando algo falla: gastando más.
+
+No sabemos si Mario será el fichaje que lleve a Bodø Dream al título. No sabemos si los 79 millones parecerán baratos dentro de unas semanas o si se convertirán en el número favorito del resto de la liga.
+
+Lo único seguro es que el tercer split todavía no ha empezado y Juan ya tiene otra vez lo que quería: un equipo del que todo el mundo habla.
+
+Bodø Dream vuelve. El Ultimate Team también.
+
+Solo que esta vez hay una pequeña diferencia. Antes parecía que Juan jugaba con trucos. Ahora juega con tarjeta.
+
+Y el hijo le ha salido caro.`,
+    imagen: "/noticias/noticiabodo.png",
+    encuadre: "arriba",
+    fecha: "17 sep 2026",
+    etiqueta: "ANÁLISIS",
+  },
+  {
     id: "filosofos-74-millones-samu",
     split: 3,
     equipoSlug: "filosofos",
