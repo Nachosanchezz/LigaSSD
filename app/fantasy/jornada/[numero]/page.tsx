@@ -2,9 +2,10 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import Escudo from "@/components/Escudo";
 import PageHeader from "@/components/PageHeader";
-import { mercado, puntosDelCinco } from "@/lib/fantasy";
+import { puntosDelCinco } from "@/lib/fantasy";
 import {
   getJornadasFantasy,
+  getMercadoDeJornada,
   getParticipantes,
   getSesion,
   getTodosLosCincos,
@@ -24,12 +25,12 @@ export default async function JornadaFantasyPage({ params }: Props) {
   const jornada = jornadas.find((candidata) => candidata.numero === Number(numero));
   if (!jornada) notFound();
 
-  const [cincos, participantes, sesion] = await Promise.all([
+  const [cincos, participantes, sesion, jugadores] = await Promise.all([
     getTodosLosCincos(),
     getParticipantes(),
     getSesion(),
+    getMercadoDeJornada(jornada.numero),
   ]);
-  const jugadores = mercado();
   const porId = new Map(jugadores.map((jugador) => [jugador.id, jugador]));
 
   // Los cinco se enseñan cuando la jornada ya ha empezado, no antes

@@ -45,6 +45,22 @@ export const PORTERIA = {
 } as const;
 
 /**
+ * La bolsa: después de cada jornada cerrada, cada jugador sube 1 M€ por cada
+ * participante que lo alineó por encima de la media y baja 1 M€ por cada uno
+ * por debajo. Así los precios que puse a ojo se corrigen solos, sin que nadie
+ * tenga que arbitrar.
+ *
+ * Los porteros se comparan solo entre porteros: como hay cinco y todo el mundo
+ * está obligado a llevar uno, en la media general saldrían siempre disparados.
+ */
+export const VALORES = {
+  porFichaje: 1,
+  minimo: 1,
+  /** Nadie puede costar más que el presupuesto entero */
+  maximo: 150,
+} as const;
+
+/**
  * Valor de los 13 que no pasaron por la subasta: los cinco presidentes y los
  * ocho de Titans, que llegaron ya formados. Es una tasación, no un precio
  * pagado, hecha con lo que rindieron en el Split 2 y con el listón que puso

@@ -9,6 +9,7 @@ import {
   getClasificacionFantasy,
   getJornadaActual,
   getJornadasFantasy,
+  getMercadoDeJornada,
   getSesion,
   hayBaseDeDatos,
 } from "@/lib/fantasy-datos";
@@ -59,6 +60,7 @@ export default async function FantasyPage() {
                 Uno de los cinco tiene que ser <strong>portero</strong>; los otros cuatro, de pista.
               </li>
               <li>Como mucho {REGLAS.maxPorEquipo} del mismo equipo.</li>
+              <li>Los precios suben y bajan según a quién fiche la gente.</li>
               <li>
                 Uno es el capitán y puntúa <strong>doble</strong>.
               </li>
@@ -85,8 +87,11 @@ export default async function FantasyPage() {
     getJornadasFantasy(),
     getClasificacionFantasy(),
   ]);
-  const cinco = await getCinco(sesion.personaId, jornada.numero);
-  const porId = new Map(jugadores.map((jugador) => [jugador.id, jugador]));
+  const [cinco, mercadoDeLaJornada] = await Promise.all([
+    getCinco(sesion.personaId, jornada.numero),
+    getMercadoDeJornada(jornada.numero),
+  ]);
+  const porId = new Map(mercadoDeLaJornada.map((jugador) => [jugador.id, jugador]));
   const fichas = cinco?.jugadores.map((id) => porId.get(id)!).filter(Boolean) ?? [];
 
   const miFila = clasificacion.find((fila) => fila.participante.personaId === sesion.personaId);

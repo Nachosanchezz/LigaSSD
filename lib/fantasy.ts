@@ -1,4 +1,4 @@
-import { PORTERIA, PUNTOS, REGLAS, TASACIONES } from "@/data/fantasy";
+import { PORTERIA, PUNTOS, REGLAS, TASACIONES, VALORES } from "@/data/fantasy";
 import { getPersona } from "@/data/personas";
 import { equiposSplit3 } from "@/data/split3/equipos";
 import type { Partido } from "@/data/tipos";
@@ -56,6 +56,70 @@ export function mercado(): JugadorMercado[] {
     })
   );
   return jugadores.sort((a, b) => b.valor - a.valor || a.apodo.localeCompare(b.apodo));
+}
+
+// -------------------------------------------------------------------- bolsa
+
+export type CincoCerrado = { jornada: number; jugadores: string[] };
+
+export type ValorEnJornada = {
+  valor: number;
+  /** Lo que se movió al cerrar la jornada anterior */
+  cambio: number;
+};
+
+/**
+ * Lo que cuesta cada jugador en una jornada, partiendo del precio de la
+ * subasta y aplicando la demanda de cada jornada ya cerrada. No se guarda
+ * nada: se recalcula con los cinco que la gente alineó.
+ */
+export function valoresEnJornada(
+  jornada: number,
+  cincosCerrados: CincoCerrado[],
+  jugadores: JugadorMercado[]
+): Map<string, ValorEnJornada> {
+  const valores = new Map(jugadores.map((jugador) => [jugador.id, jugador.valor]));
+  const cambios = new Map(jugadores.map((jugador) => [jugador.id, 0]));
+  const cuantosPorteros = jugadores.filter((jugador) => jugador.portero).length;
+  const cuantosDePista = jugadores.length - cuantosPorteros;
+
+  const anteriores = [...new Set(cincosCerrados.map((cinco) => cinco.jornada))]
+    .filter((numero) => numero < jornada)
+    .sort((a, b) => a - b);
+
+  for (const numero of anteriores) {
+    const fichajes = new Map<string, number>();
+    for (const cinco of cincosCerrados.filter((candidato) => candidato.jornada === numero)) {
+      for (const id of cinco.jugadores) fichajes.set(id, (fichajes.get(id) ?? 0) + 1);
+    }
+
+    // Cada grupo con su media: los porteros no compiten contra los de pista
+    let totalPorteros = 0;
+    let totalDePista = 0;
+    for (const jugador of jugadores) {
+      const suyos = fichajes.get(jugador.id) ?? 0;
+      if (jugador.portero) totalPorteros += suyos;
+      else totalDePista += suyos;
+    }
+    const mediaPortero = cuantosPorteros > 0 ? totalPorteros / cuantosPorteros : 0;
+    const mediaDePista = cuantosDePista > 0 ? totalDePista / cuantosDePista : 0;
+
+    for (const jugador of jugadores) {
+      const media = jugador.portero ? mediaPortero : mediaDePista;
+      const movimiento = Math.round(((fichajes.get(jugador.id) ?? 0) - media) * VALORES.porFichaje);
+      const antes = valores.get(jugador.id) ?? jugador.valor;
+      const ahora = Math.min(VALORES.maximo, Math.max(VALORES.minimo, antes + movimiento));
+      valores.set(jugador.id, ahora);
+      cambios.set(jugador.id, ahora - antes);
+    }
+  }
+
+  return new Map(
+    jugadores.map((jugador) => [
+      jugador.id,
+      { valor: valores.get(jugador.id) ?? jugador.valor, cambio: cambios.get(jugador.id) ?? 0 },
+    ])
+  );
 }
 
 /** Por qué un cinco no vale; null si es legal */

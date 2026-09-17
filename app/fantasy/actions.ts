@@ -5,6 +5,7 @@ import { mercado, motivoInvalido } from "@/lib/fantasy";
 import {
   getHashDePin,
   getJornadasFantasy,
+  getMercadoDeJornada,
   getSesion,
   hayBaseDeDatos,
 } from "@/lib/fantasy-datos";
@@ -61,7 +62,7 @@ export async function guardarCinco(
   if (!elegida) return { error: "Esa jornada no existe" };
   if (!elegida.abierta) return { error: "Esa jornada ya ha empezado: el mercado está cerrado" };
 
-  const precios = new Map(mercado().map((jugador) => [jugador.id, jugador]));
+  const precios = new Map((await getMercadoDeJornada(jornada)).map((jugador) => [jugador.id, jugador]));
   const problema = motivoInvalido(jugadores, capitan, precios);
   if (problema) return { error: problema };
 

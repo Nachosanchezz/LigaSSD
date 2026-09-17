@@ -12,6 +12,8 @@ export type JugadorSelector = JugadorMercado & {
   rival?: string;
   /** Puntos que lleva en lo que va de split */
   puntos: number;
+  /** Lo que se movió su precio al cerrar la jornada anterior */
+  cambio: number;
 };
 
 type Props = {
@@ -297,14 +299,26 @@ export default function SelectorCinco({ jornada, abierta, jugadores, inicial }: 
                       {impedimento}
                     </span>
                   )}
-                  <span
-                    className={`shrink-0 rounded-lg px-2 py-1 text-sm font-black tabular-nums ${
-                      elegido ? "bg-[#0b4a6f] text-white" : "bg-slate-100 text-[#0b4a6f]"
-                    }`}
-                    title={jugador.tasado ? "Valor tasado: no pasó por la subasta" : "Lo que costó en la subasta"}
-                  >
-                    {jugador.valor}
-                    {jugador.tasado && <span className="font-normal text-yellow-500">*</span>}
+                  <span className="flex shrink-0 flex-col items-end">
+                    <span
+                      className={`rounded-lg px-2 py-1 text-sm font-black tabular-nums ${
+                        elegido ? "bg-[#0b4a6f] text-white" : "bg-slate-100 text-[#0b4a6f]"
+                      }`}
+                    >
+                      {jugador.valor}
+                      {jugador.tasado && jugador.cambio === 0 && (
+                        <span className="font-normal text-yellow-500">*</span>
+                      )}
+                    </span>
+                    {jugador.cambio !== 0 && (
+                      <span
+                        className={`mt-0.5 text-[10px] font-black tabular-nums ${
+                          jugador.cambio > 0 ? "text-green-600" : "text-red-500"
+                        }`}
+                      >
+                        {jugador.cambio > 0 ? "▲" : "▼"} {Math.abs(jugador.cambio)}
+                      </span>
+                    )}
                   </span>
                 </button>
               </li>
@@ -315,8 +329,10 @@ export default function SelectorCinco({ jornada, abierta, jugadores, inicial }: 
           )}
         </ul>
         <p className="border-t border-slate-100 px-4 py-3 text-[11px] text-slate-400">
-          Los precios son los de la subasta. El <span className="font-bold text-yellow-500">*</span> marca a los
-          que no pasaron por ella (presidentes y Titans): su valor es una tasación.
+          Los precios salieron de la subasta y se mueven solos: al cerrar cada jornada, cada jugador sube 1 M€
+          por cada participante que lo alineó por encima de la media y baja 1 M€ por cada uno por debajo. La
+          flecha es lo que se movió en la última. El <span className="font-bold text-yellow-500">*</span> marca
+          a los que no pasaron por la subasta y llevan un valor tasado.
         </p>
       </div>
     </div>

@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 import PageHeader from "@/components/PageHeader";
 import { REGLAS } from "@/data/fantasy";
 import { textoDeInstante } from "@/lib/fecha";
-import { getCinco, getJornadaActual, getMercadoConPuntos, getSesion } from "@/lib/fantasy-datos";
+import { getCinco, getJornadaActual, getMercadoDeJornada, getSesion } from "@/lib/fantasy-datos";
 import SelectorCinco, { type JugadorSelector } from "../SelectorCinco";
 
 export const dynamic = "force-dynamic";
@@ -14,7 +14,7 @@ export default async function ElegirCincoPage() {
 
   const jornada = await getJornadaActual();
   const [jugadores, cinco] = await Promise.all([
-    getMercadoConPuntos(),
+    getMercadoDeJornada(jornada.numero),
     getCinco(sesion.personaId, jornada.numero),
   ]);
 

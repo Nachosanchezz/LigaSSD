@@ -1,6 +1,6 @@
 import Link from "next/link";
 import PageHeader from "@/components/PageHeader";
-import { PORTERIA, PUNTOS, REGLAS } from "@/data/fantasy";
+import { PORTERIA, PUNTOS, REGLAS, VALORES } from "@/data/fantasy";
 
 export const metadata = { title: "Reglas del Fantasy · Liga SSD" };
 
@@ -38,8 +38,8 @@ export default function ReglasFantasyPage() {
         <Bloque titulo="Tu cinco">
           <p>
             Cada jornada alineas a <strong>{REGLAS.tamanoEquipo} jugadores</strong> de la liga con un presupuesto
-            de <strong>{REGLAS.presupuesto} M€</strong>. Los precios son los que se pagaron en la subasta del 15 de
-            septiembre; los presidentes y los de Titans, que no pasaron por ella, llevan un valor tasado.
+            de <strong>{REGLAS.presupuesto} M€</strong>. Los precios salieron de la subasta del 15 de septiembre
+            —los presidentes y los de Titans llevan un valor tasado— y a partir de ahí los mueve la demanda.
           </p>
           <p>
             Uno de los cinco tiene que ser <strong>portero</strong>, y solo uno: los otros cuatro son de pista. En
@@ -53,6 +53,27 @@ export default function ReglasFantasyPage() {
           <p>
             Uno de los cinco es el <strong>capitán</strong> y puntúa{" "}
             <strong>doble</strong>, para bien y para mal.
+          </p>
+        </Bloque>
+
+        <Bloque titulo="Los precios se mueven">
+          <p>
+            Los precios salieron de la subasta, pero no se quedan quietos: <strong>los mueve la demanda</strong>.
+            Al cerrar cada jornada, un jugador sube <strong>{VALORES.porFichaje} M€ por cada participante que lo
+            alineó por encima de la media</strong> y baja otro tanto por cada uno por debajo.
+          </p>
+          <p>
+            Si a alguien lo ficha medio grupo porque está regalado, sube hasta que deje de estarlo. Si nadie
+            quiere a otro porque parece caro, baja hasta que compense. Así los precios se colocan solos y nadie
+            tiene que discutirlos.
+          </p>
+          <p>
+            Los porteros se comparan <strong>solo entre porteros</strong>: como hay cinco y todos estáis
+            obligados a llevar uno, en la media general subirían siempre.
+          </p>
+          <p>
+            El precio nuevo entra en vigor <strong>en la jornada siguiente</strong>, nunca a mitad, y en el
+            mercado verás con una flecha lo que se movió cada uno. Nadie baja de {VALORES.minimo} M€.
           </p>
         </Bloque>
 

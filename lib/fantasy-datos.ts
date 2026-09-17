@@ -8,7 +8,10 @@ import {
   mercado,
   puntosDePartidos,
   puntosDelCinco,
+  valoresEnJornada,
   type Asistencias,
+  type CincoCerrado,
+  type JugadorMercado,
   type PuntosJugador,
 } from "./fantasy";
 import { cookieDeSesion, firmaValida } from "./fantasy-sesion";
@@ -222,14 +225,47 @@ export async function getClasificacionFantasy(): Promise<FilaFantasy[]> {
   );
 }
 
-/** El mercado con los puntos que lleva cada jugador en todo el split */
-export async function getMercadoConPuntos() {
-  const jornadas = await getJornadasFantasy();
+export type JugadorDelMercado = JugadorMercado & {
+  /** Lo que se movió su precio al cerrar la jornada anterior */
+  cambio: number;
+  /** Puntos que lleva en lo que va de split */
+  puntos: number;
+};
+
+/**
+ * El mercado tal y como está en una jornada: el precio ya movido por la
+ * demanda de las jornadas cerradas, y los puntos que lleva cada uno.
+ *
+ * Solo cuentan las jornadas cerradas: mientras una sigue abierta, sus cinco
+ * son secretos y no pueden mover ningún precio.
+ */
+export const getMercadoDeJornada = cache(async (jornada: number): Promise<JugadorDelMercado[]> => {
+  const [jornadas, cincos] = await Promise.all([getJornadasFantasy(), getTodosLosCincos()]);
+
+  const cerradas = new Set(jornadas.filter((candidata) => !candidata.abierta).map((c) => c.numero));
+  const cincosCerrados: CincoCerrado[] = cincos
+    .filter((cinco) => cerradas.has(cinco.jornada))
+    .map((cinco) => ({ jornada: cinco.jornada, jugadores: cinco.jugadores }));
+
+  const base = mercado();
+  const valores = valoresEnJornada(jornada, cincosCerrados, base);
+
   const acumulado: Record<string, number> = {};
-  for (const jornada of jornadas) {
-    for (const [id, puntos] of Object.entries(jornada.puntos)) {
+  for (const candidata of jornadas) {
+    for (const [id, puntos] of Object.entries(candidata.puntos)) {
       acumulado[id] = (acumulado[id] ?? 0) + puntos.puntos;
     }
   }
-  return mercado().map((jugador) => ({ ...jugador, puntos: acumulado[jugador.id] ?? 0 }));
-}
+
+  return base
+    .map((jugador) => {
+      const valor = valores.get(jugador.id);
+      return {
+        ...jugador,
+        valor: valor?.valor ?? jugador.valor,
+        cambio: valor?.cambio ?? 0,
+        puntos: acumulado[jugador.id] ?? 0,
+      };
+    })
+    .sort((a, b) => b.valor - a.valor || a.apodo.localeCompare(b.apodo));
+});
