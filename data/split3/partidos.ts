@@ -16,9 +16,9 @@ const CALENDARIO: FilaCalendario[] = [
   [1, "2026-09-22T21:00", "1", "juan", "melendi", "borja"],
   [1, "2026-09-23T20:00", "1", "lui", "nacho", "carlos"],
 
-  [2, "2026-09-29T20:00", "1", "carlos", "lui", "borja"],
-  [2, "2026-09-29T21:00", "1", "juan", "borja", "lui"],
-  [2, "2026-09-30T20:00", "1", "melendi", "nacho", "carlos"],
+  [2, "2026-09-29T20:00", "1", "carlos", "lui", "melendi"],
+  [2, "2026-09-30T21:00", "1", "juan", "borja", "nacho"],
+  [2, "2026-10-01T21:00", "1", "melendi", "nacho", "borja"],
 
   [3, "2026-10-06T20:00", "1", "borja", "lui", "nacho"],
   [3, "2026-10-06T21:00", "1", "nacho", "juan", "lui"],
