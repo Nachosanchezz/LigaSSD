@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { guardarResultado, borrarResultado, guardarArbitra, guardarAplazado, quitarAplazado } from "../actions";
 
@@ -389,11 +389,10 @@ export default function ResultadoForm({
           <label className="block text-xs font-black uppercase tracking-widest text-slate-500 mb-2">
             MVP (apodo)
           </label>
-          <input
-            type="text"
+          <EntradaJugador
             value={mvp}
-            onChange={(e) => setMvp(e.target.value)}
-            list="jugadores-todos"
+            onChange={setMvp}
+            plantilla={[...jugadoresLocal, ...jugadoresVisitante]}
             placeholder="Apodo del jugador MVP"
             className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-800 focus:outline-none focus:border-[#0b4a6f] focus:bg-white transition"
           />
@@ -403,7 +402,7 @@ export default function ResultadoForm({
       {/* Goles Local */}
       <GolesSection
         titulo={`Goles ${local}`}
-        lista="jugadores-local"
+        plantilla={jugadoresLocal}
         goles={golesLocal}
         onAdd={() => setGolesLocal([...golesLocal, golVacio()])}
         onUpdate={(i, campo, val) =>
@@ -415,7 +414,7 @@ export default function ResultadoForm({
       {/* Goles Visitante */}
       <GolesSection
         titulo={`Goles ${visitante}`}
-        lista="jugadores-visitante"
+        plantilla={jugadoresVisitante}
         goles={golesVisitante}
         onAdd={() => setGolesVisitante([...golesVisitante, golVacio()])}
         onUpdate={(i, campo, val) =>
@@ -427,13 +426,13 @@ export default function ResultadoForm({
       {/* Tarjetas */}
       <TarjetasSection
         titulo={`Tarjetas ${local}`}
-        lista="jugadores-local"
+        plantilla={jugadoresLocal}
         tarjetas={tarjetasLocal}
         onCambiar={setTarjetasLocal}
       />
       <TarjetasSection
         titulo={`Tarjetas ${visitante}`}
-        lista="jugadores-visitante"
+        plantilla={jugadoresVisitante}
         tarjetas={tarjetasVisitante}
         onCambiar={setTarjetasVisitante}
       />
@@ -451,23 +450,6 @@ export default function ResultadoForm({
         jugaron={jugaronVisitante}
         onCambiar={setJugaronVisitante}
       />
-
-      {/* Sugerencias para los nombres */}
-      <datalist id="jugadores-local">
-        {jugadoresLocal.map((jugador) => (
-          <option key={jugador} value={jugador} />
-        ))}
-      </datalist>
-      <datalist id="jugadores-visitante">
-        {jugadoresVisitante.map((jugador) => (
-          <option key={jugador} value={jugador} />
-        ))}
-      </datalist>
-      <datalist id="jugadores-todos">
-        {[...jugadoresLocal, ...jugadoresVisitante].map((jugador) => (
-          <option key={jugador} value={jugador} />
-        ))}
-      </datalist>
 
       {/* Nombres que no cuadran con ninguna plantilla */}
       {desconocidos.length > 0 && (
@@ -539,17 +521,87 @@ export default function ResultadoForm({
   );
 }
 
+/**
+ * Campo de nombre con la plantilla a un toque.
+ *
+ * Antes esto era un <datalist>, que el Safari del iPhone no llega a pintar:
+ * apuntando el acta desde el móvil a pie de pista no salía ninguna sugerencia
+ * y había que escribir el apodo entero y bien. Ahora los nombres son botones.
+ */
+function EntradaJugador({
+  value,
+  onChange,
+  plantilla,
+  placeholder,
+  /** Anotaciones que no son un jugador, como "Cedido" */
+  extras = [],
+  className = "",
+}: {
+  value: string;
+  onChange: (valor: string) => void;
+  plantilla: string[];
+  placeholder: string;
+  extras?: string[];
+  className?: string;
+}) {
+  const campo = useRef<HTMLInputElement>(null);
+  const [abierto, setAbierto] = useState(false);
+
+  const escrito = normalizar(value);
+  const opciones = [...plantilla, ...extras].filter(
+    (opcion) => !escrito || normalizar(opcion).includes(escrito)
+  );
+
+  function elegir(opcion: string) {
+    onChange(opcion);
+    setAbierto(false);
+    campo.current?.blur();
+  }
+
+  return (
+    <div className="min-w-0 flex-1">
+      <input
+        ref={campo}
+        type="text"
+        value={value}
+        onChange={(e) => { onChange(e.target.value); setAbierto(true); }}
+        onFocus={() => setAbierto(true)}
+        onBlur={() => setAbierto(false)}
+        autoComplete="off"
+        placeholder={placeholder}
+        className={className}
+      />
+      {abierto && opciones.length > 0 && (
+        <div className="mt-2 flex flex-wrap gap-1.5">
+          {opciones.map((opcion) => (
+            <button
+              key={opcion}
+              type="button"
+              // El dedo saca el foco del campo antes de que llegue el click, y
+              // eso cerraría la lista sin elegir nada: mejor actuar aquí
+              onPointerDown={(e) => { e.preventDefault(); elegir(opcion); }}
+              className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-bold text-[#0b4a6f] shadow-sm transition active:scale-95 active:border-[#0b4a6f] active:bg-[#0b4a6f] active:text-white"
+            >
+              {opcion}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 function GolesSection({
   titulo,
-  lista,
+  plantilla,
   goles,
   onAdd,
   onUpdate,
   onRemove,
 }: {
   titulo: string;
-  /** Id del datalist con la plantilla de ese equipo */
-  lista: string;
+  /** Apodos de ese equipo, para ofrecerlos de un toque */
+  plantilla: string[];
   goles: GolEntry[];
   onAdd: () => void;
   onUpdate: (i: number, campo: keyof GolEntry, val: string) => void;
@@ -578,33 +630,33 @@ function GolesSection({
               key={i}
               className="rounded-xl bg-slate-50 border border-slate-100 p-3 space-y-2"
             >
-              <div className="flex items-center gap-2">
-                <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest w-4">
+              <div className="flex items-start gap-2">
+                <span className="mt-2.5 text-[10px] font-black text-slate-400 uppercase tracking-widest w-4">
                   {i + 1}
                 </span>
-                <input
-                  type="text"
+                <EntradaJugador
                   value={gol.jugador}
-                  onChange={(e) => onUpdate(i, "jugador", e.target.value)}
-                  list={lista}
+                  onChange={(valor) => onUpdate(i, "jugador", valor)}
+                  plantilla={plantilla}
+                  extras={["Cedido"]}
                   placeholder="Goleador (apodo)"
-                  className="flex-1 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-800 focus:outline-none focus:border-[#0b4a6f] transition"
+                  className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-800 focus:outline-none focus:border-[#0b4a6f] transition"
                 />
                 <button
                   onClick={() => onRemove(i)}
-                  className="text-slate-400 hover:text-red-500 transition text-lg leading-none px-1"
+                  className="mt-1 text-slate-400 hover:text-red-500 transition text-lg leading-none px-1"
                 >
                   ×
                 </button>
               </div>
-              <div className="flex gap-2 ml-6">
-                <input
-                  type="text"
+              <div className="flex items-start gap-2 ml-6">
+                <EntradaJugador
                   value={gol.asistente}
-                  onChange={(e) => onUpdate(i, "asistente", e.target.value)}
-                  list={lista}
+                  onChange={(valor) => onUpdate(i, "asistente", valor)}
+                  plantilla={plantilla}
+                  extras={["Cedido"]}
                   placeholder="Asistente (opcional)"
-                  className="flex-1 rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs text-slate-600 focus:outline-none focus:border-[#0b4a6f] transition"
+                  className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs text-slate-600 focus:outline-none focus:border-[#0b4a6f] transition"
                 />
                 <input
                   type="number"
@@ -706,12 +758,12 @@ function AsistenciaSection({
 /** Las tarjetas del acta. Restan en el fantasy y salen en la ficha del partido. */
 function TarjetasSection({
   titulo,
-  lista,
+  plantilla,
   tarjetas,
   onCambiar,
 }: {
   titulo: string;
-  lista: string;
+  plantilla: string[];
   tarjetas: TarjetaEntry[];
   onCambiar: (tarjetas: TarjetaEntry[]) => void;
 }) {
@@ -736,24 +788,23 @@ function TarjetasSection({
         <div className="space-y-3">
           {tarjetas.map((tarjeta, i) => (
             <div key={i} className="rounded-xl bg-slate-50 border border-slate-100 p-3 space-y-2">
-              <div className="flex items-center gap-2">
+              <div className="flex items-start gap-2">
                 <span
-                  className={`h-5 w-3.5 shrink-0 rounded-sm ${
+                  className={`mt-2 h-5 w-3.5 shrink-0 rounded-sm ${
                     tarjeta.tipo === "roja" ? "bg-red-500" : "bg-yellow-400"
                   }`}
                   aria-hidden
                 />
-                <input
-                  type="text"
+                <EntradaJugador
                   value={tarjeta.jugador}
-                  onChange={(e) => actualizar(i, "jugador", e.target.value)}
-                  list={lista}
+                  onChange={(valor) => actualizar(i, "jugador", valor)}
+                  plantilla={plantilla}
                   placeholder="Jugador (apodo)"
-                  className="flex-1 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-800 focus:outline-none focus:border-[#0b4a6f] transition"
+                  className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-800 focus:outline-none focus:border-[#0b4a6f] transition"
                 />
                 <button
                   onClick={() => onCambiar(tarjetas.filter((_, indice) => indice !== i))}
-                  className="text-slate-400 hover:text-red-500 transition text-lg leading-none px-1"
+                  className="mt-1 text-slate-400 hover:text-red-500 transition text-lg leading-none px-1"
                   aria-label="Quitar tarjeta"
                 >
                   ×
